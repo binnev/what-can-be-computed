@@ -15,20 +15,25 @@
 # terminate. However, as stated above, this implementation works
 # correctly only for a single trivial case.
 
-import utils; from utils import rf
-# The following import is NOT an oracle---it's a computable function.  
-from isPeanoProof import isPeanoProof 
+import utils
+from utils import rf
+
+# The following import is NOT an oracle---it's a computable function.
+from isPeanoProof import isPeanoProof
+
+
 def provableInPeano(inString):
-    proofString = ''
+    proofString = ""
     while True:
-        if isPeanoProof(proofString, inString)=='yes': 
-            return 'yes'
-        proofString = utils.nextASCII(proofString) 
+        if isPeanoProof(proofString, inString) == "yes":
+            return "yes"
+        proofString = utils.nextASCII(proofString)
+
 
 def testprovableInPeano():
     # isPeanoProof() works only for one particular string ('0=0') in our
     # artificial, skeletal implementation for testing purposes. So we test only that string.
-    inString = '0=0'
+    inString = "0=0"
     val = provableInPeano(inString)
-    utils.tprint(inString, ':', val)
-    assert val == 'yes'
+    utils.tprint(inString, ":", val)
+    assert val == "yes"

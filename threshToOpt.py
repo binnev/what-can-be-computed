@@ -19,10 +19,14 @@
 
 # Example: see the test function below for an example.
 
-import utils; from utils import rf
+import utils
+from utils import rf
+
 # Import a function solving the threshold version of the optimization
 # problem FOpt.
-from FThresh import FThresh 
+from FThresh import FThresh
+
+
 def threshToOpt(inString, upperBound):
     lowerBound = 0
     upperBound = int(upperBound)
@@ -30,21 +34,24 @@ def threshToOpt(inString, upperBound):
     # Check initial bounds to see if binary search is necessary.
     lowerResult = FThresh(inString, str(lowerBound))
     upperResult = FThresh(inString, str(upperBound))
-    if lowerResult != 'no': return lowerResult
-    if upperResult == 'no': return 'no'
+    if lowerResult != "no":
+        return lowerResult
+    if upperResult == "no":
+        return "no"
 
     # Optimal value is somewhere between upper and lower bounds, so
     # begin binary search.  We maintain the invariant that the lower
     # bound always yields a negative instance and the upper bound
     # always yields a positive instance.
     while lowerBound < upperBound - 1:
-        midVal = int( (upperBound+lowerBound)/2 )
+        midVal = int((upperBound + lowerBound) / 2)
         midResult = FThresh(inString, str(midVal))
-        if midResult == 'no':
+        if midResult == "no":
             lowerBound = midVal
         else:
             upperBound = midVal
-    return FThresh(inString, str(upperBound))  
+    return FThresh(inString, str(upperBound))
+
 
 # Let min be the optimization problem that accepts a list of
 # nonnegative integers and returns the smallest. We define a threshold
@@ -57,35 +64,35 @@ def minThresh(inString, threshold):
     for v in vals:
         if v <= threshold:
             return str(v)
-    return 'no'
+    return "no"
+
 
 def testThreshToOpt():
     global FThresh
     FThresh = minThresh
-    inStrings = [\
-                 '13 18 16 35 23 19 42 73 4 13 8 22',\
-                 '',\
-                 '0',\
-                 '0 1 2 3',\
-                 '4',\
-                 '4 4 4',\
-                 '7 6 5 4',\
-                 '4 5',\
-                 '4 5 6',\
-                 '5',\
-                 '5 6',\
-                 '5 6 7',\
-                 '105 106 107',\
-                 '100 105 106 107',\
-                 ]
+    inStrings = [
+        "13 18 16 35 23 19 42 73 4 13 8 22",
+        "",
+        "0",
+        "0 1 2 3",
+        "4",
+        "4 4 4",
+        "7 6 5 4",
+        "4 5",
+        "4 5 6",
+        "5",
+        "5 6",
+        "5 6 7",
+        "105 106 107",
+        "100 105 106 107",
+    ]
     upperBound = 100
     for inString in inStrings:
         val = threshToOpt(inString, upperBound)
-        utils.tprint('with upper bound', upperBound, ', min of', inString, ':', val)
+        utils.tprint("with upper bound", upperBound, ", min of", inString, ":", val)
         nums = [int(x) for x in inString.split()]
-        if len(nums)==0 or min(nums) > upperBound:
-            solution = 'no'
+        if len(nums) == 0 or min(nums) > upperBound:
+            solution = "no"
         else:
             solution = str(min(nums))
         assert val == solution
-

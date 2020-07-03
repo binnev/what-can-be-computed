@@ -11,8 +11,11 @@
 # Example:
 # >>> convertSatTo3Sat('(x1 OR x2 OR NOT x3 OR NOT x4)')
 # '(d1 OR x1 OR x2) AND (NOT d1 OR NOT x3 OR NOT x4)'
-import utils; from utils import rf
+import utils
+from utils import rf
 import sat
+
+
 def convertSatTo3Sat(inString):
     cnfFormula = sat.readSat(inString)
     allVariables = sat.getVariablesAsSet(cnfFormula)
@@ -37,10 +40,11 @@ def convertSatTo3Sat(inString):
                 (newClause1, newClause2) = splitClause(clause, allVariables)
                 cnfFormula.pop(clauseID)
                 cnfFormula.insert(clauseID, newClause1)
-                cnfFormula.insert(clauseID+1, newClause2)
+                cnfFormula.insert(clauseID + 1, newClause2)
                 break
 
     return sat.writeSat(cnfFormula)
+
 
 def splitClause(clause, allVariables):
     """Split a clause using the method described in the textbook.
@@ -78,7 +82,7 @@ def splitClause(clause, allVariables):
     for i in range(numLiterals):
         variable = sortedClauseVariables[i]
         posNeg = clause[variable]
-        if i < numLiterals-2:
+        if i < numLiterals - 2:
             newClause1[variable] = posNeg
         else:
             newClause2[variable] = posNeg
@@ -87,6 +91,7 @@ def splitClause(clause, allVariables):
     newClause2[dummyVariable] = -1
 
     return (newClause1, newClause2)
+
 
 # Create, add, and return a new dummy variable name. Specifically, the
 # set allVariables is a set of all current variable names. We find a
@@ -115,10 +120,11 @@ def addDummyVariable(allVariables):
         str: the new dummy variable name.
 
     """
-    
-    i = 1; done = False
+
+    i = 1
+    done = False
     while not done:
-        dummyName = 'd' + str(i)
+        dummyName = "d" + str(i)
         if dummyName not in allVariables:
             allVariables.add(dummyName)
             return dummyName
@@ -126,37 +132,45 @@ def addDummyVariable(allVariables):
 
 
 def testAddDummyVariable():
-    formulaStr = '(x1 OR x2 OR NOT x3 OR NOT x4 OR x5) AND (NOT x1 OR NOT x2 OR x3 OR x4) AND (x4 OR NOT x5)'
+    formulaStr = (
+        "(x1 OR x2 OR NOT x3 OR NOT x4 OR x5) AND (NOT x1 OR NOT x2 OR x3 OR x4) AND (x4 OR NOT x5)"
+    )
     cnfFormula = sat.readSat(formulaStr)
     allVariables = sat.getVariablesAsSet(cnfFormula)
     numVars = len(allVariables)
     for i in range(5):
         dummyName = addDummyVariable(allVariables)
         utils.tprint(dummyName, allVariables)
-        varName = 'd'+str(i+1)
+        varName = "d" + str(i + 1)
         assert varName in allVariables
-        assert len(allVariables) == numVars + i+1
+        assert len(allVariables) == numVars + i + 1
+
 
 def testSplitClause():
-    formulaStr = '(x1 OR x2 OR NOT x3 OR NOT x4 OR x5) AND (NOT x1 OR NOT x2 OR x3 OR x4) AND (x4 OR NOT x5)'
+    formulaStr = (
+        "(x1 OR x2 OR NOT x3 OR NOT x4 OR x5) AND (NOT x1 OR NOT x2 OR x3 OR x4) AND (x4 OR NOT x5)"
+    )
     cnfFormula = sat.readSat(formulaStr)
     allVariables = sat.getVariablesAsSet(cnfFormula)
     result = splitClause(cnfFormula[0], allVariables)
-    solution = ({'x1': 1, 'd1': 1, 'x3': -1, 'x2': 1}, {'d1': -1, 'x5': 1, 'x4': -1})
-    utils.tprint('before split:', cnfFormula[0], '\nafter split:', result)
-    assert result==solution
-    
+    solution = ({"x1": 1, "d1": 1, "x3": -1, "x2": 1}, {"d1": -1, "x5": 1, "x4": -1})
+    utils.tprint("before split:", cnfFormula[0], "\nafter split:", result)
+    assert result == solution
+
+
 def testConvertSatTo3Sat():
-    s0 = '(x1 OR x2 OR NOT x3 OR NOT x4 OR x5) AND (NOT x1 OR NOT x2 OR x3 OR x4) AND (x4 OR NOT x5)'
-    s0soln = '(d1 OR d2 OR x1) AND (NOT d2 OR x2 OR NOT x3) AND (NOT d1 OR NOT x4 OR x5) AND (d3 OR NOT x1 OR NOT x2) AND (NOT d3 OR x3 OR x4) AND (x4 OR NOT x5)'
-    s1 = ''
-    s1soln = ''
-    s2 = 'x1'
-    s2soln = '(x1)'
-    s3 = 'x1 AND NOT x2'
-    s3soln = '(x1) AND (NOT x2)'
-    s4 = 'x1 OR NOT x2'
-    s4soln = '(x1 OR NOT x2)'
+    s0 = (
+        "(x1 OR x2 OR NOT x3 OR NOT x4 OR x5) AND (NOT x1 OR NOT x2 OR x3 OR x4) AND (x4 OR NOT x5)"
+    )
+    s0soln = "(d1 OR d2 OR x1) AND (NOT d2 OR x2 OR NOT x3) AND (NOT d1 OR NOT x4 OR x5) AND (d3 OR NOT x1 OR NOT x2) AND (NOT d3 OR x3 OR x4) AND (x4 OR NOT x5)"
+    s1 = ""
+    s1soln = ""
+    s2 = "x1"
+    s2soln = "(x1)"
+    s3 = "x1 AND NOT x2"
+    s3soln = "(x1) AND (NOT x2)"
+    s4 = "x1 OR NOT x2"
+    s4soln = "(x1 OR NOT x2)"
 
     testvals = [
         (s0, s0soln),
@@ -167,8 +181,7 @@ def testConvertSatTo3Sat():
     ]
 
     for (inString, soln) in testvals:
-        utils.tprint('**', inString, '**')
+        utils.tprint("**", inString, "**")
         converted = convertSatTo3Sat(inString)
-        utils.tprint(converted, '\n\n')
+        utils.tprint(converted, "\n\n")
         assert converted == soln
-

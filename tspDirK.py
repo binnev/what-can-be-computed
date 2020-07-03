@@ -18,22 +18,24 @@
 # Example:
 # >>> tspDirK('a,b,4 b,a,9 b,c,6 c,a,10;3')
 # 'a,b,c'
-import utils; from utils import rf
+import utils
+from utils import rf
 from graph import Graph, Edge, Path
 from tspDir import completeCycle
 
 # Variant of TSP. We seek a directed shortest cycle that incorporates
 # at least K nodes. See tspDir.py for more detailed comments.
 def tspDirK(inString):
-    (graphString, K) = inString.split(';')
+    (graphString, K) = inString.split(";")
     K = int(K)
     # treat K=0 as a special case. Since the empty cycle satisfies
     # this, we return a positive solution which is the empty string.
-    if K==0:
-        return ''
+    if K == 0:
+        return ""
 
     graph = Graph(graphString)
-    bestCycle = None; bestDistance = None
+    bestCycle = None
+    bestDistance = None
     for firstNode in graph:
         (cycle, distance) = shortestKCycleWithPrefix(graph, K, Path([firstNode]), 0)
         if cycle != None:
@@ -42,7 +44,8 @@ def tspDirK(inString):
     if bestCycle != None:
         return str(bestCycle)
     else:
-        return 'no'
+        return "no"
+
 
 # See tspDir.py for documentation on shortestCycleWithPrefix, which is
 # analogous to this function except we permit cycles to have K or more
@@ -52,7 +55,7 @@ def shortestKCycleWithPrefix(graph, K, prefix, prefixDistance):
         (cycle1, distance1) = completeCycle(graph, prefix, prefixDistance)
     else:
         (cycle1, distance1) = (None, None)
-    
+
     (cycle2, distance2) = tryAllKPrefixExtensions(graph, K, prefix, prefixDistance)
     if cycle1 == None and cycle2 == None:
         return (None, None)
@@ -64,6 +67,7 @@ def shortestKCycleWithPrefix(graph, K, prefix, prefixDistance):
         return (cycle1, distance1)
     else:
         return (cycle2, distance2)
+
 
 # See tspDir.py for documentation on tryAllPrefixExtensions, which is
 # analogous to this function except we permit cycles to have K or more
@@ -78,40 +82,43 @@ def tryAllKPrefixExtensions(graph, K, prefix, prefixDistance):
     for nextNode in graph.neighbors(lastNode):
         if nextNode not in prefix:
             extendedPrefix = prefix.extend(nextNode)
-            extendedPrefixDistance = prefixDistance + graph.getWeight( Edge([lastNode, nextNode]) )
-            (cycle, distance) = shortestKCycleWithPrefix(graph, K, extendedPrefix, extendedPrefixDistance)
+            extendedPrefixDistance = prefixDistance + graph.getWeight(Edge([lastNode, nextNode]))
+            (cycle, distance) = shortestKCycleWithPrefix(
+                graph, K, extendedPrefix, extendedPrefixDistance
+            )
             if cycle != None:
                 if bestDistance == None or distance < bestDistance:
                     bestDistance = distance
                     bestCycle = cycle
     return (bestCycle, bestDistance)
 
+
 def testTspDirK():
     testvals = [
-        (';1', 'no'),
-        ('a,a,3;1', 3),
-        ('a,a,3 ; 1 ', 3),
-        ('a,a,3;2', 'no'),
-        ('a,b,4;1', 'no'),
-        ('a,b,4;2', 'no'),
-        ('a,b,4;3', 'no'),
-        ('a,b,4 b,a,9;1', 13),
-        ('a,b,4 b,a,9;2', 13),
-        ('a,b,4 b,a,9;3', 'no'),
-        ('a,b,4 b,a,9 b,c,6 c,a,10;2', 13),
-        ('a,b,4 b,a,9 b,c,6 c,a,10;3', 20),
-        ('a,b,4 b,a,9 b,c,6 c,a,1;2', 11),
-        ('a,b,4 b,a,9 b,c,6 c,a,10;4', 'no'),
-        ('a,b,4 b,a,9 b,c,6 c,a,10 a,c,2 c,b,3;3', 14),
-        ('a,b,4 b,a,9 b,c,6 c,a,10 a,c,2 c,b,3;4', 'no'),
+        (";1", "no"),
+        ("a,a,3;1", 3),
+        ("a,a,3 ; 1 ", 3),
+        ("a,a,3;2", "no"),
+        ("a,b,4;1", "no"),
+        ("a,b,4;2", "no"),
+        ("a,b,4;3", "no"),
+        ("a,b,4 b,a,9;1", 13),
+        ("a,b,4 b,a,9;2", 13),
+        ("a,b,4 b,a,9;3", "no"),
+        ("a,b,4 b,a,9 b,c,6 c,a,10;2", 13),
+        ("a,b,4 b,a,9 b,c,6 c,a,10;3", 20),
+        ("a,b,4 b,a,9 b,c,6 c,a,1;2", 11),
+        ("a,b,4 b,a,9 b,c,6 c,a,10;4", "no"),
+        ("a,b,4 b,a,9 b,c,6 c,a,10 a,c,2 c,b,3;3", 14),
+        ("a,b,4 b,a,9 b,c,6 c,a,10 a,c,2 c,b,3;4", "no"),
     ]
     for (inString, solution) in testvals:
         val = tspDirK(inString)
-        utils.tprint(inString.strip(), ':', val)
-        if solution == 'no':
+        utils.tprint(inString.strip(), ":", val)
+        if solution == "no":
             assert val == solution
         else:
-            (graphString, K) = inString.split(';')
+            (graphString, K) = inString.split(";")
             graph = Graph(graphString, directed=True)
             K = int(K)
             cycle = Path.fromString(val)
@@ -119,4 +126,3 @@ def testTspDirK():
             assert graph.isCycle(cycle)
             assert len(cycle) >= K
             assert dist == solution
-

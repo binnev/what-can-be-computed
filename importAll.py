@@ -33,9 +33,11 @@ from alterYesToGAGA import alterYesToGAGA
 from alterYesToHalt import alterYesToHalt
 from alterYesToNumChars import alterYesToNumChars
 from alterYoEToEoE import alterYoEToEoE
+
 # from binAd import binAd
 from brokenSort import brokenSort
 from bubbleSort import bubbleSort
+
 # from cfg import cfg
 # from checkRuntimes import checkRuntimes
 # from checkTuringMachine import checkTuringMachine
@@ -45,6 +47,7 @@ from clique import clique
 from computesF import computesF
 from containsGAGA import containsGAGA
 from containsGAGAandCACAandTATA import containsGAGAandCACAandTATA
+
 # from containsGAGAcopy1 import containsGAGAcopy1
 # from containsGAGAcopy2 import containsGAGAcopy2
 # from containsGAGAcopy3 import containsGAGAcopy3
@@ -61,6 +64,7 @@ from countLines import countLines
 from countLinesPlus1 import countLinesPlus1
 from crashOnSelf import crashOnSelf
 from crashOnString import crashOnString
+
 # from createRelease import createRelease
 from dfa import Dfa
 from dhc import dhc
@@ -72,6 +76,7 @@ from factor import factor
 from factorUnary import factorUnary
 from godel import godel
 from graph import *
+
 # from graphTests import graphTests
 from halfUhc import halfUhc
 from haltExTuring import haltExTuring
@@ -106,6 +111,7 @@ from ndFindNANADivConq import ndFindNANADivConq
 from ndTuringMachine import NDTuringMachine
 from nfa import Nfa
 from no import no
+
 # from noMainFunction import noMainFunction
 from notYesOnSelf import notYesOnSelf
 from notYesOnSelfApprox import notYesOnSelfApprox
@@ -123,6 +129,7 @@ from recognizeEvenLength import recognizeEvenLength
 from repeatCAorGA import repeatCAorGA
 from returnsNumber import returnsNumber
 from rule110 import rule110
+
 # from runAllTests import runAllTests
 from sat import sat
 from shortestPath import shortestPath
@@ -136,8 +143,10 @@ from simulateTM import simulateTM
 from simulateTM1 import simulateTM1
 from simulateTMv2 import simulateTMv2
 from slow10thPower import slow10thPower
+
 # from someTests import someTests
 from sortTimings import sortTimings
+
 # from syntaxError import syntaxError
 from threshToOpt import threshToOpt
 from throwsException import throwsException
@@ -150,6 +159,7 @@ from turingMachine import TuringMachine
 from twoTDCM import TwoTDCM
 from uhc import uhc
 from universal import universal
+
 # from utils import utils
 from verifyAdd import verifyAdd
 from verifyCheckMultiply import verifyCheckMultiply

@@ -6,21 +6,23 @@
 # example:
 # >>> onlyZs('aZbZZZc')
 # 'ZZZZ'
-import utils; from utils import rf
+import utils
+from utils import rf
+
+
 def onlyZs(inString):
-    numZs = inString.count('Z')
-    return 'Z' * numZs
+    numZs = inString.count("Z")
+    return "Z" * numZs
+
 
 def testOnlyZs():
     for (inString, solution) in [
-            ('', ''),
-            ('aassdc', ''),
-            ('ZZZ', 'ZZZ'),
-            ('Z', 'Z'),
-            ('ascZsfaasZZsacscaZZZ', 'ZZZZZZ')
+        ("", ""),
+        ("aassdc", ""),
+        ("ZZZ", "ZZZ"),
+        ("Z", "Z"),
+        ("ascZsfaasZZsacscaZZZ", "ZZZZZZ"),
     ]:
         val = onlyZs(inString)
         utils.tprint(inString, ":", val)
         assert val == solution
-        
-

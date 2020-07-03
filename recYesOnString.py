@@ -13,21 +13,26 @@
 # Example:
 # >>> recYesOnString(utils.ESS(rf('containsGAGA.py'), 'GA'))
 # 'no'
-import utils; from utils import rf
-from universal import universal  
+import utils
+from utils import rf
+from universal import universal
+
+
 def recYesOnString(inString):
-    (progString, newInString) = utils.DESS(inString) 
-    val = universal(progString, newInString)  
-    if val == 'yes':
-        return 'yes'
+    (progString, newInString) = utils.DESS(inString)
+    val = universal(progString, newInString)
+    if val == "yes":
+        return "yes"
     else:
-        return 'no'  
+        return "no"
+
 
 def testRecYesOnString():
-    for (progName, inString, solution) in [('containsGAGA.py', 'GAGAGAGAG', 'yes'), \
-                                 ('containsGAGA.py', 'TTTTGGCCGGT', 'no') ]:
+    for (progName, inString, solution) in [
+        ("containsGAGA.py", "GAGAGAGAG", "yes"),
+        ("containsGAGA.py", "TTTTGGCCGGT", "no"),
+    ]:
         combinedString = utils.ESS(rf(progName), inString)
         val = recYesOnString(combinedString)
-        utils.tprint( (progName, inString), ":", val )
+        utils.tprint((progName, inString), ":", val)
         assert val == solution
-

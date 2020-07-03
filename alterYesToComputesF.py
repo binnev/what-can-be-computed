@@ -20,28 +20,35 @@
 # G" occur before the function definition in the printed version. The
 # version given below works better in certain circumstances,
 # especially when being simulated by universal.py.
-import utils; from utils import rf
-from universal import universal 
+import utils
+from utils import rf
+from universal import universal
+
+
 def alterYesToComputesF(inString):
     from F import F
-    from G import G # G is any computable function different to F
-    progString = rf('progString.txt') 
-    newInString = rf('inString.txt') 
-    val = universal(progString, newInString) 
-    if val == 'yes':
-        return F(inString) 
+    from G import G  # G is any computable function different to F
+
+    progString = rf("progString.txt")
+    newInString = rf("inString.txt")
+    val = universal(progString, newInString)
+    if val == "yes":
+        return F(inString)
     else:
-        return G(inString) 
+        return G(inString)
 
-def testAlterYesToComputesF():    
+
+def testAlterYesToComputesF():
     from F import F
-    from G import G # G is any computable function different to F
-    F_input = 'xxxx'
-    for (progName, inString, solution) in [('containsGAGA.py', 'GAGAGAGAG', F(F_input)), 
-                                           ('containsGAGA.py', 'TTTTGGCCGGT', G(F_input)) ]:
-        utils.writeFile('progString.txt', rf(progName))
-        utils.writeFile('inString.txt', inString)
-        val = utils.runWithTimeout(None, alterYesToComputesF, F_input)
-        utils.tprint( (progName, inString), ":", val )  
-        assert val == solution
+    from G import G  # G is any computable function different to F
 
+    F_input = "xxxx"
+    for (progName, inString, solution) in [
+        ("containsGAGA.py", "GAGAGAGAG", F(F_input)),
+        ("containsGAGA.py", "TTTTGGCCGGT", G(F_input)),
+    ]:
+        utils.writeFile("progString.txt", rf(progName))
+        utils.writeFile("inString.txt", inString)
+        val = utils.runWithTimeout(None, alterYesToComputesF, F_input)
+        utils.tprint((progName, inString), ":", val)
+        assert val == solution

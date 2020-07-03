@@ -14,23 +14,28 @@
 # Example:
 # >>> clique('a,b a,c a,d b,c b,d c,d c,e b,e d,e ; 4')
 # 'd,e,b,c' [or another 4-clique]
-import utils; from utils import rf
+import utils
+from utils import rf
 from graph import Graph, Edge
+
+
 def clique(inString):
-    (graphString, Kstring) = inString.split(';')
+    (graphString, Kstring) = inString.split(";")
     G = Graph(graphString, weighted=False, directed=False)
     K = int(Kstring)
 
     # special case: if K=0, we have a positive solution but it's the empty string
-    if K==0: return ''
-    
+    if K == 0:
+        return ""
+
     nodes = G.getNodesAsSet()
     emptyClique = set()
     clique = tryExtendClique(G, K, emptyClique, nodes)
     if clique:
-        return ','.join(clique)
+        return ",".join(clique)
     else:
-        return 'no'
+        return "no"
+
 
 # The parameter clique is a clique in the parameter graph, represented
 # as a list of nodes. Return True if adding newNode produces a new
@@ -54,30 +59,32 @@ def extendsClique(graph, clique, newNode):
            clique in graph, and otherwise return False.
 
     """
-    
+
     for node in clique:
-        if not graph.containsEdge( Edge([node, newNode]) ):
+        if not graph.containsEdge(Edge([node, newNode])):
             return False
     return True
 
+
 def testExtendsClique():
-    G = 'a,b a,c a,d b,c b,d c,d c,e b,e d,e'
+    G = "a,b a,c a,d b,c b,d c,d c,e b,e d,e"
     G = Graph(G, weighted=False, directed=False)
     testvals = [
-        ([], 'a', True),
-        (['a'], 'b', True),
-        (['a'], 'c', True),
-        (['a', 'b'], 'c', True),
-        (['a', 'b'], 'd', True),
-        (['a', 'b', 'c'], 'd', True),
-        (['a'], 'e', False),
-        (['a', 'b'], 'e', False),
-        (['a', 'b', 'c'], 'e', False),
+        ([], "a", True),
+        (["a"], "b", True),
+        (["a"], "c", True),
+        (["a", "b"], "c", True),
+        (["a", "b"], "d", True),
+        (["a", "b", "c"], "d", True),
+        (["a"], "e", False),
+        (["a", "b"], "e", False),
+        (["a", "b", "c"], "e", False),
     ]
     for (clique, newNode, solution) in testvals:
         val = extendsClique(G, clique, newNode)
         utils.tprint(clique, newNode, val)
         assert val == solution
+
 
 def tryExtendClique(graph, K, clique, remainingNodes):
     """Attempt to extend the given clique to a clique of size K.
@@ -107,13 +114,13 @@ def tryExtendClique(graph, K, clique, remainingNodes):
             extended, None is returned.
 
     """
-    
+
     if len(clique) == K:
         return clique
-    elif len(remainingNodes)==0:
+    elif len(remainingNodes) == 0:
         return None
     else:
-        nextNode = next(iter(remainingNodes)) # pick a remaining element
+        nextNode = next(iter(remainingNodes))  # pick a remaining element
         newRemainingNodes = remainingNodes - {nextNode}
         if extendsClique(graph, clique, nextNode):
             newClique = clique | {nextNode}
@@ -122,50 +129,49 @@ def tryExtendClique(graph, K, clique, remainingNodes):
                 return extendedClique
         return tryExtendClique(graph, K, clique, newRemainingNodes)
 
+
 def testTryExtendClique():
-    G = 'a,b a,c a,d b,c b,d c,d c,e b,e d,e'
+    G = "a,b a,c a,d b,c b,d c,d c,e b,e d,e"
     G = Graph(G, weighted=False, directed=False)
-    utils.tprint('Trying to extend cliques in', G)
+    utils.tprint("Trying to extend cliques in", G)
     testvals = [
-        (1, set({}), set({'a', 'b', 'c', 'd', 'e'}), 'verify'),
-        (2, set({}), set({'a', 'b', 'c', 'd', 'e'}), 'verify'),
-        (3, set({}), set({'a', 'b', 'c', 'd', 'e'}), 'verify'),
-        (4, set({}), set({'a', 'b', 'c', 'd', 'e'}), 'verify'),
-        (5, set({}), set({'a', 'b', 'c', 'd', 'e'}), None),
-        (4, set({'c', 'd', 'e'}), set({'a', 'b'}), 'verify'),
-        (5, set({'c', 'd', 'e'}), set({'a', 'b'}), None),
-        (4, set({'a', 'c'}), set({'b', 'd', 'e'}), 'verify'),
-        (5, set({'a', 'c'}), set({'b', 'd', 'e'}), None),
+        (1, set({}), set({"a", "b", "c", "d", "e"}), "verify"),
+        (2, set({}), set({"a", "b", "c", "d", "e"}), "verify"),
+        (3, set({}), set({"a", "b", "c", "d", "e"}), "verify"),
+        (4, set({}), set({"a", "b", "c", "d", "e"}), "verify"),
+        (5, set({}), set({"a", "b", "c", "d", "e"}), None),
+        (4, set({"c", "d", "e"}), set({"a", "b"}), "verify"),
+        (5, set({"c", "d", "e"}), set({"a", "b"}), None),
+        (4, set({"a", "c"}), set({"b", "d", "e"}), "verify"),
+        (5, set({"a", "c"}), set({"b", "d", "e"}), None),
     ]
     for (K, clique, remainingNodes, solution) in testvals:
         val = tryExtendClique(G, K, clique, remainingNodes)
         utils.tprint(K, clique, remainingNodes, val)
         if solution is None:
             assert val == solution
-        else: # need to verify the solution
+        else:  # need to verify the solution
             assert G.isClique(val)
             assert len(val) == K
 
-    
+
 def testClique():
-    graphString = 'a,b a,c a,d b,c b,d c,d c,e b,e d,e'
+    graphString = "a,b a,c a,d b,c b,d c,d c,e b,e d,e"
     G = Graph(graphString, weighted=False, directed=False)
     testvals = [
-        (1, 'verify'),
-        (2, 'verify'),
-        (3, 'verify'),
-        (4, 'verify'),
+        (1, "verify"),
+        (2, "verify"),
+        (3, "verify"),
+        (4, "verify"),
         (5, None),
     ]
     for (K, solution) in testvals:
-        inString = graphString + ' ; ' + str(K)
+        inString = graphString + " ; " + str(K)
         val = clique(inString)
         utils.tprint(inString, val)
         if solution is None:
-            assert val == 'no'
-        else: # need to verify the solution
-            nodes = val.split(',')
+            assert val == "no"
+        else:  # need to verify the solution
+            nodes = val.split(",")
             assert G.isClique(nodes)
             assert len(nodes) == K
-
-

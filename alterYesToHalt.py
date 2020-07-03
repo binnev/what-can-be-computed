@@ -11,25 +11,28 @@
 # Example:
 # >>> alterYesToHalt(utils.ESS(rf('containsGAGA.py'), 'TTGAGATT'))
 # 'halted'
-import utils; from utils import rf
-from universal import universal 
+import utils
+from utils import rf
+from universal import universal
+
+
 def alterYesToHalt(inString):
     (progString, newInString) = utils.DESS(inString)
     val = universal(progString, newInString)
-    if val == 'yes':
+    if val == "yes":
         # return value is irrelevant, since returning any string halts
-        return 'halted' 
+        return "halted"
     else:
         # deliberately enter infinite loop
-        utils.loop()  
+        utils.loop()
+
 
 def testAlterYesToHalt():
     for (progName, inString, solution) in [
-            ('containsGAGA.py', 'GAGAGAGAG', 'halted'),
-            ('containsGAGA.py', 'TTTTGGCCGGT', None),
+        ("containsGAGA.py", "GAGAGAGAG", "halted"),
+        ("containsGAGA.py", "TTTTGGCCGGT", None),
     ]:
         combinedString = utils.ESS(rf(progName), inString)
         val = utils.runWithTimeout(None, alterYesToHalt, combinedString)
-        utils.tprint( (progName, inString), ":", val )
+        utils.tprint((progName, inString), ":", val)
         assert val == solution
-

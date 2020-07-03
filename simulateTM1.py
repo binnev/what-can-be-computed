@@ -13,21 +13,22 @@
 # Example:
 # >>> simulateTM1(utils.ESS(rf('binaryIncrementer.tm'), 'x100111x'))
 # 'x101000x'
-import utils; from utils import rf
-from simulateTM import simulateTM 
+import utils
+from utils import rf
+from simulateTM import simulateTM
+
+
 def simulateTM1(inString):
     (progString, newInString) = utils.DESS(inString)
-    return simulateTM(progString, newInString) 
+    return simulateTM(progString, newInString)
 
 
 def testSimulateTM1():
     for (filename, inString, solution) in [
-            ('containsGAGA.tm', 'CCCCCCCCCAAAAAA', 'no'),
-            ('containsGAGA.tm', 'CCCGAGACCAAAAAA', 'yes'),
-            ('binaryIncrementer.tm', 'x100111x', 'x101000x'),
-            ]:
+        ("containsGAGA.tm", "CCCCCCCCCAAAAAA", "no"),
+        ("containsGAGA.tm", "CCCGAGACCAAAAAA", "yes"),
+        ("binaryIncrementer.tm", "x100111x", "x101000x"),
+    ]:
         val = simulateTM1(utils.ESS(rf(filename), inString))
-        utils.tprint('filename:', filename, 'inString:', inString, 'result:', val)
+        utils.tprint("filename:", filename, "inString:", inString, "result:", val)
         assert val == solution
-
-

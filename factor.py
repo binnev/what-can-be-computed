@@ -12,19 +12,23 @@
 # Example:
 # >>> factor('15')
 # '3'
-import utils; from utils import rf
-def factor(inString): 
+import utils
+from utils import rf
+
+
+def factor(inString):
     M = int(inString)
-    for i in range(2,M): 
-        if M % i == 0: 
+    for i in range(2, M):
+        if M % i == 0:
             return str(i)
-    return 'no'  
+    return "no"
+
 
 def testFactor():
-    for M in (1,2,3,4,5,10,15,36,37,49,97,121,0,-5):
+    for M in (1, 2, 3, 4, 5, 10, 15, 36, 37, 49, 97, 121, 0, -5):
         val = factor(str(M))
-        utils.tprint(M, ':', val)
-        if M<2 or utils.isPrime(M):
-            assert val == 'no'
+        utils.tprint(M, ":", val)
+        if M < 2 or utils.isPrime(M):
+            assert val == "no"
         else:
             assert M % int(val) == 0

@@ -1,4 +1,6 @@
-import utils; from utils import rf
+import utils
+from utils import rf
+
 
 class Rule:
     """Models a rule in a context free grammar.
@@ -10,7 +12,7 @@ class Rule:
     as part of a derivation of a string.
 
     """
-    
+
     def __init__(self, lhs, rhs):
         """Initialize Rule object.
 
@@ -31,33 +33,36 @@ class Rule:
         self.rhs = rhs
 
     def __str__(self):
-        return 'lhs: %s rhs: %s' % \
-            (self.lhs, self.rhs)
+        return "lhs: %s rhs: %s" % (self.lhs, self.rhs)
 
     def __repr__(self):
         return self.__str__()
 
     def __eq__(self, other):
-        if self is other: return True
-        if other==None: return False
-        if not isinstance(other, type(self)): return False
+        if self is other:
+            return True
+        if other == None:
+            return False
+        if not isinstance(other, type(self)):
+            return False
         return (self.lhs, self.rhs) == (other.lhs, other.rhs)
 
     def __ne__(self, other):
-        return not self==other
+        return not self == other
+
 
 class Cfg:
     """Represents a context free grammar.
 
     """
-    
-    commentStart = '#'
-    ruleSeparator = '->'
-    alternativeSep = '|'
-    startSymbol = 'S'
-    epsilonStr = 'Eps'
 
-    def __init__(self, description = None):
+    commentStart = "#"
+    ruleSeparator = "->"
+    alternativeSep = "|"
+    startSymbol = "S"
+    epsilonStr = "Eps"
+
+    def __init__(self, description=None):
         """Initialize Cfg object.
 
         Args:
@@ -76,13 +81,12 @@ class Cfg:
         rules whose left-hand side is the variable V.
 
         """
-        
+
         self.variables = None
         """frozenset containing all variables in the grammar."""
-        
+
         self.accepted = set()
         """A set of strings known to be in the language of this cfg."""
-
 
         # Keys are a set of sentential forms that have not yet had
         # rules applied to them. For a given key, value is the
@@ -97,9 +101,9 @@ class Cfg:
         start symbol, S' is the empty string.
 
         """
-        
+
         # Initialize the frontier with the start symbol.
-        self.frontier[Cfg.startSymbol] = ''
+        self.frontier[Cfg.startSymbol] = ""
 
         self.explored = dict()
         """dict mapping str to str.
@@ -111,10 +115,9 @@ class Cfg:
         start symbol, S' is the empty string.
 
         """
-        
+
         if description:
             self.read(description)
-        
 
     def read(self, description):
         """Initialize the rules of the grammar based on an ASCII description.
@@ -139,13 +142,13 @@ class Cfg:
 
         self.rules = dict()
         # split on newlines
-        lines = description.split('\n')
+        lines = description.split("\n")
         # strip comments (anything after a Cfg.commentStart)
-        lines = [x.split(Cfg.commentStart)[0] for x in lines]        
+        lines = [x.split(Cfg.commentStart)[0] for x in lines]
         # strip whitespace
         lines = [x.strip() for x in lines]
         for line in lines:
-            if len(line)>0:
+            if len(line) > 0:
                 r = self.extractRules(line)
                 rulesList = self.rules.setdefault(r[0].lhs, [])
                 rulesList.extend(r)
@@ -169,7 +172,7 @@ class Cfg:
         """
         (lhs, rhsides) = [x.strip() for x in line.split(Cfg.ruleSeparator)]
         rhsides = [x.strip() for x in rhsides.split(Cfg.alternativeSep)]
-        return (lhs, rhsides) 
+        return (lhs, rhsides)
 
     def extractRules(self, line):
         """Extract Rule objects from a given line of a grammar description.
@@ -190,7 +193,7 @@ class Cfg:
         ruleList = []
         for rhs in rhsides:
             if rhs == Cfg.epsilonStr:
-                rhs = ''
+                rhs = ""
             newRule = Rule(lhs, rhs)
             ruleList.append(newRule)
         return ruleList
@@ -200,8 +203,8 @@ class Cfg:
 
         This is primarily intended for debugging and testing.
         """
-        utils.tprint('variables:', self.variables)
-        utils.tprint('rules:')
+        utils.tprint("variables:", self.variables)
+        utils.tprint("rules:")
         for r in self.rules.values():
             utils.tprint(r)
 
@@ -217,7 +220,7 @@ class Cfg:
         # alphabetically, then by length.
         accepted = sorted(self.accepted)
         accepted = sorted(accepted, key=len)
-        utils.tprint('accepted:', accepted)
+        utils.tprint("accepted:", accepted)
 
     def printAllStrings(self):
         """Print the all relevant sentential forms of the grammar via utils.tprint().
@@ -226,9 +229,8 @@ class Cfg:
 
         """
         self.printAccepted()
-        utils.tprint('explored:', self.explored)
-        utils.tprint('frontier:', self.frontier)
-        
+        utils.tprint("explored:", self.explored)
+        utils.tprint("frontier:", self.frontier)
 
     # apply all rules to the given string s, returning a list of the
     # resulting strings
@@ -253,11 +255,10 @@ class Cfg:
                 rules = self.rules[c]
                 for r in rules:
                     prefix = s[:i]
-                    suffix = s[i+1:]
+                    suffix = s[i + 1 :]
                     result = prefix + r.rhs + suffix
                     results.append(result)
         return results
-                
 
     def applyRulesToFrontier(self):
         """Update the frontier by applying all rules of the grammar to it.
@@ -279,11 +280,10 @@ class Cfg:
                         newFrontier[result] = s
                     else:
                         self.accepted.add(result)
-        for (s, predecessor) in  self.frontier.items():
+        for (s, predecessor) in self.frontier.items():
             assert s not in self.explored
             self.explored[s] = predecessor
         self.frontier = newFrontier
-
 
     def containsVariable(self, s):
         """Determine whether a string contains a variable i this grammar
@@ -299,7 +299,8 @@ class Cfg:
 
         """
         for v in self.variables:
-            if v in s: return True
+            if v in s:
+                return True
         return False
 
     def removeLongStringsFromFrontier(self, maxLen):
@@ -314,12 +315,12 @@ class Cfg:
         """
         victims = []
         for s in self.frontier:
-            if len(s)>maxLen:
+            if len(s) > maxLen:
                 victims.append(s)
         for v in victims:
             del self.frontier[v]
 
-    def generateLanguage(self, maxLen = 50, maxDepth = 50, maxStrings = 100000):
+    def generateLanguage(self, maxLen=50, maxDepth=50, maxStrings=100000):
         """Generate some of the strings in the language of the grammar.
 
         Generate some of the strings in the language, using breadth
@@ -353,15 +354,14 @@ class Cfg:
             depth += 1
             self.applyRulesToFrontier()
             self.removeLongStringsFromFrontier(maxLen)
-            if len(self.frontier)==0 or depth>=maxDepth \
-               or len(self.accepted)>=maxStrings:
+            if len(self.frontier) == 0 or depth >= maxDepth or len(self.accepted) >= maxStrings:
                 done = True
-            
-    
-def testCfg():
-    cfg = Cfg(rf('GnTn.cfg'))
 
-    rules = {'S': [Rule('S',''), Rule('S', 'GST')]}
+
+def testCfg():
+    cfg = Cfg(rf("GnTn.cfg"))
+
+    rules = {"S": [Rule("S", ""), Rule("S", "GST")]}
     assert cfg.rules == rules
 
     cfg.printRules()
@@ -373,12 +373,12 @@ def testCfg():
     cfg.printAllStrings()
 
     for length in range(6):
-        assert 'G'*length + 'T'*length in cfg.accepted
+        assert "G" * length + "T" * length in cfg.accepted
 
     for s in cfg.accepted:
-        assert len(s)%2 == 0
-        halfLen = int(len(s)/2)
-        for c in s[:halfLen]: assert c== 'G'
-        for c in s[halfLen:]: assert c== 'T'
-
-
+        assert len(s) % 2 == 0
+        halfLen = int(len(s) / 2)
+        for c in s[:halfLen]:
+            assert c == "G"
+        for c in s[halfLen:]:
+            assert c == "T"

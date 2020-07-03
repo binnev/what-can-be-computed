@@ -16,26 +16,29 @@
 # functions and could be implemented in Python, but their
 # implementations would be long and tedious and are not provided.
 
-import utils; from utils import rf
-# The following two imports are computable functions, NOT oracles.  
-from isPeanoProof import isPeanoProof 
+import utils
+from utils import rf
+
+# The following two imports are computable functions, NOT oracles.
+from isPeanoProof import isPeanoProof
 from convertHaltToPeano import convertHaltToPeano
 
+
 def haltsViaCompletePeano(inString):
-    haltInPeano = convertHaltToPeano(inString) 
-    notHaltInPeano = 'NOT ' + haltInPeano 
-    proofString = ''
+    haltInPeano = convertHaltToPeano(inString)
+    notHaltInPeano = "NOT " + haltInPeano
+    proofString = ""
     while True:
-        if isPeanoProof(proofString, haltInPeano)=='yes': 
-            return 'yes'
-        if isPeanoProof(proofString, notHaltInPeano)=='yes': 
-            return 'no'
-        proofString = utils.nextASCII(proofString)  
+        if isPeanoProof(proofString, haltInPeano) == "yes":
+            return "yes"
+        if isPeanoProof(proofString, notHaltInPeano) == "yes":
+            return "no"
+        proofString = utils.nextASCII(proofString)
+
 
 def testhaltsViaCompletePeano():
     # Since isPeanoProof() and convertHaltToPeano() are not
     # implemented, there is nothing reasonable to assert in this
     # test. We just run the code.
-    inString = 'asdf'
+    inString = "asdf"
     val = utils.runWithTimeout(None, haltsViaCompletePeano, inString)
-        

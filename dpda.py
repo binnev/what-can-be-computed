@@ -1,8 +1,10 @@
-import utils; from utils import rf
+import utils
+from utils import rf
 import re
 from turingMachine import TuringMachine, Transition
 from nfa import Nfa
 from utils import WcbcException
+
 
 class PdaTransition(Transition):
     """Models a transition in a pda.
@@ -12,8 +14,8 @@ class PdaTransition(Transition):
     they also have information about the stack.
 
     """
-    def __init__(self, sourceState, destState, label, stackLabel, 
-                 stackWriteStr, direction):
+
+    def __init__(self, sourceState, destState, label, stackLabel, stackWriteStr, direction):
         """Initialize PdaTransition object.
 
         Args:
@@ -43,19 +45,26 @@ class PdaTransition(Transition):
         self.stackWriteStr = stackWriteStr
 
     def __str__(self):
-        return 'sourceState: %s destState: %s label: %s stackLabel: %s ' \
-               'stackWriteStr: %s direction: %s' % \
-            (self.sourceState, self.destState, self.label, self.stackLabel, 
-             self.stackWriteStr,  self.direction)
-
+        return (
+            "sourceState: %s destState: %s label: %s stackLabel: %s "
+            "stackWriteStr: %s direction: %s"
+            % (
+                self.sourceState,
+                self.destState,
+                self.label,
+                self.stackLabel,
+                self.stackWriteStr,
+                self.direction,
+            )
+        )
 
 
 class Dpda(TuringMachine):
     """A Dpda object models a dpda as described in the textbook.
 
     """
-    def __init__(self, description = None, tapeStr = '', depth = 0, name = None, \
-                 keepHistory = False):
+
+    def __init__(self, description=None, tapeStr="", depth=0, name=None, keepHistory=False):
         """Initialize Dpda object.
 
         Args:
@@ -84,18 +93,18 @@ class Dpda(TuringMachine):
                 storage.
 
         """
-        TuringMachine.__init__(self, description, tapeStr, depth, name, \
-                               keepHistory=keepHistory)
+        TuringMachine.__init__(self, description, tapeStr, depth, name, keepHistory=keepHistory)
 
-    def reset(self, tapeStr = '', state = TuringMachine.startState, headPos = 0, \
-              steps = 0, resetHistory=True):
+    def reset(
+        self, tapeStr="", state=TuringMachine.startState, headPos=0, steps=0, resetHistory=True
+    ):
         """Reset the dpda.
 
         Overrides TuringMachine.reset(). See documentation of that
         method for details.
 
         """
-        self.stack = [] # a list of symbols with the top of the stack last        
+        self.stack = []  # a list of symbols with the top of the stack last
         TuringMachine.reset(self, tapeStr, state, headPos, steps, resetHistory)
 
     def extractTransition(self, line):
@@ -114,37 +123,37 @@ class Dpda(TuringMachine):
             Transition: a new Transition object
 
         """
-        (label, stackWriteStr, sourceState, destState) = \
-                self.splitTransition(line)
+        (label, stackWriteStr, sourceState, destState) = self.splitTransition(line)
         if TuringMachine.actionSeparator in stackWriteStr:
-            raise WcbcException('transition ' + line + \
-                                ' specifies a direction, which is illegal in a pda')
+            raise WcbcException(
+                "transition " + line + " specifies a direction, which is illegal in a pda"
+            )
         if TuringMachine.actionSeparator not in label:
-            raise WcbcException('transition ' + line + \
-                                ' needs both a label and a stack symbol, which can be ' + \
-                                Nfa.epsilonStr)
-        (label, stackLabel) = [x.strip() for x in \
-                                 label.split(TuringMachine.actionSeparator)]
+            raise WcbcException(
+                "transition "
+                + line
+                + " needs both a label and a stack symbol, which can be "
+                + Nfa.epsilonStr
+            )
+        (label, stackLabel) = [x.strip() for x in label.split(TuringMachine.actionSeparator)]
         if label == Nfa.epsilonStr:
             direction = TuringMachine.stayDir
         else:
             direction = TuringMachine.rightDir
 
-        return PdaTransition(sourceState, destState, label, \
-                             stackLabel, stackWriteStr, direction)
+        return PdaTransition(sourceState, destState, label, stackLabel, stackWriteStr, direction)
 
     def clone(self):
         """Clone this dpda, returning a new Dpda object
         """
         newPda = Dpda(None, self.tape, self.depth, self.name)
         self.copyTMState(newPda)
-        newPda.stack = list(self.stack) 
+        newPda.stack = list(self.stack)
         return newPda
-
 
     def isStackEmpty(self):
         """Return True if the stack is empty and False otherwise"""
-        return len(self.stack)==0
+        return len(self.stack) == 0
 
     def peekStack(self):
         """Return the top element of the stack, or None if the stack is empty."""
@@ -169,17 +178,17 @@ class Dpda(TuringMachine):
         """
         scannedSymbol = self.getScannedSymbol()
         stackSymbol = self.peekStack()
-        labelEps = (t.label == Nfa.epsilonStr)
-        stackReadEps = (t.stackLabel == Nfa.epsilonStr)
-        stackEmpty = (stackSymbol is None)
+        labelEps = t.label == Nfa.epsilonStr
+        stackReadEps = t.stackLabel == Nfa.epsilonStr
+        stackEmpty = stackSymbol is None
 
         if not stackReadEps and stackEmpty:
             return False
 
         # figure out if the label on the transition matches the
         # scanned symbol, storing the result in labelMatches
-        if labelEps: # don't need to read anything, so that counts as
-                     # a match
+        if labelEps:  # don't need to read anything, so that counts as
+            # a match
             labelMatches = True
         else:
             labelMatches = self.labelMatchesSymbol(scannedSymbol, t.label)
@@ -214,37 +223,37 @@ class Dpda(TuringMachine):
         # print(self)
 
     def __str__(self):
-        return TuringMachine.__str__(self) + ' stack: ' + ''.join(reversed(self.stack))
+        return TuringMachine.__str__(self) + " stack: " + "".join(reversed(self.stack))
 
 
 # see testCheckDpda() in checkTuringMachine.py for more detailed tests
 def testDpda():
     for (filename, inString, val) in [
-            ('containsGAGA.pda', 'CCCCCCCCCAAAAAA', 'no'),
-            ('containsGAGA.pda', 'CCCGAGACCAAAAAA', 'yes'),
-            ('multipleOf5.pda', '12345', 'yes'),
-            ('multipleOf5.pda', '1234560', 'yes'),
-            ('multipleOf5.pda', '123456', 'no'),
-            ]:
+        ("containsGAGA.pda", "CCCCCCCCCAAAAAA", "no"),
+        ("containsGAGA.pda", "CCCGAGACCAAAAAA", "yes"),
+        ("multipleOf5.pda", "12345", "yes"),
+        ("multipleOf5.pda", "1234560", "yes"),
+        ("multipleOf5.pda", "123456", "no"),
+    ]:
         dpda = Dpda(rf(filename), inString)
         result = dpda.run()
-        utils.tprint('filename:', filename, 'inString:', inString, 'result:', result)
+        utils.tprint("filename:", filename, "inString:", inString, "result:", result)
         assert val == result
 
-# This test shows how to examine the history of a computation        
+
+# This test shows how to examine the history of a computation
 def anotherTestDpda():
-    filename = 'containsGAGA.pda'
-    tape = 'GGGGGCCCCGAGATT'
+    filename = "containsGAGA.pda"
+    tape = "GGGGGCCCCGAGATT"
     # filename = 'GnTn.pda'
     # tape = 'GGGTTTT'
     # filename = 'GsTs.pda'
     # tape = 'GTTG'
-    dpda = Dpda(rf(filename), keepHistory = True)
+    dpda = Dpda(rf(filename), keepHistory=True)
     # dpda.printTransitions()
     dpda.reset(tape)
-    print('before:\n', dpda)
+    print("before:\n", dpda)
     result = dpda.run()
-    print('after:\n', dpda)
-    print('result:\n', result)
-    print('history:\n' + '\n'.join(dpda.history))
-
+    print("after:\n", dpda)
+    print("result:\n", result)
+    print("history:\n" + "\n".join(dpda.history))

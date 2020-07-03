@@ -15,23 +15,24 @@
 # could be implemented in Python, but its implementation would be
 # long and tedious and is not provided.
 
-import utils; from utils import rf
-from trueInPeano import trueInPeano # oracle function  
+import utils
+from utils import rf
+from trueInPeano import trueInPeano  # oracle function
 
 # The following import is NOT an oracle---it's a computable function.
 # See page~\pageref{page:convertHaltToPeano.py}.
-from convertHaltToPeano import convertHaltToPeano 
+from convertHaltToPeano import convertHaltToPeano
+
 
 def haltsViaPeano(inString):
     haltInPA = convertHaltToPeano(inString)
-    return trueInPeano(haltInPA)  
+    return trueInPeano(haltInPA)
 
 
 def testhaltsViaPeano():
     # Since trueInPeano() is an oracle function that could never be
     # implemented, there is nothing reasonable to assert in this
     # test. We just run the code.
-    inString = 'asdf'
+    inString = "asdf"
     val = haltsViaPeano(inString)
-    utils.tprint(inString, ':', val)
-    
+    utils.tprint(inString, ":", val)

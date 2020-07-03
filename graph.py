@@ -1,9 +1,12 @@
-import utils; from utils import rf
+import utils
+from utils import rf
 from utils import WcbcException
+
 
 class Path:
     """A Path object models a path in a graph.
     """
+
     def __init__(self, nodes):
         """Initialize Path object.
         
@@ -12,12 +15,12 @@ class Path:
             nodes (list of str): a list containing the names of the nodes in the path
         """
         if isinstance(nodes, str):
-            raise WcbcException('Path constructor parameter must be a list, not a string')
+            raise WcbcException("Path constructor parameter must be a list, not a string")
         for node in nodes:
             if not isinstance(node, str):
-                raise WcbcException('Path node', str(node), 'isn\'t a string')
-            if len(node)==0:
-                raise WcbcException('Encountered empty node name')
+                raise WcbcException("Path node", str(node), "isn't a string")
+            if len(node) == 0:
+                raise WcbcException("Encountered empty node name")
 
         self.nodes = tuple(nodes)
         """Tuple of the nodes in the path, where each node is a string."""
@@ -25,13 +28,13 @@ class Path:
         self.nodeSet = None
         """A set of str that is constructed lazily (if and when needed). 
         It will contain the nodes in the path"""
-                
+
         self.edgeSet = None
         """Set of Edge objects in the path. 
         Constructed lazily (if and when needed)."""
 
     def __str__(self):
-        return ','.join(self.nodes)
+        return ",".join(self.nodes)
 
     def __repr__(self):
         return self.__str__()
@@ -40,7 +43,7 @@ class Path:
         """Return the number of nodes in the path"""
         return len(self.nodes)
 
-    def __getitem__(self,index):
+    def __getitem__(self, index):
         """Return the index-th node in the path"""
         return self.nodes[index]
 
@@ -58,20 +61,23 @@ class Path:
         return node in self.nodeSet
 
     def __eq__(self, other):
-        if self is other: return True
-        if other==None: return False
+        if self is other:
+            return True
+        if other == None:
+            return False
         # Importantly, we allow subclasses to be equal -- this allows
         # an equivalent Path and Edge to be equal.
-        if not isinstance(other, Path): return False
-        return self.nodes==other.nodes
+        if not isinstance(other, Path):
+            return False
+        return self.nodes == other.nodes
 
     def __ne__(self, other):
-        return not self==other
+        return not self == other
 
-    def __lt__ (self, other):
+    def __lt__(self, other):
         return self.nodes < other.nodes
 
-    def __gt__ (self, other):
+    def __gt__(self, other):
         return other.__lt__(self)
 
     def __hash__(self):
@@ -95,9 +101,8 @@ class Path:
             Path: A new Path object.
 
         """
-        return Path(pathStr.split(',') if pathStr!='' else [])
-    
-    
+        return Path(pathStr.split(",") if pathStr != "" else [])
+
     def start(self):
         """Return the initial node in the path.
 
@@ -106,8 +111,8 @@ class Path:
            str: the initial node in the path.
 
         """
-        if len(self.nodes)==0:
-            raise WcbcException('can\'t find start of empty path')
+        if len(self.nodes) == 0:
+            raise WcbcException("can't find start of empty path")
         return self.nodes[0]
 
     def end(self):
@@ -118,8 +123,8 @@ class Path:
            str: the final node in the path.
 
         """
-        if len(self.nodes)==0:
-            raise WcbcException('can\'t find end of empty path')
+        if len(self.nodes) == 0:
+            raise WcbcException("can't find end of empty path")
         return self.nodes[-1]
 
     def extend(self, node):
@@ -134,7 +139,7 @@ class Path:
             Path: A new Path object with the given node appended.
 
         """
-        return Path( self.nodes + (node,) )
+        return Path(self.nodes + (node,))
 
     def reverse(self):
         """Reverse of the current path.
@@ -144,8 +149,7 @@ class Path:
             Path: A new Path object which is the reverse of the current path.
 
         """
-        return Path( tuple(reversed(self.nodes)) )
-
+        return Path(tuple(reversed(self.nodes)))
 
     def rotateToFront(self, node):
         """Cyclically permute the nodes in the path so that a given node is at
@@ -164,7 +168,7 @@ the start of the path.
 
         """
         if not node in self.nodes:
-            raise WcbcException('node ' + str(node) + ' is not in the path ' + str(self))
+            raise WcbcException("node " + str(node) + " is not in the path " + str(self))
         ind = self.nodes.index(node)
         newNodes = self.nodes[ind:] + self.nodes[:ind]
         return Path(newNodes)
@@ -185,9 +189,10 @@ the start of the path.
             self.edgeSet = set([e for e in self])
         return edge in self.edgeSet
 
+
 class PathIterator:
     """Iterator class for iterating over the edges in a Path."""
-    
+
     def __init__(self, path):
         """Initialize a PathIterator.
 
@@ -199,7 +204,7 @@ class PathIterator:
         """
         self.path = path
         self.counter = 0
-        if len(path)<=1:
+        if len(path) <= 1:
             self.short = True
         else:
             self.short = False
@@ -208,21 +213,24 @@ class PathIterator:
         self.counter += 1
         if self.short or self.counter == len(self.path):
             raise StopIteration
-        node1 = self.path[self.counter-1]
+        node1 = self.path[self.counter - 1]
         node2 = self.path[self.counter]
-        return Edge( (node1, node2) )
+        return Edge((node1, node2))
 
     next = __next__  # for Python 2; see https://stackoverflow.com/questions/29578469/how-to-make-an-object-both-a-python2-and-python3-iterator
-    
+
+
 class Edge(Path):
     """An Edge object represents an edge in a path or graph. It is
     implemented as a Path with exactly 2 nodes, so it inherits all of
     the methods and properties of Path.
 
     """
+
     def __init__(self, nodes):
         Path.__init__(self, nodes)
-        assert len(nodes)==2
+        assert len(nodes) == 2
+
 
 class Graph:
     """A Graph object represents a graph i.e., a collection of nodes with edges between them.
@@ -230,6 +238,7 @@ class Graph:
     The graph may be weighted or unweighted, directed or undirected.
 
     """
+
     def __init__(self, graphString, weighted=True, directed=True):
         """Initialize Graph object.
         
@@ -259,8 +268,8 @@ class Graph:
         """
 
         self.readDescription(graphString)
-        
-        self.isolatedNodes = None 
+
+        self.isolatedNodes = None
         """A frozenset of strings. Each element is an isolated node, i.e. a
         node with no incoming or outgoing edges. This will be computed
         lazily, on demand.
@@ -268,15 +277,20 @@ class Graph:
         """
 
     def __eq__(self, other):
-        if self is other: return True
-        if other==None: return False
-        if not isinstance(other, Graph): return False
-        return self.nodes==other.nodes and \
-            self.directed==other.directed and \
-            self.weighted==other.weighted 
+        if self is other:
+            return True
+        if other == None:
+            return False
+        if not isinstance(other, Graph):
+            return False
+        return (
+            self.nodes == other.nodes
+            and self.directed == other.directed
+            and self.weighted == other.weighted
+        )
 
     def __ne__(self, other):
-        return not self==other
+        return not self == other
 
     def __len__(self):
         return len(self.nodes)
@@ -285,12 +299,12 @@ class Graph:
         edgeStrings = []
         for edge, weight in self.getEdgesAsDict().items():
             if self.weighted:
-                edgeString = str(edge) + ',' + str(weight)
+                edgeString = str(edge) + "," + str(weight)
             else:
                 edgeString = str(edge)
             edgeStrings.append(edgeString)
         edgesAndIsolatedNodes = edgeStrings + list(self.getIsolatedNodes())
-        graphString = ' '.join(sorted(edgesAndIsolatedNodes))
+        graphString = " ".join(sorted(edgesAndIsolatedNodes))
         return graphString
 
     def __repr__(self):
@@ -318,50 +332,54 @@ class Graph:
         """
         edgeDescriptions = [x.strip() for x in graphString.split()]
         for edgeDescription in edgeDescriptions:
-            if len(edgeDescription)>0:
-                components = edgeDescription.split(',')
-                if len(components)==1:
+            if len(edgeDescription) > 0:
+                components = edgeDescription.split(",")
+                if len(components) == 1:
                     # isolated node with no edges (yet)
                     (sourceStr, destStr, weightStr) = (components[0], None, None)
                 elif self.weighted:
-                    if len(components)!=3:
-                        raise WcbcException('expected 3 components in edge description ' \
-                                            + edgeDescription + \
-                                            'for weighted graph')
-                    (sourceStr, destStr, weightStr) = edgeDescription.split(',')
+                    if len(components) != 3:
+                        raise WcbcException(
+                            "expected 3 components in edge description "
+                            + edgeDescription
+                            + "for weighted graph"
+                        )
+                    (sourceStr, destStr, weightStr) = edgeDescription.split(",")
                     weight = int(weightStr)
                 else:
-                    if len(components)!=2:
-                        raise WcbcException('expected 2 components in edge description ' \
-                                            + edgeDescription + \
-                                            'for unweighted graph')
-                    (sourceStr, destStr) = edgeDescription.split(',')
+                    if len(components) != 2:
+                        raise WcbcException(
+                            "expected 2 components in edge description "
+                            + edgeDescription
+                            + "for unweighted graph"
+                        )
+                    (sourceStr, destStr) = edgeDescription.split(",")
                     weight = 1
 
-                if len(sourceStr)==0 or (destStr and len(destStr)==0): 
-                    raise WcbcException('encountered node name of length zero')
-                
-                if not sourceStr in self.nodes: 
+                if len(sourceStr) == 0 or (destStr and len(destStr) == 0):
+                    raise WcbcException("encountered node name of length zero")
+
+                if not sourceStr in self.nodes:
                     self.nodes[sourceStr] = dict()
                 source = self.nodes[sourceStr]
-                if destStr!=None:
+                if destStr != None:
                     if not destStr in self.nodes:
                         # we haven't seen this node before -- create it
                         self.nodes[destStr] = dict()
                     if destStr in source:
-                        raise WcbcException('duplicate edge ' + str([sourceStr, destStr]))
+                        raise WcbcException("duplicate edge " + str([sourceStr, destStr]))
                     source[destStr] = weight
                     if not self.directed:
                         dest = self.nodes[destStr]
-                        if sourceStr in dest and sourceStr!=destStr:
-                            raise WcbcException('duplicate edge ' + str([destStr, sourceStr]))
+                        if sourceStr in dest and sourceStr != destStr:
+                            raise WcbcException("duplicate edge " + str([destStr, sourceStr]))
                         dest[sourceStr] = weight
-    
+
     def clone(self):
         """Return a new Graph object identical to the current one.
 
         """
-        
+
         # inefficient, but extremely easy to implement!
         return Graph(str(self), self.weighted, self.directed)
 
@@ -375,7 +393,7 @@ outgoing edges.
                     edges
 
         """
-        if not self.isolatedNodes: # need to update
+        if not self.isolatedNodes:  # need to update
             self.isolatedNodes = self.computeIsolatedNodes()
         return self.isolatedNodes
 
@@ -388,7 +406,7 @@ outgoing edges.
         """
         isolated = set(self.nodes.keys())
         for node, neighbors in self.nodes.items():
-            if len(neighbors)>0:
+            if len(neighbors) > 0:
                 # print('discarding', node, 'because len(neighbors)>0')
                 isolated.discard(node)
             for neighbor, weight in neighbors.items():
@@ -396,7 +414,6 @@ outgoing edges.
                 isolated.discard(neighbor)
         # print('computeIsolatedNodes:', isolated)
         return frozenset(isolated)
-                
 
     def addNode(self, node):
         """Add the given node to the graph.
@@ -410,9 +427,9 @@ outgoing edges.
 
         """
         if node in self.nodes:
-            raise WcbcException('Tried to add existing node ' + node)
+            raise WcbcException("Tried to add existing node " + node)
         self.nodes[node] = dict()
-        self.isolatedNodes = None # force recomputation later, when needed
+        self.isolatedNodes = None  # force recomputation later, when needed
 
     def getNodesAsSet(self):
         """Return a frozenset consisting of all nodes in the graph.
@@ -423,7 +440,6 @@ outgoing edges.
 
         """
         return frozenset(self.nodes.keys())
-
 
     # key will be an Edge object, value will be weight
     def getEdgesAsDict(self):
@@ -439,8 +455,8 @@ outgoing edges.
         edges = dict()
         for node, neighbors in self.nodes.items():
             for neighbor, weight in neighbors.items():
-                edge = Edge([node,neighbor])
-                reversedEdge = Edge([neighbor,node])
+                edge = Edge([node, neighbor])
+                reversedEdge = Edge([neighbor, node])
                 # If undirected, store only one direction. By
                 # convention, this will be the lexicographically
                 # earlier one.
@@ -495,9 +511,9 @@ outgoing edges.
                 the given parameter node.
 
         """
-        
+
         if not node in self:
-            raise WcbcException('node ' + node + ' not in graph')
+            raise WcbcException("node " + node + " not in graph")
         return self.nodes[node].keys()
 
     def weightedNeighbors(self, node):
@@ -519,7 +535,7 @@ outgoing edges.
 
         """
         if not node in self:
-            raise WcbcException('node ' + node + ' not in graph')
+            raise WcbcException("node " + node + " not in graph")
         return self.nodes[node]
 
     def containsEdge(self, edge):
@@ -559,11 +575,11 @@ outgoing edges.
 
         """
         if not self.containsEdge(edge):
-            raise WcbcException('edge ' + str(edge) + ' not in graph')
+            raise WcbcException("edge " + str(edge) + " not in graph")
         node1, node2 = edge.nodes
         return self.nodes[node1][node2]
 
-    def addEdge(self, edge, weight = 1):
+    def addEdge(self, edge, weight=1):
         """Add an edge to the graph.
 
         An exception is thrown if the edge is already present. An
@@ -579,16 +595,16 @@ outgoing edges.
         """
         node1, node2 = edge.nodes
         if self.containsEdge(edge):
-            raise WcbcException('edge ' + str(edge) + ' already in graph')
+            raise WcbcException("edge " + str(edge) + " already in graph")
         if not node1 in self:
-            raise WcbcException('node ' + node1 + ' not in graph')
+            raise WcbcException("node " + node1 + " not in graph")
         if not node2 in self:
-            raise WcbcException('node ' + node2 + ' not in graph')
+            raise WcbcException("node " + node2 + " not in graph")
 
         self.nodes[node1][node2] = weight
         if not self.directed:
             self.nodes[node2][node1] = weight
-        self.isolatedNodes = None # force recomputation later, when needed
+        self.isolatedNodes = None  # force recomputation later, when needed
 
     def removeEdge(self, edge):
         """Remove an edge from the graph.
@@ -604,14 +620,16 @@ outgoing edges.
         """
         node1, node2 = edge.nodes
         if not self.containsEdge(edge):
-            raise WcbcException('edge ' + str(edge) + ' not in graph')
+            raise WcbcException("edge " + str(edge) + " not in graph")
 
-        if node2 in self.nodes[node1]: del self.nodes[node1][node2]  
+        if node2 in self.nodes[node1]:
+            del self.nodes[node1][node2]
         if not self.directed:
-            if node1 in self.nodes[node2]: del self.nodes[node2][node1] 
-        self.isolatedNodes = None # force recomputation later, when needed
-        
-    def isPath(self, path, source = None, dest = None):
+            if node1 in self.nodes[node2]:
+                del self.nodes[node2][node1]
+        self.isolatedNodes = None  # force recomputation later, when needed
+
+    def isPath(self, path, source=None, dest=None):
         """Return true if the given path exists as a simple path in the current graph.
 
         The path passed in as a parameter is just a sequence of
@@ -648,11 +666,11 @@ outgoing edges.
                 return False unless the given dest is the end of p.
 
         """
-        if len(path)==0: 
+        if len(path) == 0:
             return True
-        if source == None: 
+        if source == None:
             source = path.start()
-        if dest == None: 
+        if dest == None:
             dest = path.end()
         if path.start() != source or path.end() != dest:
             return False
@@ -707,7 +725,7 @@ outgoing edges.
                 False otherwise.
 
         """
-        if len(path)==0: 
+        if len(path) == 0:
             return True
         if not self.isPath(path):
             return False
@@ -733,7 +751,7 @@ outgoing edges.
             bool: True if p contains all nodes in the current graph exactly once.
 
         """
-        
+
         # check that all graph nodes are contained in the path
         for node in self.nodes:
             if node not in path:
@@ -742,7 +760,7 @@ outgoing edges.
         for node in path.nodes:
             if node not in self.nodes:
                 return False
-            
+
         # It's possible that some nodes were repeated. An easy way to
         # check for this is to see if the number of nodes in the path
         # is the same as the number of nodes in the graph.
@@ -762,7 +780,7 @@ outgoing edges.
             bool: True if p is a Hamilton path in the current graph.
 
         """
-        
+
         if not self.isPath(path):
             return False
         if not self.containsAllNodesOnce(path):
@@ -786,7 +804,7 @@ outgoing edges.
             bool: True if p is a Hamilton cycle in the current graph.
 
         """
-        
+
         if not self.isCycle(path):
             return False
         if not self.containsAllNodesOnce(path):
@@ -806,11 +824,11 @@ outgoing edges.
                 in the current graph.
 
         """
-        
+
         for node1 in nodes:
             for node2 in nodes:
                 if node1 != node2:
-                    if not self.containsEdge( Edge([node1, node2]) ):
+                    if not self.containsEdge(Edge([node1, node2])):
                         return False
         return True
 
@@ -822,10 +840,10 @@ outgoing edges.
         default weight of 1 for each edge.
 
         """
-        
-        self.weighted = True # slightly evil hack. works fine because
-                             # all graphs are stored internally as
-                             # weighted graphs.
+
+        self.weighted = True  # slightly evil hack. works fine because
+        # all graphs are stored internally as
+        # weighted graphs.
 
     def convertToDirected(self):
         """Convert the current graph to a directed graph.
@@ -836,10 +854,10 @@ outgoing edges.
         directed edges between the same nodes, one in each direction.
 
         """
-        
-        self.directed = True # slightly evil hack. works fine because
-                             # all graphs are stored internally as
-                             # directed graphs.
+
+        self.directed = True  # slightly evil hack. works fine because
+        # all graphs are stored internally as
+        # directed graphs.
 
     def pathLength(self, path):
         """Return the "length" of the given path (i.e. total weight of its edges)
@@ -859,12 +877,11 @@ outgoing edges.
 
         """
         if not self.isPath(path):
-            raise WcbcException(str(path) + ' is not a path in the graph ' + str(self))
+            raise WcbcException(str(path) + " is not a path in the graph " + str(self))
         length = 0
         for edge in path:
             length += self.getWeight(edge)
         return length
-        
 
     def cycleLength(self, cycle):
         """Return the "length" of the given cycle (i.e. total weight of its edges)
@@ -889,8 +906,8 @@ outgoing edges.
 
         """
         if not self.isCycle(cycle):
-            raise WcbcException(str(cycle) + ' is not a cycle in the graph ' + str(self))
-        if len(cycle)==0:
+            raise WcbcException(str(cycle) + " is not a cycle in the graph " + str(self))
+        if len(cycle) == 0:
             return 0
         pathLen = self.pathLength(cycle)
         finalEdge = Edge([cycle.end(), cycle.start()])
@@ -933,4 +950,3 @@ outgoing edges.
 ##############################
 ## see graphTest.py for tests
 ##############################
-

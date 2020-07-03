@@ -11,21 +11,24 @@
 # Example:
 # >>> pythonSort('cap bat apple')
 # 'apple bat cap'
-import utils; from utils import rf
-def pythonSort(inString): 
-    words = sorted(inString.split());
-    return ' '.join(words) # single string of words separated by spaces    
+import utils
+from utils import rf
+
+
+def pythonSort(inString):
+    words = sorted(inString.split())
+    return " ".join(words)  # single string of words separated by spaces
 
 
 def testPythonSort():
-    testvals = [('here is no water but only rock', 'but here is no only rock water'),
-                ('', ''),
-                ('xxxx', 'xxxx'),
-                ('apple banana apple', 'apple apple banana'),
+    testvals = [
+        ("here is no water but only rock", "but here is no only rock water"),
+        ("", ""),
+        ("xxxx", "xxxx"),
+        ("apple banana apple", "apple apple banana"),
     ]
 
     for (inString, solution) in testvals:
         val = pythonSort(inString)
-        utils.tprint(inString, ':', val)
+        utils.tprint(inString, ":", val)
         assert val == solution
-    

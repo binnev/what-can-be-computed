@@ -13,23 +13,22 @@
 # Example:
 # >>> factorUnary('111111111111111')
 # '3'
-import utils; from utils import rf
+import utils
+from utils import rf
 from factor import factor
+
+
 def factorUnary(inString):
     M = len(inString)
     return factor(str(M))
 
 
-
-
 def testFactorUnary():
-    for M in (1,2,3,4,5,10,15,36,37,49,97,121):
-        unaryM = '1'*M
+    for M in (1, 2, 3, 4, 5, 10, 15, 36, 37, 49, 97, 121):
+        unaryM = "1" * M
         val = factorUnary(unaryM)
-        utils.tprint(M, ':', val)
+        utils.tprint(M, ":", val)
         if utils.isPrime(M):
-            assert val == 'no'
+            assert val == "no"
         else:
             assert M % int(val) == 0
-
-        

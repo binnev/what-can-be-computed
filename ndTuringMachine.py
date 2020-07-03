@@ -1,25 +1,27 @@
-import utils; from utils import rf
+import utils
+from utils import rf
 import re
 from turingMachine import TuringMachine
+
 
 class NDTuringMachine:
     """An NDTuringMachine object models a nondeterministic Turing machine
     as described in the textbook.
 
     """
-    
-    maxClones = 1000;
+
+    maxClones = 1000
     """The maximum number of clones permitted in a single NDTuringMachine object.
 
     We impose this limit to prevent too many resources being
     consumed. A true, abstract nondeterministic Turing machine should
     of course be permitted as many clones as desired.
     """
-    
-    exceededMaxClonesMsg = 'Exceeded maximum permitted clones'
+
+    exceededMaxClonesMsg = "Exceeded maximum permitted clones"
     """Message passed to the exception when maximum number of clones is exceeded."""
-    
-    maxSteps = 100000;
+
+    maxSteps = 100000
     """The maximum number of computational steps permitted in a computation.
 
     We impose this limit to prevent too many resources being
@@ -33,8 +35,7 @@ class NDTuringMachine:
 
     """
 
-    def __init__(self, description = None, tapeStr = '', name = None, \
-                 keepHistory = False):
+    def __init__(self, description=None, tapeStr="", name=None, keepHistory=False):
         """Initialize NDTuringMachine object.
 
         Args:
@@ -59,14 +60,13 @@ class NDTuringMachine:
 
         """
 
-        self.rootClone = self.createRootClone(description, tapeStr, 'root', \
-                                              keepHistory)
+        self.rootClone = self.createRootClone(description, tapeStr, "root", keepHistory)
         """TuringMachine object: The root clone of this nondeterministic
         Turing machine, which is itself a (deterministic) Turing
         machine.
 
         """
-        
+
         if len(self.rootClone.blocks) > 0:
             msg = "Sorry, blocks aren't supported for nondeterministic machines"
             raise utils.WcbcException(msg)
@@ -76,17 +76,17 @@ class NDTuringMachine:
         nondeterministic Turing machine.
 
         """
-        
+
         self.steps = 0
         """int: The number of computational steps taken so far in the computation."""
-        
+
         self.nextCloneID = 1
         """int: Each clone is assigned an ID number sequentially, beginning
         with zero for the root clone. This stores the ID that will be
         assigned to the next clone created.
 
         """
-        
+
         self.name = name
         self.keepHistory = keepHistory
 
@@ -105,11 +105,11 @@ class NDTuringMachine:
 
         """
         return TuringMachine(description, tapeStr, 0, name, keepHistory=keepHistory)
-        
+
     def step(self):
         """Perform one computational step in all clones in this
         nondeterministic Turing machine."""
-        
+
         self.steps += 1
         victims = set()
         children = set()
@@ -118,9 +118,9 @@ class NDTuringMachine:
             if len(ts) == 0:
                 victims.add(tm)
             else:
-                for i in range(1,len(ts)):
+                for i in range(1, len(ts)):
                     child = tm.clone()
-                    child.name = 'clone' + str(self.nextCloneID)
+                    child.name = "clone" + str(self.nextCloneID)
                     self.nextCloneID += 1
                     child.applyTransition(ts[i])
                     children.add(child)
@@ -136,7 +136,9 @@ class NDTuringMachine:
 
         """
         while True:
-            if NDTuringMachine.verbose: print(self); print()
+            if NDTuringMachine.verbose:
+                print(self)
+                print()
             self.step()
             allReject = True
             retVal = None
@@ -144,18 +146,17 @@ class NDTuringMachine:
                 if tm.state != TuringMachine.rejectState:
                     allReject = False
                 if tm.state == TuringMachine.acceptState:
-                    retVal = 'yes'
+                    retVal = "yes"
                 elif tm.state == TuringMachine.haltState:
-                    retVal = ''.join(tm.tape)
+                    retVal = "".join(tm.tape)
                 # Mostly for debugging, remember which clone accepted
                 # (if any). Also, we break so that the first clone to
                 # accept is the one whose return value is used.
-                if tm.state == TuringMachine.acceptState or \
-                   tm.state == TuringMachine.haltState:
+                if tm.state == TuringMachine.acceptState or tm.state == TuringMachine.haltState:
                     self.acceptingClone = tm
                     break
             if allReject:
-                retVal = 'no'
+                retVal = "no"
             if retVal != None:
                 return retVal
             if self.steps >= NDTuringMachine.maxSteps:
@@ -165,14 +166,15 @@ class NDTuringMachine:
                 raise utils.WcbcException(NDTuringMachine.exceededMaxClonesMsg)
                 # return NDTuringMachine.exceededMaxClonesMsg
 
-    def reset(self, tapeStr = '', state = TuringMachine.startState, headPos = 0, \
-              steps = 0, resetHistory=True):
+    def reset(
+        self, tapeStr="", state=TuringMachine.startState, headPos=0, steps=0, resetHistory=True
+    ):
         """Reset the Turing machine.
 
         See the documentation of TuringMachine.reset() for details.
 
         """
-        
+
         self.rootClone.reset(tapeStr, state, headPos, steps, resetHistory)
         self.clones = set([self.rootClone])
         self.steps = steps
@@ -193,9 +195,15 @@ class NDTuringMachine:
         maxClonesToPrint = 10
         tm_strings = [str(tm) for tm in list(self.clones)[:maxClonesToPrint]]
         if len(self.clones) > maxClonesToPrint:
-            tm_strings.append('... [and other clones]')
-        return 'steps: ' + str(self.steps) + ' num clones: ' + str(len(self.clones)) + \
-            '\n' + '\n'.join(tm_strings)
+            tm_strings.append("... [and other clones]")
+        return (
+            "steps: "
+            + str(self.steps)
+            + " num clones: "
+            + str(len(self.clones))
+            + "\n"
+            + "\n".join(tm_strings)
+        )
 
     def __repr__(self):
         return self.__str__()
@@ -211,20 +219,21 @@ class NDTuringMachine:
     def labelMatchesSymbol(self, symbol, label):
         return self.rootClone.labelMatchesSymbol(symbol, label)
 
+
 # see testCheckNDTM() in checkTuringMachine.py for additional tests
 def testNDTuringMachine():
     for (filename, inString, solution) in [
-            ('containsGAGAorGTGT.tm', 'GTGAGAGAGT', 'yes'),
-            ('containsGAGAorGTGT.tm', 'GTGAGTGTGT', 'yes'),
-            ('containsGAGAorGTGT.tm', 'GTGAGTGAGT', 'no'),
-            ('manyClones.tm', 'CGCGCGCGCGCGCGCCCCCCCCC', NDTuringMachine.exceededMaxClonesMsg),
-            ('loop.tm', 'x', TuringMachine.exceededMaxStepsMsg),
-            ('GthenOneT.tm', 'xCCCCCTCCGTTx', 'yes'),
-            ('GthenOneT.tm', 'xCCCCCCCGTTGCATGx', 'yes'),
-            ('GthenOneT.tm', 'xCCTCCTCCGTTx', 'no'),
-            ('GthenOneT.tm', 'xCCCCCCCGTTGCATGTTx', 'no'),
-            ('GthenOneT.tm', 'xGTx', 'yes'),
-            ]:
+        ("containsGAGAorGTGT.tm", "GTGAGAGAGT", "yes"),
+        ("containsGAGAorGTGT.tm", "GTGAGTGTGT", "yes"),
+        ("containsGAGAorGTGT.tm", "GTGAGTGAGT", "no"),
+        ("manyClones.tm", "CGCGCGCGCGCGCGCCCCCCCCC", NDTuringMachine.exceededMaxClonesMsg),
+        ("loop.tm", "x", TuringMachine.exceededMaxStepsMsg),
+        ("GthenOneT.tm", "xCCCCCTCCGTTx", "yes"),
+        ("GthenOneT.tm", "xCCCCCCCGTTGCATGx", "yes"),
+        ("GthenOneT.tm", "xCCTCCTCCGTTx", "no"),
+        ("GthenOneT.tm", "xCCCCCCCGTTGCATGTTx", "no"),
+        ("GthenOneT.tm", "xGTx", "yes"),
+    ]:
         ndtm = NDTuringMachine(rf(filename), inString, keepHistory=True)
         try:
             result = ndtm.run()
@@ -234,9 +243,9 @@ def testNDTuringMachine():
             elif str(e).startswith(TuringMachine.exceededMaxStepsMsg):
                 result = TuringMachine.exceededMaxStepsMsg
             else:
-                raise            
-        utils.tprint('filename:', filename, 'inString:', inString, 'result:', result)
-        if result=='yes':
-            utils.tprint('acceptingClone:', ndtm.acceptingClone)
-            utils.tprint('history:\n' + '\n'.join(ndtm.acceptingClone.history))
+                raise
+        utils.tprint("filename:", filename, "inString:", inString, "result:", result)
+        if result == "yes":
+            utils.tprint("acceptingClone:", ndtm.acceptingClone)
+            utils.tprint("history:\n" + "\n".join(ndtm.acceptingClone.history))
         assert result == solution

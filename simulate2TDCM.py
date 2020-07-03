@@ -26,27 +26,29 @@
 # Example:
 # >>> simulate2TDCM(rf('unarySequence.tm'), '')
 # 'exceeded maxSteps, outTape is:0010110111011110111110111111011111110...
-import utils; from utils import rf
+import utils
+from utils import rf
 from turingMachine import TuringMachine
 import re
-def simulate2TDCM(tmString, inString, verbose = False):
+
+
+def simulate2TDCM(tmString, inString, verbose=False):
     # key is state, value is list of transitions
     transitions = dict()
-    tmLines = [x.strip() for x in tmString.split('\n')]
-    splitRegex = '[' + \
-                 TuringMachine.labelSeparator + \
-                 TuringMachine.writeSymSeparator + \
-                 ']'
+    tmLines = [x.strip() for x in tmString.split("\n")]
+    splitRegex = "[" + TuringMachine.labelSeparator + TuringMachine.writeSymSeparator + "]"
     for line in tmLines:
-        if len(line)>0:
-            (states, label, actions) = [x.strip() for x in re.split(splitRegex,line)]
-            (sourceState, destState) = [x.strip() for x in states.split(TuringMachine.stateSeparator)]
+        if len(line) > 0:
+            (states, label, actions) = [x.strip() for x in re.split(splitRegex, line)]
+            (sourceState, destState) = [
+                x.strip() for x in states.split(TuringMachine.stateSeparator)
+            ]
             if TuringMachine.actionSeparator in actions:
                 (writeSymbol, direction) = actions.split(TuringMachine.actionSeparator)
             else:
                 (writeSymbol, direction) = (None, actions)
             transitionList = transitions.setdefault(sourceState, [])
-            transitionList.append( (destState, label, writeSymbol, direction) )
+            transitionList.append((destState, label, writeSymbol, direction))
 
     # Recall that in a 2TDCM, there is a ``regular'' tape and an ``output''
     # tape.  There is no need to keep track of the head position on the
@@ -54,10 +56,10 @@ def simulate2TDCM(tmString, inString, verbose = False):
     # read it.
     regTape = [c for c in inString]
     regHeadPos = 0
-    outTape = [ ]
+    outTape = []
     # Also recall that in a 2TDCM, only the symbols 0-9 can be written
     # on the output tape.
-    outSymbols = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    outSymbols = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
     state = TuringMachine.startState
     stuck = False
     steps = 0
@@ -65,7 +67,8 @@ def simulate2TDCM(tmString, inString, verbose = False):
 
     while not stuck and steps < maxSteps:
         steps = steps + 1
-        if verbose: print(steps, regTape, regHeadPos, outTape)
+        if verbose:
+            print(steps, regTape, regHeadPos, outTape)
         if regHeadPos == len(regTape):
             regTape.append(TuringMachine.blank)
         scannedSymbol = regTape[regHeadPos]
@@ -76,7 +79,7 @@ def simulate2TDCM(tmString, inString, verbose = False):
                 foundTransition = True
                 break
             elif label[0] == TuringMachine.notSym:
-                if scannedSymbol not in label[1:]: 
+                if scannedSymbol not in label[1:]:
                     foundTransition = True
                     break
             elif scannedSymbol in label:
@@ -99,20 +102,19 @@ def simulate2TDCM(tmString, inString, verbose = False):
                 regHeadPos = regHeadPos - 1
         elif direction == TuringMachine.rightDir:
             regHeadPos = regHeadPos + 1
-        
-    if verbose: print (regTape, outTape)
+
+    if verbose:
+        print(regTape, outTape)
 
     if TuringMachine.isAHaltingState(state):
-        return 'stuck, outTape is:' + ''.join(outTape)
+        return "stuck, outTape is:" + "".join(outTape)
     else:
-        return 'exceeded maxSteps, outTape is:' + ''.join(outTape)
-                    
+        return "exceeded maxSteps, outTape is:" + "".join(outTape)
+
 
 def testSimulate2TDCM():
-    inString = ''
-    tmString = rf('unarySequence.tm')
+    inString = ""
+    tmString = rf("unarySequence.tm")
     outString = simulate2TDCM(tmString, inString)
     utils.tprint(outString)
-    assert '0010110111011110111110111111011111110111111110' in outString
-
-
+    assert "0010110111011110111110111111011111110111111110" in outString

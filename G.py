@@ -3,22 +3,25 @@
 # This function is a placeholder for a generic computable function G.
 # This particular choice of G returns the first character of the input
 # string.
-import utils; from utils import rf
+import utils
+from utils import rf
+
+
 def G(inString):
     if len(inString) >= 1:
         return inString[0]
     else:
-        return ''
+        return ""
 
 
 def testG():
-    testvals = [('', ''),
-                ('x', 'x'),
-                ('abcdef', 'a'),
+    testvals = [
+        ("", ""),
+        ("x", "x"),
+        ("abcdef", "a"),
     ]
 
     for (inString, solution) in testvals:
         val = G(inString)
-        utils.tprint(inString, ':', val)
+        utils.tprint(inString, ":", val)
         assert val == solution
-    

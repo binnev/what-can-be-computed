@@ -10,16 +10,19 @@
 # an approximate version that relies on simulating P(P), so it only
 # returns in the cases where P halts on input P. See yesOnString.py
 # for details.
-import utils; from utils import rf
-from yesOnString import yesOnString  
-def yesOnSelf(progString):   
-    return yesOnString(progString, progString) 
+import utils
+from utils import rf
+from yesOnString import yesOnString
+
+
+def yesOnSelf(progString):
+    return yesOnString(progString, progString)
 
 
 def testyesOnSelf():
     testvals = [
-        ('containsGAGA.py', 'yes'),
-        ('isEmpty.py', 'no'),
+        ("containsGAGA.py", "yes"),
+        ("isEmpty.py", "no"),
     ]
     for (filename, solution) in testvals:
         val = yesOnSelf(rf(filename))

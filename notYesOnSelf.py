@@ -10,23 +10,25 @@
 # is an approximate version that relies on simulating P(P), so it only
 # returns in the cases where P halts on input P. See yesOnString.py
 # and yesOnSelf.py for details.
-import utils; from utils import rf
+import utils
+from utils import rf
 from yesOnSelf import yesOnSelf
-def notYesOnSelf(progString):   
+
+
+def notYesOnSelf(progString):
     val = yesOnSelf(progString)
-    if val == 'yes':
-        return 'no'
+    if val == "yes":
+        return "no"
     else:
-        return 'yes' 
+        return "yes"
 
 
 def testNotYesOnSelf():
     testvals = [
-        ('containsGAGA.py', 'no'),
-        ('isEmpty.py', 'yes'),
+        ("containsGAGA.py", "no"),
+        ("isEmpty.py", "yes"),
     ]
     for (filename, solution) in testvals:
         val = notYesOnSelf(rf(filename))
         utils.tprint(filename + ":", val)
         assert val == solution
-    

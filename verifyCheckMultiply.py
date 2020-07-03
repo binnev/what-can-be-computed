@@ -11,25 +11,28 @@
 # If implemented correctly, the return value would be as described in
 # Chapter 12 for verifiers: 'correct' if S was successfully verified,
 # and 'unsure' otherwise.
-import utils; from utils import rf
-def verifyCheckMultiply(I, S, H): 
+import utils
+from utils import rf
+
+
+def verifyCheckMultiply(I, S, H):
     (M1, M2, K) = [int(x) for x in I.split()]
-    if M1*M2==K and S=='yes':
-        return 'correct'
-    elif M1*M2!=K and S=='no':
-        return 'correct'  
+    if M1 * M2 == K and S == "yes":
+        return "correct"
+    elif M1 * M2 != K and S == "no":
+        return "correct"
     else:
-        return 'unsure' 
+        return "unsure"
 
 
 def testverifyCheckMultiply():
-    testVals = [('5 6 30', 'yes', '', 'correct'),
-                ('5 6 31', 'no', '', 'correct'),
-                ('5 6 30', 'no', '', 'unsure'),
-                ('5 6 31', 'yes', '', 'unsure'),
-                ]
+    testVals = [
+        ("5 6 30", "yes", "", "correct"),
+        ("5 6 31", "no", "", "correct"),
+        ("5 6 30", "no", "", "unsure"),
+        ("5 6 31", "yes", "", "unsure"),
+    ]
     for (I, S, H, retVal) in testVals:
         val = verifyCheckMultiply(I, S, H)
-        utils.tprint(I, S, H, ':', val)
+        utils.tprint(I, S, H, ":", val)
         assert val == retVal
-    

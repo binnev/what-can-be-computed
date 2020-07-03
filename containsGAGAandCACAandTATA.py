@@ -10,41 +10,45 @@
 # Example:
 # >>> containsGAGAandCACAandTATA('CCCCCCGAGATTTATA')
 # 'no'
-import utils; from utils import rf  
-from containsGAGA import *  
+import utils
+from utils import rf
+from containsGAGA import *
+
+
 def containsGAGAandCACAandTATA(inString):
-    if containsGAGA(inString)=='yes' and \
-                  containsCACA(inString) and \
-                          containsTATA(inString): 
-        return 'yes'
+    if containsGAGA(inString) == "yes" and containsCACA(inString) and containsTATA(inString):
+        return "yes"
     else:
-        return 'no'   
+        return "no"
+
 
 def containsCACA(searchString):
-    return containsSubstring(searchString, 'CACA')
+    return containsSubstring(searchString, "CACA")
+
 
 def containsTATA(searchString):
-    return containsSubstring(searchString, 'TATA')
+    return containsSubstring(searchString, "TATA")
+
 
 def containsSubstring(searchString, subString):
     if subString in searchString:
         return True
     else:
-        return False 
+        return False
 
 
 def testcontainsGAGAandCACAandTATA():
-    testVals = [('GAGACACATATA', 'yes'),
-                ('CTATACCACACGAGA', 'yes'),
-                ('AGAGAGAAGAAGAGAATATAACACA', 'yes'),
-                ('', 'no'),
-                ('CCCCCCCCGAGTTTT', 'no'),
-                ('CCCACAGAGACCCCCGAGTTTT', 'no'),
-                ('CCTATAGAGACCCCCGAGTTTT', 'no'),
-                ('CCTATACACACCCCCGAGTTTT', 'no'),
-                ]
+    testVals = [
+        ("GAGACACATATA", "yes"),
+        ("CTATACCACACGAGA", "yes"),
+        ("AGAGAGAAGAAGAGAATATAACACA", "yes"),
+        ("", "no"),
+        ("CCCCCCCCGAGTTTT", "no"),
+        ("CCCACAGAGACCCCCGAGTTTT", "no"),
+        ("CCTATAGAGACCCCCGAGTTTT", "no"),
+        ("CCTATACACACCCCCGAGTTTT", "no"),
+    ]
     for (inString, solution) in testVals:
         val = containsGAGAandCACAandTATA(inString)
-        utils.tprint(inString, ':', val)
+        utils.tprint(inString, ":", val)
         assert val == solution
-    

@@ -21,7 +21,9 @@ from __future__ import print_function
 
 # Check that the version of Python being used is sufficiently recent.
 import sys
-def checkPythonVersion(shouldExit = True):
+
+
+def checkPythonVersion(shouldExit=True):
     """Check that the version of Python is recent enough (>=2.7).
 
     If the version is too old, exit Python immediately unless instructed otherwise.
@@ -38,6 +40,7 @@ def checkPythonVersion(shouldExit = True):
         if shouldExit:
             sys.exit()
 
+
 checkPythonVersion()
 
 # Import all the modules we need.
@@ -47,6 +50,7 @@ import re, sys, threading, random, time, os, os.path
 # changed in version 3. The following code takes care of this issue.
 if sys.version_info < (3, 0):
     import Queue
+
     queue = Queue
 else:
     import queue
@@ -59,7 +63,7 @@ aRandom = random.Random()
 want one.
 """
 
-inf = float('inf')
+inf = float("inf")
 """A value representing positive infinity.
 
 In version >= 3.5 of Python, math.inf would be more elegant here, but
@@ -67,6 +71,7 @@ it's better to use an idiom that also works with earlier versions of
 Python.
 
 """
+
 
 def extractMainFunctionName(progString):
     """Extract the name of the main function in a Python program.
@@ -94,18 +99,19 @@ def extractMainFunctionName(progString):
            otherwise the empty string.
 
     """
-    
+
     # This is the regular expression that searches for the main
     # function using the heuristic described above.
-    mainFunctionRegex = r'^def\s+([a-zA-Z0-9_]*)'
-    matchResult = re.search(mainFunctionRegex, progString, re.MULTILINE )
+    mainFunctionRegex = r"^def\s+([a-zA-Z0-9_]*)"
+    matchResult = re.search(mainFunctionRegex, progString, re.MULTILINE)
     if matchResult:
         return matchResult.group(1)
     else:
         # Return empty string if we couldn't find any function
         # definitions. This should never happen when processing a
         # legitimate SISO program.
-        return ''
+        return ""
+
 
 def extractMainFunction(progString, localVars):
     """Given a Python program as defined in the book, return a reference
@@ -136,8 +142,9 @@ def extractMainFunction(progString, localVars):
     if functionName in localVars:
         progFunction = localVars[functionName]
     else:
-        raise WcbcException('function ' + functionName + \
-                            ' not defined, so cannot extract or simulate it')
+        raise WcbcException(
+            "function " + functionName + " not defined, so cannot extract or simulate it"
+        )
     return progFunction
 
 
@@ -153,10 +160,11 @@ def readFile(fileName):
         str: The contents of the file.
     """
 
-    fileContents = ''
+    fileContents = ""
     with open(fileName) as inputFile:
         fileContents = inputFile.read()
     return fileContents
+
 
 # Define a very short convenient alias for the readFile function
 rf = readFile
@@ -172,7 +180,7 @@ def writeFile(fileName, fileContents):
         fileContents (str): The contents of the file to be written,
             stored as a single string that may contain newlines.
     """
-    with open(fileName, 'w') as outputFile:
+    with open(fileName, "w") as outputFile:
         outputFile.write(fileContents)
 
 
@@ -199,7 +207,8 @@ def ESS(inString1, inString2):
         >>> ESS('abc', 'defg')
         '3 abcdefg'
     """
-    return str(len(inString1)) + ' ' + inString1 + inString2
+    return str(len(inString1)) + " " + inString1 + inString2
+
 
 def DESS(inString):
     """Decode a single string into two strings (inverse of ESS).
@@ -224,13 +233,13 @@ def DESS(inString):
         
     """
     # split on the first space character
-    (theLength, remainder) = inString.split(' ', 1)
-    inString1 = remainder[:int(theLength)]
-    inString2 = remainder[int(theLength):]
+    (theLength, remainder) = inString.split(" ", 1)
+    inString1 = remainder[: int(theLength)]
+    inString2 = remainder[int(theLength) :]
     return (inString1, inString2)
 
 
-def randomAlphanumericString(length = None, maxLength = 20):
+def randomAlphanumericString(length=None, maxLength=20):
     """Generate a random alphanumeric string.
 
     This function generates and returns a random alphanumeric string,
@@ -253,19 +262,18 @@ def randomAlphanumericString(length = None, maxLength = 20):
         str: The randomly generated alphanumeric string.
 
     """
-    
-    characters = 'abcdefghijklmnopqstuvwxyzABCDEFGHIJKLMNOPQSTUVWXYZ0123456789'
+
+    characters = "abcdefghijklmnopqstuvwxyzABCDEFGHIJKLMNOPQSTUVWXYZ0123456789"
     if length == None:
-        length = aRandom.randint(0,maxLength)
+        length = aRandom.randint(0, maxLength)
     chosenCharacters = []
     for i in range(length):
         randomCharacter = aRandom.choice(characters)
         chosenCharacters.append(randomCharacter)
-    return ''.join(chosenCharacters)
+    return "".join(chosenCharacters)
 
 
-
-def randomDigitalString(length = None, maxLength = 20):
+def randomDigitalString(length=None, maxLength=20):
     """Generate a random string of numeric digits.
 
     This function generates and returns a random string of numeric
@@ -290,19 +298,20 @@ def randomDigitalString(length = None, maxLength = 20):
 
     """
 
-    characters = '0123456789'
+    characters = "0123456789"
     if length == None:
-        length = aRandom.randint(0,maxLength)
+        length = aRandom.randint(0, maxLength)
     chosenCharacters = []
     for i in range(length):
         randomCharacter = aRandom.choice(characters)
         # first character must be nonzero
-        while i==0 and randomCharacter=='0':
+        while i == 0 and randomCharacter == "0":
             randomCharacter = aRandom.choice(characters)
         chosenCharacters.append(randomCharacter)
-    return ''.join(chosenCharacters)
+    return "".join(chosenCharacters)
 
-def randomString(alphabet, length = None, maxLength = 20):
+
+def randomString(alphabet, length=None, maxLength=20):
     """Generate a random string of characters from a given up a bit.
 
     This function generates and returns a random string of characters
@@ -331,28 +340,30 @@ def randomString(alphabet, length = None, maxLength = 20):
 
     characters = alphabet
     if length == None:
-        length = aRandom.randint(0,maxLength)
+        length = aRandom.randint(0, maxLength)
     chosenCharacters = []
     for i in range(length):
         randomCharacter = aRandom.choice(characters)
         chosenCharacters.append(randomCharacter)
-    return ''.join(chosenCharacters)
+    return "".join(chosenCharacters)
 
 
 def asciiAlphabetAsList():
     """Return a list consisting of the 128 ASCII characters"""
-    
+
     asciiAlphabet = []
     for i in range(128):
         asciiAlphabet.append(chr(i))
     return asciiAlphabet
 
+
 ASCII_ALPHABET = asciiAlphabetAsList()
 """A list consisting of the 128 ASCII characters"""
 
+
 def geneticAlphabetAsList():
     """Return a list consisting of the 4 characters 'A', 'C', 'G', 'T'"""
-    return ['A', 'C', 'G', 'T']
+    return ["A", "C", "G", "T"]
 
 
 def boolToYes(b):
@@ -368,9 +379,10 @@ def boolToYes(b):
 
     """
     if b:
-        return 'yes'
+        return "yes"
     else:
-        return 'no'
+        return "no"
+
 
 def nextShortLex(s, alphabet):
     """Return the next string in shortlex ordering on a given alphabet.
@@ -403,14 +415,15 @@ def nextShortLex(s, alphabet):
 
     first = alphabet[0]
     last = alphabet[-1]
-    if s=='': return str(first)
+    if s == "":
+        return str(first)
     chars = [c for c in s]
     L = len(chars)
     # The Boolean variable overflow will indicate whether or not this
     # is the last string of the current length (and hence whether we
     # need to "overflow" to the first string with length one greater)
     overflow = True
-    for i in range(L-1,-1,-1):
+    for i in range(L - 1, -1, -1):
         currentChar = chars[i]
         if currentChar != last:
             overflow = False
@@ -422,24 +435,23 @@ def nextShortLex(s, alphabet):
     incrementIndex = i
     incrementChar = currentChar
     alphabetIndex = alphabet.index(currentChar)
-    
+
     if overflow:
         # Treat overflow as a special case and return a string of
         # length L+1 consisting entirely of the first character in the
         # alphabet.
-        return first*(L+1)
+        return first * (L + 1)
     else:
         # We didn't overflow, so manipulate the array of characters to
         # produce the next string in lexicographic order. The
         # rightmost character that can be incremented gets
         # incremented...
-        chars[incrementIndex] = alphabet[alphabetIndex+1]
+        chars[incrementIndex] = alphabet[alphabetIndex + 1]
         # ...then all the characters to the right of that roll over to
         # the first character in the alphabet.
-        for j in range(incrementIndex+1,L):
-            chars[j]=first
-        return ''.join(chars)
-
+        for j in range(incrementIndex + 1, L):
+            chars[j] = first
+        return "".join(chars)
 
 
 def nextASCII(s):
@@ -477,8 +489,8 @@ def loop():
     60 seconds. This prevents background threads looping indefinitely.
 
     """
- 
-    timeout = 60 # one minute should be plenty
+
+    timeout = 60  # one minute should be plenty
     haltComputations.wait(timeout)
     # reset the haltComputations event
     haltComputations.clear()
@@ -515,7 +527,8 @@ def invokeAndStoreResult(fn, q, done, *inStrings):
     ret = fn(*inStrings)
     q.put(ret)
     done.set()
-        
+
+
 def runWithTimeout(timeout, fn, *inStrings):
     """Invoke a function with a timeout.
 
@@ -540,11 +553,11 @@ def runWithTimeout(timeout, fn, *inStrings):
         object: None if fn times out, otherwise the return value of fn.
 
     """
-    
+
     if timeout == None:
         timeout = TEST_TIMEOUT
 
-    # a queue for storing the return value of fn   
+    # a queue for storing the return value of fn
     q = queue.Queue()
     # an event for signaling when fn has completed
     done = threading.Event()
@@ -574,7 +587,6 @@ def runWithTimeout(timeout, fn, *inStrings):
 
     return retVal
 
-    
 
 def formatASet(theSet):
     """Format a set of strings as a string.
@@ -596,7 +608,8 @@ def formatASet(theSet):
         '{d,ef,abc}'
     
     """
-    return '{' + ','.join(theSet) + '}'
+    return "{" + ",".join(theSet) + "}"
+
 
 def formatSetOfSets(theSets):
     """Format a set of frozensets of strings as a single string.
@@ -621,7 +634,7 @@ def formatSetOfSets(theSets):
 
     """
     formattedSets = [formatASet(s) for s in theSets]
-    return ' '.join(formattedSets)
+    return " ".join(formattedSets)
 
 
 def sortByNthElement(theList, N):
@@ -640,6 +653,7 @@ def sortByNthElement(theList, N):
     """
     return sorted(theList, key=lambda x: x[N])
 
+
 def killAllThreadsAndExit():
     """Exit Python, which also kills all Python threads.
 
@@ -652,6 +666,7 @@ def killAllThreadsAndExit():
     # not be printed.
     sys.stdout.flush()
     os._exit(0)
+
 
 class NonDetSolution:
     """Manages solutions to nondeterministic programs.
@@ -668,7 +683,6 @@ class NonDetSolution:
 
     """
 
-    
     printLock = threading.Lock()
     """A static lock shared between all NonDetSolution objects -- the
     intention is that this can be used for debugging. Specifically,
@@ -676,21 +690,20 @@ class NonDetSolution:
     then release the lock.
 
     """
-    
+
     def __init__(self):
-        self.solution = 'no'
+        self.solution = "no"
         """str: Stores the solution to the problem being solved. By default,
         it has the value 'no'."""
-        
+
         # This lock protects access to the above solution field.
         self.solnLock = threading.Lock()
         """threading.Lock: protects access to the above solution field"""
-        
+
         self.done = threading.Event()
         """threading.Event: Will be used to signal when either a positive
         solution has been found or all threads have terminated with
         negative solutions."""
-
 
     def waitUntilDone(self):
         """Wait until we receive the signal that a positive solution has been
@@ -712,14 +725,14 @@ class NonDetSolution:
         to become aware that a positive solution has been found.
 
         """
-        
+
         # We only take action for positive solutions. If the given
         # solution is 'no', we leave the default value of 'no'
         # untouched -- and if another thread has meanwhile set the
         # solution to a positive value, we should certainly not set it
         # back to 'no' because positive solutions take precedence
         # anyway.
-        if solution != 'no':
+        if solution != "no":
             self.solnLock.acquire()
             self.solution = solution
             self.solnLock.release()
@@ -732,6 +745,7 @@ class NonDetSolution:
         solution = self.solution
         self.solnLock.release()
         return solution
+
 
 def waitForOnePosOrAllNeg(threads, nonDetSolution):
     """Wait until one of the threads terminates positively or all terminate negatively.
@@ -760,16 +774,17 @@ def waitForOnePosOrAllNeg(threads, nonDetSolution):
     maxThreads = 500
     if len(threads) + threading.active_count() > maxThreads:
         NonDetSolution.printLock.acquire()
-        print('Fatal error in waitForOnePosOrAllNeg: you attempted to run more than', 
-              maxThreads,
-              '''threads simultaneously.  
+        print(
+            "Fatal error in waitForOnePosOrAllNeg: you attempted to run more than",
+            maxThreads,
+            """threads simultaneously.  
 In theory this isn't a problem, but in practice your Python
 implementation may encounter difficulties. To avoid these potential
-problems, all threads will now be killed.''')
+problems, all threads will now be killed.""",
+        )
         NonDetSolution.printLock.release()
         killAllThreadsAndExit()
-    
-    
+
     # start each thread
     for t in threads:
         # print('starting', t)
@@ -777,12 +792,11 @@ problems, all threads will now be killed.''')
 
     # create and start yet another thread, whose job it will be to
     # detect when all the other threads have terminated
-    allTerminatedThread = threading.Thread(target=waitAllTerminated, \
-                                     args = (threads, nonDetSolution))
+    allTerminatedThread = threading.Thread(target=waitAllTerminated, args=(threads, nonDetSolution))
     allTerminatedThread.start()
     nonDetSolution.waitUntilDone()
     return nonDetSolution.getSolution()
-    
+
 
 def waitAllTerminated(threads, nonDetSolution):
     """Wait until all the given threads have terminated, then signal. 
@@ -803,7 +817,6 @@ def waitAllTerminated(threads, nonDetSolution):
     for t in threads:
         t.join()
     nonDetSolution.setDone()
-    
 
 
 class WcbcException(Exception):
@@ -813,9 +826,9 @@ class WcbcException(Exception):
     unhandled situations within the WCBC package.
 
     """
-    def __init__(self,*args,**kwargs):
-        Exception.__init__(self,*args,**kwargs)
 
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args, **kwargs)
 
 
 ################################################################################
@@ -837,10 +850,11 @@ def tprint(*args, **kwargs):
     VERBOSE_TESTS is True.
 
     """
-    
+
     if VERBOSE_TESTS:
         print(*args, **kwargs)
         sys.stdout.flush()
+
 
 def isPrime(M):
     """Return True if integer M is prime, and False otherwise.
@@ -849,6 +863,7 @@ def isPrime(M):
     simple, inefficient algorithm is employed.
 
     """
-    for x in range(2,M):
-        if M%x==0: return False
+    for x in range(2, M):
+        if M % x == 0:
+            return False
     return True

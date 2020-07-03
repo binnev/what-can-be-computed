@@ -8,24 +8,28 @@
 # example:
 # >>> MCopiesOfC('12')
 # 'CCCCCCCCCCCC'
-import utils; from utils import rf
-def MCopiesOfC(inString):      
+import utils
+from utils import rf
+
+
+def MCopiesOfC(inString):
     M = int(inString)
-    cList = [ ] 
+    cList = []
     # iterate M times, appending a single ``C'' character at each iteration
     for i in range(M):
-        cList.append('C') 
+        cList.append("C")
     # join all the C's together into a single string, with no separator
-    return ''.join(cList) 
+    return "".join(cList)
+
 
 def testMCopiesOfC():
-    testvals = [('0', ''),
-                ('1', 'C'),
-                ('2', 'CC'),
-                ('20', 'CCCCCCCCCCCCCCCCCCCC'),
-            ]
+    testvals = [
+        ("0", ""),
+        ("1", "C"),
+        ("2", "CC"),
+        ("20", "CCCCCCCCCCCCCCCCCCCC"),
+    ]
     for (inString, solution) in testvals:
         val = MCopiesOfC(inString)
-        utils.tprint(inString, ':', val)
+        utils.tprint(inString, ":", val)
         assert val == solution
-

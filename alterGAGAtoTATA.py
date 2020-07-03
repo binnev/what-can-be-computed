@@ -11,22 +11,26 @@
 # Example:
 # >>> alterGAGAtoTATA(utils.ESS(rf('repeatCAorGA.py'), 'GA'))
 # 'TATA'
-import utils; from utils import rf
-from universal import universal  
+import utils
+from utils import rf
+from universal import universal
+
+
 def alterGAGAtoTATA(inString):
-    (progString, newInString) = utils.DESS(inString) 
-    val = universal(progString, newInString)  
-    if val == 'GAGA': 
-        return 'TATA'
+    (progString, newInString) = utils.DESS(inString)
+    val = universal(progString, newInString)
+    if val == "GAGA":
+        return "TATA"
     else:
-        return val 
+        return val
+
 
 def testAlterGAGAtoTATA():
-    testvals = [('repeatCAorGA.py', 'CA', 'CACA'),
-                ('repeatCAorGA.py', 'GA', 'TATA'),
-            ]
+    testvals = [
+        ("repeatCAorGA.py", "CA", "CACA"),
+        ("repeatCAorGA.py", "GA", "TATA"),
+    ]
     for (progName, inString, solution) in testvals:
         val = alterGAGAtoTATA(utils.ESS(rf(progName), inString))
-        utils.tprint(progName, ',', inString, ':', val)
+        utils.tprint(progName, ",", inString, ":", val)
         assert val == solution
-    

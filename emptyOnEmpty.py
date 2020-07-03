@@ -8,21 +8,22 @@
 # returns: the program attempts to return "yes" if P('')=='' and "no"
 # otherwise, but it will fail if its simulation of P enters an
 # infinite loop.
-import utils; from utils import rf
+import utils
+from utils import rf
 from universal import universal
+
+
 def emptyOnEmpty(progString):
-    val = universal(progString, '')
-    if val == '':
-        return 'yes'
+    val = universal(progString, "")
+    if val == "":
+        return "yes"
     else:
-        return 'no'
+        return "no"
+
 
 def testEmptyOnEmpty():
-    testvals = [('containsGAGA.py', 'no'), 
-                ('isEmpty.py', 'no'), 
-                ('onlyZs.py', 'yes') ]
+    testvals = [("containsGAGA.py", "no"), ("isEmpty.py", "no"), ("onlyZs.py", "yes")]
     for (progName, solution) in testvals:
         val = emptyOnEmpty(rf(progName))
-        utils.tprint( progName, ":", val )
+        utils.tprint(progName, ":", val)
         assert val == solution
-

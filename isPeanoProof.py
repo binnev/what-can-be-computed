@@ -19,25 +19,29 @@
 # trivial case so that certain other functions can be tested.
 
 
-import utils; from utils import rf
+import utils
+from utils import rf
+
+
 def isPeanoProof(proofString, inString):
     # To permit testing of certain other functions, we return a
     # correct value for proving '0=0'. This is not actually an axiom
     # in the usual formulations of Peano arithmetic, but for testing
     # purposes let's assume that it is an axiom. So for our purposes,
     # the proof of '0=0' consists only of the string '0=0'.
-    if proofString=='0=0' and inString=='0=0':
-        return 'yes'
+    if proofString == "0=0" and inString == "0=0":
+        return "yes"
     else:
-        return 'no' # Obviously, this could be wrong. We only do this
-                    # for testing purposes.
+        return "no"  # Obviously, this could be wrong. We only do this
+        # for testing purposes.
+
 
 def testisPeanoProof():
-    testVals = [('0=0', '0=0', 'yes'),
-                ('asdf', 'zxcv', 'no'),
-                ]
+    testVals = [
+        ("0=0", "0=0", "yes"),
+        ("asdf", "zxcv", "no"),
+    ]
     for (proofString, inString, solution) in testVals:
         val = isPeanoProof(proofString, inString)
-        utils.tprint(proofString, inString, ':', val)
+        utils.tprint(proofString, inString, ":", val)
         assert val == solution
-    

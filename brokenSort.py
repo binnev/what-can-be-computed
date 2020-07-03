@@ -16,32 +16,37 @@
 # Example:
 # >>> brokenSort('cap bat apple')
 # 'apple bat cap'
-import utils; from utils import rf
-def brokenSort(inString):  
-    words = inString.split();
-    while not isSorted(words): 
-        for i in range(len(words)-1):
-            if words[i+1] < words[i]:
+import utils
+from utils import rf
+
+
+def brokenSort(inString):
+    words = inString.split()
+    while not isSorted(words):
+        for i in range(len(words) - 1):
+            if words[i + 1] < words[i]:
                 # swap elements i and i+1
-                words[i], words[i+1] = words[i+1], words[i]
-    return ' '.join(words) # single string of words separated by spaces
+                words[i], words[i + 1] = words[i + 1], words[i]
+    return " ".join(words)  # single string of words separated by spaces
+
 
 def isSorted(words):
-    for i in range(len(words)-1):
+    for i in range(len(words) - 1):
         # next line is a BUG: should be \str{<}, not \str{<=}
-        if words[i+1] <= words[i]:    
+        if words[i + 1] <= words[i]:
             return False
-    return True 
-        
+    return True
+
+
 def testBrokenSort():
-    testvals = [('here is no water but only rock', 'but here is no only rock water'),
-                ('', ''),
-                ('xxxx', 'xxxx'),
-                ('apple banana apple', None), # brokenSort enters infinite loop for duplicate values
+    testvals = [
+        ("here is no water but only rock", "but here is no only rock water"),
+        ("", ""),
+        ("xxxx", "xxxx"),
+        ("apple banana apple", None),  # brokenSort enters infinite loop for duplicate values
     ]
 
     for (inString, solution) in testvals:
         val = utils.runWithTimeout(None, brokenSort, inString)
-        utils.tprint(inString, ':', val)
+        utils.tprint(inString, ":", val)
         assert val == solution
-    

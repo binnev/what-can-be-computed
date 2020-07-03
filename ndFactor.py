@@ -13,7 +13,8 @@
 # Example:
 # >>> ndFactor('15')
 # '3'
-import utils; from utils import rf
+import utils
+from utils import rf
 from threading import Thread
 import threading
 
@@ -35,24 +36,24 @@ def ndFactor(inString):
 # and launching new threads to search those intervals -- unless the
 # interval already has size 1, in which case the only possible value
 # of m is tested.
-def ndFactorHelper(M, low, high, nonDetSolution):  
+def ndFactorHelper(M, low, high, nonDetSolution):
     if high <= low:
         # There is nothing to search.
         return
     elif high - low == 1:
         # The search interval includes only one possibility (low), so test it.
-        if M%low==0:
+        if M % low == 0:
             # low is a factor of M, so store this solution
             nonDetSolution.setSolution(str(low))
         return
     else:
         # Split the search interval in two, and launch new threads to
         # search those intervals.
-        threads = [ ] 
-        childNdSoln = utils.NonDetSolution() 
-        mid = int( (high+low)/2 )
-        t1 = Thread(target=ndFactorHelper, args = (M,low,mid,childNdSoln))
-        t2 = Thread(target=ndFactorHelper, args = (M,mid,high,childNdSoln))
+        threads = []
+        childNdSoln = utils.NonDetSolution()
+        mid = int((high + low) / 2)
+        t1 = Thread(target=ndFactorHelper, args=(M, low, mid, childNdSoln))
+        t2 = Thread(target=ndFactorHelper, args=(M, mid, high, childNdSoln))
         threads.append(t1)
         threads.append(t2)
         solution = utils.waitForOnePosOrAllNeg(threads, childNdSoln)
@@ -60,11 +61,10 @@ def ndFactorHelper(M, low, high, nonDetSolution):
 
 
 def testNdFactor():
-    for M in (1,2,3,4,5,10,15,36,37,49,97,121,0,-5):
+    for M in (1, 2, 3, 4, 5, 10, 15, 36, 37, 49, 97, 121, 0, -5):
         val = ndFactor(str(M))
-        utils.tprint(M, ':', val)
-        if M<2 or utils.isPrime(M):
-            assert val == 'no'
+        utils.tprint(M, ":", val)
+        if M < 2 or utils.isPrime(M):
+            assert val == "no"
         else:
             assert M % int(val) == 0
-

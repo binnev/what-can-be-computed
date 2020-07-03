@@ -12,24 +12,27 @@
 # Example:
 # >>> alterYesToNumChars(utils.ESS(rf('containsGAGA.py'), 'TTGAGATT'))
 # 'xxx'
-import utils; from utils import rf
-from universal import universal  
+import utils
+from utils import rf
+from universal import universal
+
+
 def alterYesToNumChars(inString):
     (progString, newInString) = utils.DESS(inString)
     val = universal(progString, newInString)
-    if val == 'yes':
+    if val == "yes":
         # return a string with three characters
-        return 'xxx'
+        return "xxx"
     else:
         # return a string with two characters
-        return 'xx'  
+        return "xx"
+
 
 def testAlterYesToNumChars():
     for (progName, inString, solution) in [
-            ('containsGAGA.py', 'GAGAGAGAG', 'xxx'), 
-            ('containsGAGA.py', 'TTTTGGCCGGT', 'xx'),
+        ("containsGAGA.py", "GAGAGAGAG", "xxx"),
+        ("containsGAGA.py", "TTTTGGCCGGT", "xx"),
     ]:
         val = alterYesToNumChars(utils.ESS(rf(progName), inString))
-        utils.tprint( (progName, inString), ":", val )
+        utils.tprint((progName, inString), ":", val)
         assert val == solution
-

@@ -17,9 +17,12 @@
 # terminates based on a fixed timeout. Moreover, as mentioned above,
 # even when P(I) terminates this program returns the elapsed time and
 # not the number of steps.
-import utils; from utils import rf
+import utils
+from utils import rf
 import time
 from universal import universal
+
+
 def numStepsOnString(progString, inString):
     start = time.clock()
     # if it doesn't complete before timing out, assume it is in an infinite loop
@@ -28,16 +31,17 @@ def numStepsOnString(progString, inString):
     if val:
         return str(elapsed)
     else:
-        return 'no'
-    
+        return "no"
+
 
 def testNumStepsOnString():
     for (progName, inString, solution) in [
-            ('loopIfContainsGAGA.py', 'GAGAGAGAG', 'no'), \
-            ('loopIfContainsGAGA.py', 'TTTTGGCCGGT', 'num') ]:
+        ("loopIfContainsGAGA.py", "GAGAGAGAG", "no"),
+        ("loopIfContainsGAGA.py", "TTTTGGCCGGT", "num"),
+    ]:
         val = numStepsOnString(rf(progName), inString)
-        utils.tprint( (progName, inString), ":", val )
-        if solution == 'no':
+        utils.tprint((progName, inString), ":", val)
+        if solution == "no":
             assert val == solution
         else:
             # check returned val is a number
@@ -45,4 +49,3 @@ def testNumStepsOnString():
                 float(val)
             except ValueError:
                 assert False
-

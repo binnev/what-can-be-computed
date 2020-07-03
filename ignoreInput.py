@@ -15,20 +15,24 @@
 # >>> utils.writeFile('inString.txt', 'TTTGAGATT')
 # >>> ignoreInput('CCCCCCC')
 # 'yes'
-import utils; from utils import rf
+import utils
+from utils import rf
 from universal import universal
-def ignoreInput(inString): 
-    progString = rf('progString.txt') 
-    newInString = rf('inString.txt') 
-    return universal(progString, newInString) 
+
+
+def ignoreInput(inString):
+    progString = rf("progString.txt")
+    newInString = rf("inString.txt")
+    return universal(progString, newInString)
+
 
 def testIgnoreInput():
     for (progName, inString, solution) in [
-            ('containsGAGA.py', 'GAGAGAGAG', 'yes'), \
-            ('containsGAGA.py', 'TTTTGGCCGGT', 'no') ]:
-        utils.writeFile('progString.txt', rf(progName))
-        utils.writeFile('inString.txt', inString)
-        val = ignoreInput('irrelevant input')
-        utils.tprint( (progName, inString), ":", val )
+        ("containsGAGA.py", "GAGAGAGAG", "yes"),
+        ("containsGAGA.py", "TTTTGGCCGGT", "no"),
+    ]:
+        utils.writeFile("progString.txt", rf(progName))
+        utils.writeFile("inString.txt", inString)
+        val = ignoreInput("irrelevant input")
+        utils.tprint((progName, inString), ":", val)
         assert val == solution
-

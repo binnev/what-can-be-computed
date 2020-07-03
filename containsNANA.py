@@ -11,31 +11,34 @@
 # Example:
 # >>> containsNANA('CCCCCCGAGATTTATA')
 # 'yes'
-import utils; from utils import rf
-def containsNANA(inString):  
-    strings = ['CACA', 'GAGA', 'TATA', 'AAAA']
+import utils
+from utils import rf
+
+
+def containsNANA(inString):
+    strings = ["CACA", "GAGA", "TATA", "AAAA"]
     for string in strings:
         if string in inString:
-            return 'yes'
-    return 'no'  
+            return "yes"
+    return "no"
+
 
 def testContainsNANA():
     numTests = 25
-    strings = ['CACA', 'GAGA', 'TATA', 'AAAA']
+    strings = ["CACA", "GAGA", "TATA", "AAAA"]
     for i in range(numTests):
-        randStr = utils.randomString('abcdef')
+        randStr = utils.randomString("abcdef")
         val = containsNANA(randStr)
-        utils.tprint(randStr, ':', val)
-        assert val == 'no'
+        utils.tprint(randStr, ":", val)
+        assert val == "no"
         for string in strings:
-            if i==0:
+            if i == 0:
                 insertLoc = 0
-            elif i==1:
+            elif i == 1:
                 insertLoc = len(randStr)
             else:
                 insertLoc = utils.aRandom.randint(0, len(randStr))
             inString = randStr[:insertLoc] + string + randStr[insertLoc:]
             val = containsNANA(inString)
-            utils.tprint(inString, ':', val)
-            assert val == 'yes'
-            
+            utils.tprint(inString, ":", val)
+            assert val == "yes"

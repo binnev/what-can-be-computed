@@ -11,23 +11,27 @@
 # Example:
 # >>> alterYesToGAGA(utils.ESS(rf('containsGAGA.py'), 'TTGAGATT'))
 # 'GAGA'
-import utils; from utils import rf
+import utils
+from utils import rf
 from universal import universal
-def alterYesToGAGA(inString):  
+
+
+def alterYesToGAGA(inString):
     (progString, newInString) = utils.DESS(inString)
     val = universal(progString, newInString)
-    if val == 'yes':
-        return 'GAGA'
+    if val == "yes":
+        return "GAGA"
     else:
-        return 'no'  
+        return "no"
+
 
 def testAlterYesToGAGA():
-    for (progName, inString, solution) in [('containsGAGA.py', 'GAGAGAGAG', 'GAGA'), 
-                                           ('containsGAGA.py', 'ATATACCC', 'no') ]:
+    for (progName, inString, solution) in [
+        ("containsGAGA.py", "GAGAGAGAG", "GAGA"),
+        ("containsGAGA.py", "ATATACCC", "no"),
+    ]:
         progString = rf(progName)
-        combinedString = utils.ESS(progString, inString) 
+        combinedString = utils.ESS(progString, inString)
         val = alterYesToGAGA(combinedString)
-        utils.tprint( (progName, inString), ":", val )  
+        utils.tprint((progName, inString), ":", val)
         assert val == solution
-
-

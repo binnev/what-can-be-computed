@@ -9,18 +9,20 @@
 # Example:
 # >>> convertNfaToDfa(rf('simple1.nfa'))
 # 'q0->q1: A\nq1->q2: C\nq1->q3: A\nq1->q4: G ...'
-import utils; from utils import rf
+import utils
+from utils import rf
 from dfa import Dfa
 from nfa import Nfa
 from turingMachine import TuringMachine, Transition
 from checkTuringMachine import checkEquivalent
 
+
 def convertNfaToDfa(nfaString):
-    nfa = Nfa(nfaString, name = 'sourceNfa')
+    nfa = Nfa(nfaString, name="sourceNfa")
 
     # print('source nfa is', nfa.write())
 
-    dfa = Dfa(None, name = 'destDfa')
+    dfa = Dfa(None, name="destDfa")
     # Dictionary of states in destDfa. Key is the name of the state (e.g. q0, qA),
     # and value is the set of states in sourceNfa to which the destDfa
     # state corresponds.
@@ -35,8 +37,13 @@ def convertNfaToDfa(nfaString):
     # special case of accepting all strings, so construct and return a
     # suitable dfa.
     if TuringMachine.acceptState in initialStateSet:
-        t = Transition(TuringMachine.startState, TuringMachine.acceptState,
-                       TuringMachine.anySym, None, TuringMachine.rightDir)
+        t = Transition(
+            TuringMachine.startState,
+            TuringMachine.acceptState,
+            TuringMachine.anySym,
+            None,
+            TuringMachine.rightDir,
+        )
         dfa.addTransition(t)
         return dfa.write()
 
@@ -44,19 +51,20 @@ def convertNfaToDfa(nfaString):
     # which corresponds to the subset of states in the NFA that can be
     # reached without consuming any symbols.
     stateToSubset[TuringMachine.startState] = initialStateSet
-    subsetToState[ initialStateSet  ] = TuringMachine.startState
+    subsetToState[initialStateSet] = TuringMachine.startState
 
     # Also create an accept state
     stateToSubset[TuringMachine.acceptState] = frozenset([TuringMachine.acceptState])
-    subsetToState[ frozenset([TuringMachine.acceptState])  ] = TuringMachine.acceptState
-    
+    subsetToState[frozenset([TuringMachine.acceptState])] = TuringMachine.acceptState
+
     # Keep track of which states in the dfa have not yet been processed
     unprocessedDfaStates = [TuringMachine.startState]
 
-    iteration = 0 # for debugging
-    while len(unprocessedDfaStates)>0:
+    iteration = 0  # for debugging
+    while len(unprocessedDfaStates) > 0:
         # print('iteration:', iteration); iteration+=1
-        dfa.unifyTransitions(); # print(dfa.write())
+        dfa.unifyTransitions()
+        # print(dfa.write())
         dfaState = unprocessedDfaStates.pop()
         nfaStates = stateToSubset[dfaState]
 
@@ -77,8 +85,7 @@ def convertNfaToDfa(nfaString):
                     # direction represents an epsilon-transition.
                     # These will be dealt with separately. For now,
                     # don't consider these to be matches.
-                    if t.label==TuringMachine.anySym and \
-                       t.direction == TuringMachine.stayDir:
+                    if t.label == TuringMachine.anySym and t.direction == TuringMachine.stayDir:
                         continue
                     if nfa.labelMatchesSymbol(c, t.label):
                         # print(c, 'matches label', t.label)
@@ -107,11 +114,7 @@ def convertNfaToDfa(nfaString):
     dfa.unifyTransitions()
 
     return dfa.write()
-                
-            
-        
-    
-    
+
 
 # Return a frozenset of all possible destination states leading from
 # subset of states qSet in the given nfa, where we can reach the
@@ -129,11 +132,13 @@ def convertNfaToDfa(nfaString):
 def getAllStayDests(nfa, qSet):
     stayDests = {q for q in qSet}
     frontier = {q for q in qSet}
-    while not len(frontier)==0:
+    while not len(frontier) == 0:
         newFrontier = set()
         for state in frontier:
             transitionList = nfa.getTransitions(state)
-            newStayDests = set([t.destState for t in transitionList if t.direction == TuringMachine.stayDir])
+            newStayDests = set(
+                [t.destState for t in transitionList if t.direction == TuringMachine.stayDir]
+            )
             # transitions to the reject state are ignored in this algorithm
             if TuringMachine.rejectState in newStayDests:
                 newStayDests.remove(TuringMachine.rejectState)
@@ -147,14 +152,16 @@ def getAllStayDests(nfa, qSet):
     else:
         return frozenset(stayDests)
 
+
 def getNewStateName(states):
     i = 0
     while True:
-        name = 'q' + str(i)
+        name = "q" + str(i)
         if name not in states:
             return name
         i += 1
-    
+
+
 def testGetAllStayDests():
     treeOfEpsNfaStr = """
 q0->q1 : Eps
@@ -189,53 +196,54 @@ q2->qA : Eps
     nfaCycle = Nfa(cycleOfEpsNfaStr)
     nfaAccept = Nfa(chainWithAccept)
     nfaMulti = Nfa(multiChainOfEpsNfaStr)
-    nfa1 = Nfa(rf('example2.nfa'))
-    nfa2 = Nfa(rf('mult2or3Gs.nfa'))
+    nfa1 = Nfa(rf("example2.nfa"))
+    nfa2 = Nfa(rf("mult2or3Gs.nfa"))
     testvals = [
-        (nfa1, set(['q0']), frozenset(['q0'])  ),
-        (nfa1, set(['q1']), frozenset(['q1', 'q2'])  ),
-        (nfa2, set(['q0']), frozenset(['q0', 'q1', 'q3'])  ),
-        (nfaTree, set(['q0']), frozenset(['q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6'])  ),
-        (nfaTree, set(['q1']), frozenset(['q1', 'q2', 'q3', 'q4', 'q5', 'q6'])  ),
-        (nfaCycle, set(['q0']), frozenset(['q0', 'q1', 'q2', 'q3', 'q4'])  ),
-        (nfaCycle, set(['q1']), frozenset(['q0', 'q1', 'q2', 'q3', 'q4'])  ),
-        (nfaAccept, set(['q0']), frozenset(['qA'])  ),
-        (nfaMulti, set(['q0']), frozenset(['q0', 'q1', 'q2'])  ),
-        (nfaMulti, set(['q2']), frozenset(['q2'])  ),
-        (nfaMulti, set(['q1', 'q5']), frozenset(['q1', 'q2', 'q5', 'q6'])  ),
-        (nfaMulti, set(['q0', 'q3', 'q5']), frozenset(['q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6'])  ),
+        (nfa1, set(["q0"]), frozenset(["q0"])),
+        (nfa1, set(["q1"]), frozenset(["q1", "q2"])),
+        (nfa2, set(["q0"]), frozenset(["q0", "q1", "q3"])),
+        (nfaTree, set(["q0"]), frozenset(["q0", "q1", "q2", "q3", "q4", "q5", "q6"])),
+        (nfaTree, set(["q1"]), frozenset(["q1", "q2", "q3", "q4", "q5", "q6"])),
+        (nfaCycle, set(["q0"]), frozenset(["q0", "q1", "q2", "q3", "q4"])),
+        (nfaCycle, set(["q1"]), frozenset(["q0", "q1", "q2", "q3", "q4"])),
+        (nfaAccept, set(["q0"]), frozenset(["qA"])),
+        (nfaMulti, set(["q0"]), frozenset(["q0", "q1", "q2"])),
+        (nfaMulti, set(["q2"]), frozenset(["q2"])),
+        (nfaMulti, set(["q1", "q5"]), frozenset(["q1", "q2", "q5", "q6"])),
+        (nfaMulti, set(["q0", "q3", "q5"]), frozenset(["q0", "q1", "q2", "q3", "q4", "q5", "q6"])),
     ]
-    for ( nfa, state, solution) in testvals:
+    for (nfa, state, solution) in testvals:
         val = getAllStayDests(nfa, state)
-        utils.tprint(state, ':', val)
+        utils.tprint(state, ":", val)
         assert val == solution
+
 
 import checkTuringMachine
 
 NUM_BRIEF_TESTS = 3
 
 
-        
 def testConvertNfatoDfa():
     testvals = [
         # format is:
-        #(nfaFile, alphabet, maxShortInputLen, maxRandInputLen, numRandInputs)
-        ('chainWithAccept.nfa', 'abc', 4, 20, 100),
-        ('CGstar.nfa', 'CAGT', 5, 20, 100),
-        ('simple1.nfa', 'CAGT', 6, 12, 1000),
-        ('simple2.nfa', 'CAGT', 6, 12, 10000),
-        ('simple3.nfa', 'CAGT', 6, 12, 10000),
-        ('mult2or3Gs.nfa', 'G', 10, 50, 1000),
-        ('example2.nfa', 'CAGT', 9, 20, 10000),
+        # (nfaFile, alphabet, maxShortInputLen, maxRandInputLen, numRandInputs)
+        ("chainWithAccept.nfa", "abc", 4, 20, 100),
+        ("CGstar.nfa", "CAGT", 5, 20, 100),
+        ("simple1.nfa", "CAGT", 6, 12, 1000),
+        ("simple2.nfa", "CAGT", 6, 12, 10000),
+        ("simple3.nfa", "CAGT", 6, 12, 10000),
+        ("mult2or3Gs.nfa", "G", 10, 50, 1000),
+        ("example2.nfa", "CAGT", 9, 20, 10000),
     ]
-    numTests = 0;
+    numTests = 0
     for (nfaFile, alphabet, maxShortInputLen, maxRandInputLen, numRandInputs) in testvals:
         numTests += 1
-        if utils.BRIEF_TESTS and numTests > NUM_BRIEF_TESTS: break
+        if utils.BRIEF_TESTS and numTests > NUM_BRIEF_TESTS:
+            break
         nfaStr = rf(nfaFile)
         nfa = Nfa(nfaStr)
         dfaStr = convertNfaToDfa(nfaStr)
-        utils.tprint('\n'.join(['nfaStr', nfaStr, '\ndfaStr', dfaStr]))
-        checkEquivalent(dfaStr, nfa, alphabet, maxShortInputLen, maxRandInputLen, \
-                        numRandInputs, tmType = 'dfa')
-        
+        utils.tprint("\n".join(["nfaStr", nfaStr, "\ndfaStr", dfaStr]))
+        checkEquivalent(
+            dfaStr, nfa, alphabet, maxShortInputLen, maxRandInputLen, numRandInputs, tmType="dfa"
+        )

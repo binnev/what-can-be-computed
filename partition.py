@@ -17,34 +17,36 @@
 # Example:
 # >>> partition('6 6 7 7')
 # '6 7'
-import utils; from utils import rf
+import utils
+from utils import rf
 from packing import packing
+
+
 def partition(inString):
     weights = [int(x) for x in inString.split()]
     totalWeight = sum(weights)
-    if totalWeight%2 != 0:
+    if totalWeight % 2 != 0:
         # If the sum of the weights isn't even, no partition is
         # possible.
-        return 'no'
+        return "no"
     else:
         # Reduce the problem to an instance of Packing.
-        targetWeight = str(int(totalWeight/2))
-        packingString = inString + ';' + targetWeight + ';' + targetWeight
+        targetWeight = str(int(totalWeight / 2))
+        packingString = inString + ";" + targetWeight + ";" + targetWeight
         return packing(packingString)
-    
+
+
 def testPartition():
     testvals = [
-        ('', ''),
-        ('5', 'no'),
-        ('5 7', 'no'),
-        ('6 6', '6'),
-        ('6 6 7 7', '6 7'),
-        ('3 3 3 3 1000 1000 1000 1000', '3 3 1000 1000'),
+        ("", ""),
+        ("5", "no"),
+        ("5 7", "no"),
+        ("6 6", "6"),
+        ("6 6 7 7", "6 7"),
+        ("3 3 3 3 1000 1000 1000 1000", "3 3 1000 1000"),
     ]
 
     for (inString, solution) in testvals:
         val = partition(inString)
-        utils.tprint(inString,':', val)
+        utils.tprint(inString, ":", val)
         assert val == solution
-        
-

@@ -15,11 +15,13 @@
 # Example:
 # >>> shortestPath('a,b,5 b,c,6 c,d,8 d,a,9 a,c,1 d,b,2 ; a; d')
 # '7'
-import utils; from utils import rf
+import utils
+from utils import rf
 from graph import Graph, Path, Edge
 
+
 def shortestPath(inString):
-    graphStr, source, dest = [x.strip() for x in inString.split(';')]
+    graphStr, source, dest = [x.strip() for x in inString.split(";")]
     graph = Graph(graphStr, weighted=True, directed=False)
     assert source in graph
     assert dest in graph
@@ -33,21 +35,23 @@ def shortestPath(inString):
     # that is what we return.
     dist = shortest[dest]
     if dist == utils.inf:
-        return 'no'
+        return "no"
     else:
-        return str( shortest[dest] )
+        return str(shortest[dest])
+
 
 # copied from page 86 of Cormen, Algorithms Unlocked. See that book
 # for detailed documentation.
-def relax(u,v,weight,shortest,pred):
+def relax(u, v, weight, shortest, pred):
     newDist = shortest[u] + weight
     if newDist < shortest[v]:
         shortest[v] = newDist
         pred[v] = u
 
+
 # copied from page 102 of Cormen, Algorithms Unlocked. See that book
 # for detailed documentation.
-def bellmanFord(G,s):
+def bellmanFord(G, s):
     shortest = dict()
     pred = dict()
     for v in G:
@@ -55,28 +59,28 @@ def bellmanFord(G,s):
         pred[v] = None
     shortest[s] = 0
     edges = G.getEdgesAsDict()
-    for i in range(len(G)-1):
+    for i in range(len(G) - 1):
         for edge, weight in edges.items():
             u = edge.start()
             v = edge.end()
-            relax(u,v,weight,shortest,pred)
+            relax(u, v, weight, shortest, pred)
     return shortest, pred
-                    
+
+
 def testShortestPath():
     testvals = [
-        ('a,b,5 ; a; b', 5),
-        ('a,b,5 b,c,6 c,d,8 d,a,9 a,c,1 d,b,2 ; a; b', 5),
-        ('a,b,5 b,c,6 c,d,8 d,a,9 a,c,1 d,b,2 ; a; c', 1),
-        ('a,b,5 b,c,6 c,d,8 d,a,9 a,c,1 d,b,2 ; a; d', 7),
-        ('a,b,5 b,c,6 d,a,9 a,c,1 d,b,2 ; a; b', 5),
-        ('a,b,5 b,c,6 d,a,9 a,c,1 ; a; b', 5),
-        ('a,b,1 b,c,1 c,d,1 d,e,1 ; a; d', 3),
-        ('a,b,1 b,c,1 c,d,1 d,e,1 a,e,5; a; e', 4),
-        ('a,b,1 b,c,1 c,d,1 d,e,1 a,e,5 a,c,1; a; e', 3),
-        ('a,b,5 c,d,7 ; a; c', 'no'),
+        ("a,b,5 ; a; b", 5),
+        ("a,b,5 b,c,6 c,d,8 d,a,9 a,c,1 d,b,2 ; a; b", 5),
+        ("a,b,5 b,c,6 c,d,8 d,a,9 a,c,1 d,b,2 ; a; c", 1),
+        ("a,b,5 b,c,6 c,d,8 d,a,9 a,c,1 d,b,2 ; a; d", 7),
+        ("a,b,5 b,c,6 d,a,9 a,c,1 d,b,2 ; a; b", 5),
+        ("a,b,5 b,c,6 d,a,9 a,c,1 ; a; b", 5),
+        ("a,b,1 b,c,1 c,d,1 d,e,1 ; a; d", 3),
+        ("a,b,1 b,c,1 c,d,1 d,e,1 a,e,5; a; e", 4),
+        ("a,b,1 b,c,1 c,d,1 d,e,1 a,e,5 a,c,1; a; e", 3),
+        ("a,b,5 c,d,7 ; a; c", "no"),
     ]
     for (inString, solution) in testvals:
         val = shortestPath(inString)
-        utils.tprint(inString, ':', val)
+        utils.tprint(inString, ":", val)
         assert val == str(solution)
-

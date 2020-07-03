@@ -16,22 +16,25 @@
 # Example:
 # >>> haltsOnString(rf('containsGAGA.py'), 'TTTTTTTT')
 # 'yes'
-import utils; from utils import rf
+import utils
+from utils import rf
 from universal import universal
+
+
 def haltsOnString(progString, inString):
     # if it doesn't complete before timing out, assume it is in an infinite loop
     val = utils.runWithTimeout(None, universal, progString, inString)
     if val != None:
-        return 'yes'
+        return "yes"
     else:
-        return 'no'
+        return "no"
 
 
 def testhaltsOnString():
     for (progName, inString, solution) in [
-            ('loopIfContainsGAGA.py', 'GAGAGAGAG', 'no'), \
-            ('loopIfContainsGAGA.py', 'TTTTGGCCGGT', 'yes') ]:
+        ("loopIfContainsGAGA.py", "GAGAGAGAG", "no"),
+        ("loopIfContainsGAGA.py", "TTTTGGCCGGT", "yes"),
+    ]:
         val = haltsOnString(rf(progName), inString)
-        utils.tprint( (progName, inString), ":", val )
+        utils.tprint((progName, inString), ":", val)
         assert val == solution
-    

@@ -1,5 +1,7 @@
-import utils; from utils import rf
+import utils
+from utils import rf
 import re
+
 
 class Transition:
     """Models a transition in a Turing machine.
@@ -11,7 +13,7 @@ class Transition:
     T is the writeSymbol, and right is the direction.
 
     """
-    
+
     def __init__(self, sourceState, destState, label, writeSymbol, direction):
         """Initialize Transition object.
 
@@ -41,12 +43,17 @@ class Transition:
         self.direction = direction
 
     def __str__(self):
-        return 'sourceState: %s destState: %s label: %s writeSymbol: %s direction: %s' % \
-            (self.sourceState, self.destState, self.label, self.writeSymbol, self.direction)
+        return "sourceState: %s destState: %s label: %s writeSymbol: %s direction: %s" % (
+            self.sourceState,
+            self.destState,
+            self.label,
+            self.writeSymbol,
+            self.direction,
+        )
 
     def __repr__(self):
         return self.__str__()
-    
+
     # Static method to unify the labels of compatible transitions
     @staticmethod
     def unify(tList):
@@ -72,13 +79,15 @@ class Transition:
                 transitions in tList.
 
         """
-        assert len(tList)>0
+        assert len(tList) > 0
         first = tList[0]
-        unifiedTrans = Transition(first.sourceState, first.destState, None, first.writeSymbol, first.direction)
+        unifiedTrans = Transition(
+            first.sourceState, first.destState, None, first.writeSymbol, first.direction
+        )
         for t in tList:
             assert unifiedTrans.isCompatible(t)
         labels = [t.label for t in tList]
-        unifiedTrans.label = ''.join(labels)
+        unifiedTrans.label = "".join(labels)
         return unifiedTrans
 
     def isCompatible(self, other):
@@ -101,33 +110,42 @@ class Transition:
                 transition, and False otherwise
 
         """
-        
-        return self.sourceState == other.sourceState \
-            and self.destState == other.destState \
-            and self.writeSymbol == other.writeSymbol \
+
+        return (
+            self.sourceState == other.sourceState
+            and self.destState == other.destState
+            and self.writeSymbol == other.writeSymbol
             and self.direction == other.direction
+        )
 
     def __eq__(self, other):
-        if self is other: return True
-        if other==None: return False
-        if not isinstance(other, Transition): return False
-        return self.sourceState == other.sourceState \
-                and self.destState == other.destState \
-                and self.label == other.label \
-                and self.writeSymbol == other.writeSymbol \
-                and self.direction == other.direction
+        if self is other:
+            return True
+        if other == None:
+            return False
+        if not isinstance(other, Transition):
+            return False
+        return (
+            self.sourceState == other.sourceState
+            and self.destState == other.destState
+            and self.label == other.label
+            and self.writeSymbol == other.writeSymbol
+            and self.direction == other.direction
+        )
 
     def __ne__(self, other):
-        return not self==other
+        return not self == other
 
-    def __lt__ (self, other):
-        return (self.sourceState, self.destState, self.label, \
-                self.writeSymbol, self.direction) \
-            < \
-            (other.sourceState, other.destState, other.label, \
-             other.writeSymbol, other.direction)
+    def __lt__(self, other):
+        return (self.sourceState, self.destState, self.label, self.writeSymbol, self.direction) < (
+            other.sourceState,
+            other.destState,
+            other.label,
+            other.writeSymbol,
+            other.direction,
+        )
 
-    def __gt__ (self, other):
+    def __gt__(self, other):
         return other.__lt__(self)
 
     def getKeyForUnify(self):
@@ -176,17 +194,17 @@ class TuringMachine:
     textbook.
 
     """
-    
+
     verbose = False
-    blockMarker = 'block:'
+    blockMarker = "block:"
     maxSteps = 100000
     maxDepth = 1000
-    exceededMaxStepsMsg = 'exceeded maxSteps'
-    rightDir = 'R'
-    leftDir = 'L'
-    stayDir = 'S'
-    noStr = 'no'
-    yesStr = 'yes'
+    exceededMaxStepsMsg = "exceeded maxSteps"
+    rightDir = "R"
+    leftDir = "L"
+    stayDir = "S"
+    noStr = "no"
+    yesStr = "yes"
     # An underscore character represents blanks in this model of a
     # Turing machine. Technically, this means the Turing machines
     # models here are not the same as the ones in the textbook,
@@ -194,33 +212,41 @@ class TuringMachine:
     # and the underscore character is an element of that alphabet. We
     # prefer to accept that inconsistency rather than using a more
     # complex method for modeling blanks.
-    blank = '_' 
+    blank = "_"
 
     # As with the blank symbol above, the following characters have
     # special meaning in our Turing machine representation, and are
     # therefore not permitted as part of the alphabet.  Whitespace
     # characters are also excluded from the alphabet.
-    anySym = '~' # Stands for any one symbol
-    notSym = '!' # Stands for any symbol not in the immediately following sequence
-    commentStart = '#'
-    actionSeparator = ','
-    blockSeparator = '='
-    stateSeparator = '->'
-    labelSeparator = ':'
-    writeSymSeparator = ';'
+    anySym = "~"  # Stands for any one symbol
+    notSym = "!"  # Stands for any symbol not in the immediately following sequence
+    commentStart = "#"
+    actionSeparator = ","
+    blockSeparator = "="
+    stateSeparator = "->"
+    labelSeparator = ":"
+    writeSymSeparator = ";"
 
-    validSymbols = {c for c in
-        r"""$'"%&()*+-./0123456789<>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}"""}
-    
-    acceptState = 'qA'
-    rejectState = 'qR'
-    haltState = 'qH'
-    startState = 'q0'
-    
-    def __init__(self, description = None, tapeStr = '', depth = 0, name = None, \
-                 allowImplicitReject = True, \
-                 allowLeftFromCell0 = True, \
-                 keepHistory = False):
+    validSymbols = {
+        c
+        for c in r"""$'"%&()*+-./0123456789<>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}"""
+    }
+
+    acceptState = "qA"
+    rejectState = "qR"
+    haltState = "qH"
+    startState = "q0"
+
+    def __init__(
+        self,
+        description=None,
+        tapeStr="",
+        depth=0,
+        name=None,
+        allowImplicitReject=True,
+        allowLeftFromCell0=True,
+        keepHistory=False,
+    ):
         """Initialize TuringMachine object.
 
         Args:
@@ -299,7 +325,7 @@ class TuringMachine:
         # sometimes it is convenient to set it to False for debugging
         # purposes.
         self.allowLeftFromCell0 = allowLeftFromCell0
-        
+
         # Dictionary of building blocks used in this machine. Key is
         # the state from which we jump to the building block, value is
         # the building block itself (i.e., a Python object of type
@@ -319,7 +345,6 @@ class TuringMachine:
             self.read(description)
         self.checkAllSymbolsValid()
 
-
     def splitTransition(self, line):
         """Given a line in a Turing machine description, split into transition components.
 
@@ -336,18 +361,14 @@ class TuringMachine:
                 symbol, if any, and the direction.
 
         """
-        
+
         # Define a character set consisting of the label separator and
         # the write symbol separator.
-        splitRegex = '[' + \
-                     TuringMachine.labelSeparator + \
-                     TuringMachine.writeSymSeparator + \
-                     ']'
+        splitRegex = "[" + TuringMachine.labelSeparator + TuringMachine.writeSymSeparator + "]"
         # Split on the above two separators
-        (states, label, actions) = [x.strip() for x in re.split(splitRegex,line)]
+        (states, label, actions) = [x.strip() for x in re.split(splitRegex, line)]
         # Split into source and destination state
-        (sourceState, destState) = \
-            [x.strip() for x in states.split(TuringMachine.stateSeparator)]
+        (sourceState, destState) = [x.strip() for x in states.split(TuringMachine.stateSeparator)]
         return (label, actions, sourceState, destState)
 
     def extractTransition(self, line):
@@ -362,11 +383,11 @@ class TuringMachine:
             Transition: a new Transition object
 
         """
-        (label, actions, sourceState, destState) = \
-                self.splitTransition(line)
+        (label, actions, sourceState, destState) = self.splitTransition(line)
         if TuringMachine.actionSeparator in actions:
-            (writeSymbol, direction) = \
-                [x.strip() for x in actions.split(TuringMachine.actionSeparator)]
+            (writeSymbol, direction) = [
+                x.strip() for x in actions.split(TuringMachine.actionSeparator)
+            ]
         else:
             (writeSymbol, direction) = (None, actions)
         return Transition(sourceState, destState, label, writeSymbol, direction)
@@ -391,7 +412,6 @@ class TuringMachine:
 
         return [x.split(TuringMachine.commentStart)[0] for x in lines]
 
-    
     def read(self, tmString):
         """Build the states and transitions of a Turing machine from an ASCII description.
 
@@ -410,13 +430,13 @@ class TuringMachine:
 
         self.transitions = dict()
         # split on newlines
-        tmLines = tmString.split('\n')
+        tmLines = tmString.split("\n")
         # strip comments
         tmLines = TuringMachine.stripComments(tmLines)
         # strip whitespace
         tmLines = [x.strip() for x in tmLines]
         for line in tmLines:
-            if len(line)>0:
+            if len(line) > 0:
                 if line.startswith(TuringMachine.blockMarker):
                     self.addBlock(line)
                 else:
@@ -437,14 +457,20 @@ class TuringMachine:
 
         """
 
-        components = [t.sourceState, TuringMachine.stateSeparator, t.destState,
-                      TuringMachine.labelSeparator, ' ', t.label,
-                      TuringMachine.writeSymSeparator]
+        components = [
+            t.sourceState,
+            TuringMachine.stateSeparator,
+            t.destState,
+            TuringMachine.labelSeparator,
+            " ",
+            t.label,
+            TuringMachine.writeSymSeparator,
+        ]
         if t.writeSymbol != None:
             components += [t.writeSymbol, TuringMachine.actionSeparator]
         components.append(t.direction)
-        return ''.join(components)
-            
+        return "".join(components)
+
     def write(self):
         """Convert the current Turing machine into description format.
 
@@ -455,17 +481,19 @@ class TuringMachine:
 
         """
 
-        if len(self.blocks)>0:
-            raise utils.WcbcException("Error: writing Turing machines is not implemented for blocks.")
-        if self.transitions == None: 
-            return '[No transitions]'
+        if len(self.blocks) > 0:
+            raise utils.WcbcException(
+                "Error: writing Turing machines is not implemented for blocks."
+            )
+        if self.transitions == None:
+            return "[No transitions]"
         lines = []
         for tList in self.transitions.values():
             for t in tList:
                 line = self.writeTransition(t)
                 lines.append(line)
         lines.sort()
-        return '\n'.join(lines)
+        return "\n".join(lines)
 
     def addBlock(self, line):
         """Add a building block to the current machine.
@@ -482,14 +510,15 @@ class TuringMachine:
             message = 'Exceeded max depth when adding block in line "%s"' % line
             raise utils.WcbcException(message)
         # Remove the initial block marker
-        line = line[len(TuringMachine.blockMarker):]
+        line = line[len(TuringMachine.blockMarker) :]
         # Partition on the TuringMachine.blockSeparator
-        (state, separator, filename) = \
-            [x.strip() for x in line.partition(TuringMachine.blockSeparator)]
+        (state, separator, filename) = [
+            x.strip() for x in line.partition(TuringMachine.blockSeparator)
+        ]
         if separator != TuringMachine.blockSeparator:
-            message = 'Unexpected separator in block description '
+            message = "Unexpected separator in block description "
             raise utils.WcbcException(message)
-        newBlock = TuringMachine(rf(filename), '', self.depth+1)
+        newBlock = TuringMachine(rf(filename), "", self.depth + 1)
         self.blocks[state] = newBlock
 
     def getScannedSymbol(self):
@@ -533,7 +562,6 @@ class TuringMachine:
             return True
         else:
             return False
-        
 
     # is t a valid transition?
     def isValidTransition(self, t):
@@ -553,7 +581,6 @@ class TuringMachine:
 
         scannedSymbol = self.getScannedSymbol()
         return self.labelMatchesSymbol(scannedSymbol, t.label)
-
 
     # get a list of the possible transitions from the given state
     def getTransitions(self, state):
@@ -575,7 +602,6 @@ class TuringMachine:
 
         """
         return self.transitions.get(state, [])
-
 
     def getValidTransitions(self):
         """Return a list of all valid transitions from the current configuration.
@@ -610,9 +636,11 @@ class TuringMachine:
     @staticmethod
     def isAHaltingState(state):
         """True if the given state is a halting state, and False otherwise."""
-        return state == TuringMachine.acceptState or \
-            state == TuringMachine.rejectState or \
-            state == TuringMachine.haltState
+        return (
+            state == TuringMachine.acceptState
+            or state == TuringMachine.rejectState
+            or state == TuringMachine.haltState
+        )
 
     def applyTransition(self, t):
         """Apply the given transition to the current configuration.
@@ -629,14 +657,18 @@ class TuringMachine:
                 will transition into the project state.
 
         """
-        if TuringMachine.verbose: print('Applying transition', t)
+        if TuringMachine.verbose:
+            print("Applying transition", t)
         self.steps = self.steps + 1
         if not t:
             if self.allowImplicitReject:
                 self.state = TuringMachine.rejectState
             else:
-                message = '***Error***: No valid transition was found, and implicit rejects are disabled.\n' + \
-                              'Current configuration:\n' + str(self)
+                message = (
+                    "***Error***: No valid transition was found, and implicit rejects are disabled.\n"
+                    + "Current configuration:\n"
+                    + str(self)
+                )
                 raise utils.WcbcException(message)
         else:
             self.state = t.destState
@@ -649,12 +681,15 @@ class TuringMachine:
                 if self.headPos > 0:
                     self.headPos = self.headPos - 1
                 elif self.allowLeftFromCell0:
-                    pass # we remain in cell 0
+                    pass  # we remain in cell 0
                 else:
-                    message = '***Error***: Tried to move left ' + \
-                              'from cell 0, which is disallowed by ' + \
-                              'this Turing machine.\n' + \
-                              'Current configuration:\n' + str(self)
+                    message = (
+                        "***Error***: Tried to move left "
+                        + "from cell 0, which is disallowed by "
+                        + "this Turing machine.\n"
+                        + "Current configuration:\n"
+                        + str(self)
+                    )
                     raise utils.WcbcException(message)
             elif t.direction == TuringMachine.rightDir:
                 self.headPos = self.headPos + 1
@@ -662,8 +697,6 @@ class TuringMachine:
                     self.tape.append(TuringMachine.blank)
         if self.keepHistory:
             self.history.append(str(self))
-
-
 
     def runBlock(self):
         """Run a building block from the current state."""
@@ -681,9 +714,14 @@ class TuringMachine:
         """Perform one computational step for this Turing machine."""
         ts = self.getValidTransitions()
         if len(ts) > 1:
-            message = '***Error***: multiple valid transitions in deterministic Turing machine.\n' + \
-                      'Current state:' + self.state + '\n' + \
-                      'Valid transitions:' + str(ts)
+            message = (
+                "***Error***: multiple valid transitions in deterministic Turing machine.\n"
+                + "Current state:"
+                + self.state
+                + "\n"
+                + "Valid transitions:"
+                + str(ts)
+            )
             raise utils.WcbcException(message)
         if len(ts) == 0:
             t = None
@@ -695,11 +733,15 @@ class TuringMachine:
 
     def __str__(self):
         if self.name:
-            name = self.name + ': '
+            name = self.name + ": "
         else:
-            name = ''
-        return name + 'steps: %d tape: "%s" state: %s, headPos: %d' % \
-            (self.steps, ''.join(self.tape), self.state, self.headPos)
+            name = ""
+        return name + 'steps: %d tape: "%s" state: %s, headPos: %d' % (
+            self.steps,
+            "".join(self.tape),
+            self.state,
+            self.headPos,
+        )
 
     def __repr__(self):
         return self.__str__()
@@ -715,14 +757,14 @@ class TuringMachine:
             str: output of the Turing machine
 
         """
-        
+
         # Find the index of the first blank on the tape.
         if TuringMachine.blank not in self.tape:
-            blankIndex = len(self.tape) # there is an implicit a blank
-                                        # at the end of the tape
+            blankIndex = len(self.tape)  # there is an implicit a blank
+            # at the end of the tape
         else:
             blankIndex = self.tape.index(TuringMachine.blank)
-        return ''.join(self.tape[:blankIndex])
+        return "".join(self.tape[:blankIndex])
 
     def getMaxSteps(self):
         return TuringMachine.maxSteps
@@ -735,16 +777,16 @@ class TuringMachine:
 
         """
         while not self.halted and self.steps < self.getMaxSteps():
-##            print('before step %d:' % self.steps)
-##            print('tape:', self.tape)
-##            print('state:', self.state)
-##            print('headPos:', self.headPos)
+            ##            print('before step %d:' % self.steps)
+            ##            print('tape:', self.tape)
+            ##            print('state:', self.state)
+            ##            print('headPos:', self.headPos)
             self.step()
-##            print('after that step (now step=%d)' % self.steps)
-##            print('tape:', self.tape)
-##            print('state:', self.state)
-##            print('headPos:', self.headPos)
-##            print()
+        ##            print('after that step (now step=%d)' % self.steps)
+        ##            print('tape:', self.tape)
+        ##            print('state:', self.state)
+        ##            print('headPos:', self.headPos)
+        ##            print()
         if self.state == TuringMachine.acceptState:
             return TuringMachine.yesStr
         elif self.state == TuringMachine.rejectState:
@@ -758,12 +800,12 @@ class TuringMachine:
     def raiseExceededMaxSteps(self):
         """Raise an exception indicating that the maximum number of steps was exceeded.
         """
-        
-        raise utils.WcbcException(TuringMachine.exceededMaxStepsMsg + \
-                                  '.  Current output: ' + self.getOutput())        
-        
-    def reset(self, tapeStr = '', state = None, headPos = 0, steps = 0, \
-              resetHistory = True):
+
+        raise utils.WcbcException(
+            TuringMachine.exceededMaxStepsMsg + ".  Current output: " + self.getOutput()
+        )
+
+    def reset(self, tapeStr="", state=None, headPos=0, steps=0, resetHistory=True):
         """Reset the Turing machine.
 
         This is typically used to run a fresh computation on the
@@ -806,7 +848,7 @@ class TuringMachine:
                 self.tape.append(TuringMachine.blank)
         if self.keepHistory and resetHistory:
             # list of strings giving config at each step
-            self.history = [ str(self) ]
+            self.history = [str(self)]
 
     def copyTMState(self, dest):
         """Copy most of the state of this Turing machine to the destination machine.
@@ -827,9 +869,8 @@ class TuringMachine:
         dest.keepHistory = self.keepHistory
         if self.keepHistory:
             dest.history = list(self.history)
-        dest.reset(self.tape, self.state, \
-                    self.headPos, self.steps, resetHistory=False)
-                
+        dest.reset(self.tape, self.state, self.headPos, self.steps, resetHistory=False)
+
     def clone(self):
         """Clone this machine, returning a new TuringMachine
         """
@@ -869,9 +910,10 @@ class TuringMachine:
 
         """
         if c not in TuringMachine.validSymbols:
-            message = '''***Error***: The symbol {0} (ASCII value {1}) is not permitted in Turing machine alphabets. The full transition containing this error is:\n{2}'''.format(c, ord(c), t)
+            message = """***Error***: The symbol {0} (ASCII value {1}) is not permitted in Turing machine alphabets. The full transition containing this error is:\n{2}""".format(
+                c, ord(c), t
+            )
             raise utils.WcbcException(message)
-            
 
     def checkAllSymbolsValid(self):
         """Check that all symbols used in this machine are permitted.
@@ -883,9 +925,9 @@ class TuringMachine:
             for tList in self.transitions.values():
                 for t in tList:
                     label = t.label
-                    if label==TuringMachine.anySym:
+                    if label == TuringMachine.anySym:
                         continue
-                    elif label[0]==TuringMachine.notSym:
+                    elif label[0] == TuringMachine.notSym:
                         label = label[1:]
                     for c in label:
                         self.checkSymbolIsValid(t, c)
@@ -963,9 +1005,14 @@ class TuringMachine:
         """
         (prefix, remainder) = s.split(TuringMachine.labelSeparator, 1)
         (label, suffix) = remainder.split(TuringMachine.writeSymSeparator, 1)
-        sortedLabel = ''.join(sorted(label))
-        return prefix + TuringMachine.labelSeparator + sortedLabel \
-            + TuringMachine.writeSymSeparator + suffix
+        sortedLabel = "".join(sorted(label))
+        return (
+            prefix
+            + TuringMachine.labelSeparator
+            + sortedLabel
+            + TuringMachine.writeSymSeparator
+            + suffix
+        )
 
     def standardizeDescription(self, d):
         """Return standardized version of the given Turing machine description.
@@ -982,20 +1029,20 @@ class TuringMachine:
                 labels have been sorted.
 
         """
-        lines = d.split('\n')
+        lines = d.split("\n")
         # remove comments
         lines = TuringMachine.stripComments(lines)
         # remove all whitespace (not just leading and trailing whitespace)
-        lines = [re.sub(r'\s+', '', line) for line in lines]
+        lines = [re.sub(r"\s+", "", line) for line in lines]
         # remove empty lines
-        lines = [x for x in lines if x!='']
+        lines = [x for x in lines if x != ""]
         # sort characters within each label
         lines = [self.sortLabelChars(x) for x in lines]
         # sort
         lines.sort()
         # return single string with lines separated by newlines
-        return '\n'.join(lines)
-                        
+        return "\n".join(lines)
+
     # See whether two Turing machine descriptions are the same when we
     # ignore comments, whitespace and reordering of transitions.
     def descriptionsAreSame(self, selfDesc, other, otherDesc):
@@ -1022,7 +1069,6 @@ class TuringMachine:
         s2 = other.standardizeDescription(otherDesc)
         return s1 == s2
 
-
     def unifyTransitions(self):
         """Unify all transitions in this machine
 
@@ -1032,7 +1078,8 @@ class TuringMachine:
         standardize them.
 
         """
-        if self.transitions == None: return
+        if self.transitions == None:
+            return
         newTransitionsDict = dict()
         for state, tList in self.transitions.items():
             # key is tuple of all except label, value is list of labels
@@ -1043,49 +1090,51 @@ class TuringMachine:
                 labels.append(t.label)
             newTList = []
             for key, labels in tDict.items():
-                labelStr = ''.join(labels)
+                labelStr = "".join(labels)
                 newTrans = Transition.reassembleFromUnifyKey(key, labelStr)
                 newTList.append(newTrans)
             newTransitionsDict[state] = newTList
         self.transitions = newTransitionsDict
 
+
 def testTransition():
-    t1 = Transition('a', 'b', 'c', 'd', 'e')
-    t1b = Transition('a', 'b', 'c', 'd', 'e')
-    t2 = Transition('a', 'b', 'qwerty', 'd', 'e')
-    t2b = Transition('a', 'b', 'xx', 'd', 'e')
-    t3 = Transition('a', 'b', 'c', 'a', 'a')
-    t4 = Transition('u', 'v', 'w', 'x', 'y')
+    t1 = Transition("a", "b", "c", "d", "e")
+    t1b = Transition("a", "b", "c", "d", "e")
+    t2 = Transition("a", "b", "qwerty", "d", "e")
+    t2b = Transition("a", "b", "xx", "d", "e")
+    t3 = Transition("a", "b", "c", "a", "a")
+    t4 = Transition("u", "v", "w", "x", "y")
     t5 = Transition.unify([t1, t2, t2b])
-    t6 = Transition('a', 'b', 'cqwertyxx', 'd', 'e')
+    t6 = Transition("a", "b", "cqwertyxx", "d", "e")
 
-    assert t1==t1b
-    assert t1!=t2
-    assert t1<t2
-    assert t4>t1
+    assert t1 == t1b
+    assert t1 != t2
+    assert t1 < t2
+    assert t4 > t1
     assert t1.isCompatible(t1b)
-    assert t1.isCompatible(t2)    
+    assert t1.isCompatible(t2)
     assert not t1.isCompatible(t3)
-    assert t5==t6
+    assert t5 == t6
 
-    utils.tprint('transitions passed tests')
+    utils.tprint("transitions passed tests")
 
 
 def testWrite():
-    testvals = ['containsGAGA.tm', 'binaryIncrementer.tm', 'shiftInteger.tm']
+    testvals = ["containsGAGA.tm", "binaryIncrementer.tm", "shiftInteger.tm"]
     for filename in testvals:
         s0 = rf(filename)
         tm1 = TuringMachine(s0)
         s1 = tm1.write()
         tm2 = TuringMachine(s1)
         s2 = tm2.write()
-        utils.tprint(filename, '\n', s0, '\n\n', s1, '\n\n', s2)
+        utils.tprint(filename, "\n", s0, "\n\n", s1, "\n\n", s2)
         assert tm1.descriptionsAreSame(s0, tm2, s1)
         assert tm2.descriptionsAreSame(s1, TuringMachine(s2), s2)
         assert s1 == s2
 
+
 def testUnifyTransitions():
-    s1 = '''
+    s1 = """
 q0->q1:c;x,R
 q0->q1:b;x,R
 q0->q1:d;x,S
@@ -1094,15 +1143,15 @@ q0->q1:a;x,R
 q0->q0:f;x,R
 q1->q0:f;x,R
 q1->q0:g;x,R
-'''
+"""
 
-    s2 = '''
+    s2 = """
 q0->q0:f;x,R
 q0->q1:abc;x,R
 q0->q1:d;x,S
 q0->q1:e;y,R
 q1->q0:fg;x,R
-'''
+"""
 
     tm = TuringMachine(s1)
     tm.unifyTransitions()
@@ -1111,27 +1160,28 @@ q1->q0:fg;x,R
     utils.tprint(s2)
     assert tm.descriptionsAreSame(s1Unified, TuringMachine(s2), s2)
 
+
 def testHasSameTransitions():
-    s1 = '''
+    s1 = """
 q0->q0:f;x,R
 q0->q1:abc;x,R
 q0->q1:d;x,S
 q0->q1:e;y,R
-'''
+"""
 
-    s2 = '''
+    s2 = """
 q0->q0:!abcde;x,R
 q0->q1:ab;x,R
 q0->q1:c;x,R
 q0->q1:d;x,S
 q0->q1:e;y,R
 q1->q2:~;R
-'''
+"""
     testVals = [
-        ( rf('containsGAGA.tm'), rf('containsGAGA.tm'), True),
-        ( rf('binaryIncrementer.tm'), rf('binaryIncrementer.tm'), True),
-        ( s1, s2, True),
-        ( s2, s1, False),
+        (rf("containsGAGA.tm"), rf("containsGAGA.tm"), True),
+        (rf("binaryIncrementer.tm"), rf("binaryIncrementer.tm"), True),
+        (s1, s2, True),
+        (s2, s1, False),
     ]
     for (tm1str, tm2str, result) in testVals:
         tm1 = TuringMachine(tm1str)
@@ -1140,26 +1190,27 @@ q1->q2:~;R
         utils.tprint(val, result)
         assert val == result
 
+
 # see testCheckTM() in checkTuringMachine.py for more detailed tests
 def testTuringMachine():
     for (filename, inString, solution) in [
-            ('containsGAGA.tm', 'CCCCCCCCCAAAAAA', 'no'),
-            ('containsGAGA.tm', 'CCCGAGACCAAAAAA', 'yes'),
-            # ('badCharacter.tm', 'CCCGAGACCAAAAAA'), # should throw an exception
-            ('binaryIncrementer.tm', 'x100111x', 'x101000x'),
-            # ('CthenGtoAthenTtoA.tm', 'GAGACCCAACCGCCTCC'),
-            # ('CthenGtoAthenTtoA.tm', 'GAGACCCAACCGCCGCC'),
-            # ('CthenGtoAthenTtoA.tm', 'GAGAGT'),
-            # ('incrementWithOverflow.tm', 'xx0x'),
-            # ('incrementWithOverflow.tm', 'xxx'),
-            # ('appendZero.tm', 'xCGGGATATx'),
-            # ('deleteToInteger.tm', 'xTCCGGAxx10101x'),
-            ('countCs.tm', 'xGCGCGCACGCGGGx', 'x101x'),
-            # ('loop.tm', 'x'),
-            # ('containsGAGAorGTGT.tm', 'CCCCCCGTGTCCC'),
-            ]:
+        ("containsGAGA.tm", "CCCCCCCCCAAAAAA", "no"),
+        ("containsGAGA.tm", "CCCGAGACCAAAAAA", "yes"),
+        # ('badCharacter.tm', 'CCCGAGACCAAAAAA'), # should throw an exception
+        ("binaryIncrementer.tm", "x100111x", "x101000x"),
+        # ('CthenGtoAthenTtoA.tm', 'GAGACCCAACCGCCTCC'),
+        # ('CthenGtoAthenTtoA.tm', 'GAGACCCAACCGCCGCC'),
+        # ('CthenGtoAthenTtoA.tm', 'GAGAGT'),
+        # ('incrementWithOverflow.tm', 'xx0x'),
+        # ('incrementWithOverflow.tm', 'xxx'),
+        # ('appendZero.tm', 'xCGGGATATx'),
+        # ('deleteToInteger.tm', 'xTCCGGAxx10101x'),
+        ("countCs.tm", "xGCGCGCACGCGGGx", "x101x"),
+        # ('loop.tm', 'x'),
+        # ('containsGAGAorGTGT.tm', 'CCCCCCGTGTCCC'),
+    ]:
         tm = TuringMachine(rf(filename), inString, keepHistory=True)
         val = tm.run()
-        utils.tprint('filename:', filename, 'inString:', inString, 'result:', val)
-        utils.tprint('history:\n' + '\n'.join(tm.history) )
+        utils.tprint("filename:", filename, "inString:", inString, "result:", val)
+        utils.tprint("history:\n" + "\n".join(tm.history))
         assert val == solution

@@ -4,12 +4,14 @@
 # 'cattag.pda' described in the appendix.
 
 # Example:
-# >>> showCATTAGhist(True) 
+# >>> showCATTAGhist(True)
 
-import utils; from utils import rf
+import utils
+from utils import rf
 from npda import Npda
 
-def showCATTAGhist(printResults = True):
+
+def showCATTAGhist(printResults=True):
     """Print details of the computation of 'cattag.pda' on input 'CAT'
 
     Args:
@@ -25,15 +27,15 @@ def showCATTAGhist(printResults = True):
             case should be 'yes'.
 
     """
-    npda = Npda(rf('cattag.pda'), 'CAT', keepHistory=True)
+    npda = Npda(rf("cattag.pda"), "CAT", keepHistory=True)
     result = npda.run()
     if printResults:
-        print('result: ', result)
-        print('\nconfiguration after halting:\n', npda)
-        print('\nhistory of accepting clone:\n' + '\n'.join(npda.acceptingClone.history))
+        print("result: ", result)
+        print("\nconfiguration after halting:\n", npda)
+        print("\nhistory of accepting clone:\n" + "\n".join(npda.acceptingClone.history))
     return result
 
-def testShowCATTAGhist(printResults = False):
+
+def testShowCATTAGhist(printResults=False):
     val = showCATTAGhist(printResults)
-    assert val == 'yes'
-    
+    assert val == "yes"

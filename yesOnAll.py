@@ -8,25 +8,28 @@
 # returns: the program attempts to return "yes" if P(I)=='yes' for all
 # I, and "no" otherwise, but it in fact tests only a few random values
 # of I.
-import utils; from utils import rf
+import utils
+from utils import rf
 from universal import universal
+
+
 def yesOnAll(progString):
     numTests = 1000
     for i in range(numTests):
         s = utils.randomAlphanumericString()
         val = universal(progString, s)
-        if val != 'yes':
-            return 'no'
-    return 'yes'
+        if val != "yes":
+            return "no"
+    return "yes"
+
 
 def testYesOnAll():
     testvals = [
-        ('containsGAGA.py', 'no'),
-        ('isEmpty.py', 'no'),
-        ('yes.py', 'yes'),
-        ]
+        ("containsGAGA.py", "no"),
+        ("isEmpty.py", "no"),
+        ("yes.py", "yes"),
+    ]
     for (filename, solution) in testvals:
         val = yesOnAll(rf(filename))
         utils.tprint(filename + ":", val)
         assert val == solution
-

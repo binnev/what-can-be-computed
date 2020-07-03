@@ -22,7 +22,10 @@
 # >>> sat('x1 OR x3 AND NOT x1 OR NOT x2 OR NOT x3')
 # 'x3,x1'  [or another satisfying assignment]
 
-import utils; from utils import rf
+import utils
+from utils import rf
+
+
 def sat(inString):
 
     # Convert the ASCII formula into our internal format for CNF
@@ -30,8 +33,8 @@ def sat(inString):
     cnfFormula = readSat(inString)
 
     # special case of zero clauses: solution is positive, but it's the empty string
-    if len(cnfFormula)==0:
-        return ''
+    if len(cnfFormula) == 0:
+        return ""
 
     # dictionary mapping str to bool; key is the name of variable and
     # value is the truth value assigned to that variable
@@ -45,9 +48,10 @@ def sat(inString):
     satisfyingAssignment = tryExtensions(cnfFormula, truthAssignment, remainingVariables)
     if satisfyingAssignment:
         trueVars = [var for var, truthVal in satisfyingAssignment.items() if truthVal]
-        return ','.join(trueVars)
+        return ",".join(trueVars)
     else:
-        return 'no'
+        return "no"
+
 
 def satisfies(cnfFormula, truthAssignment):
     """Return True if the given truthAssignment satisfies the given cnfFormula.
@@ -68,38 +72,39 @@ def satisfies(cnfFormula, truthAssignment):
             cnfFormula and False otherwise.
 
     """
-    
+
     for clause in cnfFormula:
         clauseIsSatisfied = False
         for variable, posOrNeg in clause.items():
-            if posOrNeg==1:
+            if posOrNeg == 1:
                 if variable in truthAssignment and truthAssignment[variable] == True:
                     clauseIsSatisfied = True
                     break
-            elif posOrNeg==-1: # i.e., the literal is negated
+            elif posOrNeg == -1:  # i.e., the literal is negated
                 if variable in truthAssignment and truthAssignment[variable] == False:
                     clauseIsSatisfied = True
                     break
-            elif posOrNeg==0: # the literal appears both positive and negative
+            elif posOrNeg == 0:  # the literal appears both positive and negative
                 if variable in truthAssignment:
                     clauseIsSatisfied = True
                     break
-            else: # unexpected value
+            else:  # unexpected value
                 assert False
         if not clauseIsSatisfied:
             return False
     return True
 
+
 def testSatisfies():
-    truthAssignment = {'x1':True, 'x2':True, 'x3':False}
+    truthAssignment = {"x1": True, "x2": True, "x3": False}
     utils.tprint(truthAssignment)
     for (inString, solution) in [
-            ('', True),
-            ('x1', True),
-            ('x1 AND (x2)', True),
-            ('(x1) AND (NOT x2) AND (NOT x1)', False),
-            ('(x1 OR x2) AND (NOT x2 OR x3 OR x1) AND (NOT x1)  AND (NOT x3 OR NOT x2)', False),
-            ('x1 OR x3 AND NOT x1 OR NOT x2 OR NOT x3', True),
+        ("", True),
+        ("x1", True),
+        ("x1 AND (x2)", True),
+        ("(x1) AND (NOT x2) AND (NOT x1)", False),
+        ("(x1 OR x2) AND (NOT x2 OR x3 OR x1) AND (NOT x1)  AND (NOT x3 OR NOT x2)", False),
+        ("x1 OR x3 AND NOT x1 OR NOT x2 OR NOT x3", True),
     ]:
         cnfFormula = readSat(inString)
         val = satisfies(cnfFormula, truthAssignment)
@@ -126,6 +131,7 @@ def getVariablesAsSet(cnfFormula):
         variables |= set(clause.keys())
     return variables
 
+
 def getVariablesAsList(cnfFormula):
     """Return a list of variables in the given formula.
 
@@ -142,14 +148,18 @@ def getVariablesAsList(cnfFormula):
     """
     return list(getVariablesAsSet(cnfFormula))
 
+
 def testGetVariablesAsList():
     for (inString, solution) in [
-            ('', []),
-            ('x1', ['x1']),
-            ('x1 AND (x2)', ['x1', 'x2']),
-            ('(x1) AND (NOT x2) AND (NOT x1)', ['x1', 'x2']),
-            ('(x1 OR x2) AND (NOT x2 OR x3 OR x1) AND (NOT x1)  AND (NOT x3 OR NOT x2)', ['x1', 'x2', 'x3']),
-            ('x1 OR x3 AND NOT x1 OR NOT x2 OR NOT x3', ['x1', 'x2', 'x3']),
+        ("", []),
+        ("x1", ["x1"]),
+        ("x1 AND (x2)", ["x1", "x2"]),
+        ("(x1) AND (NOT x2) AND (NOT x1)", ["x1", "x2"]),
+        (
+            "(x1 OR x2) AND (NOT x2 OR x3 OR x1) AND (NOT x1)  AND (NOT x3 OR NOT x2)",
+            ["x1", "x2", "x3"],
+        ),
+        ("x1 OR x3 AND NOT x1 OR NOT x2 OR NOT x3", ["x1", "x2", "x3"]),
     ]:
         cnfFormula = readSat(inString)
         val = sorted(getVariablesAsList(cnfFormula))
@@ -190,7 +200,7 @@ def tryExtensions(cnfFormula, truthAssignment, remainingVariables):
             returned.
 
     """
-    if len(remainingVariables)==0:
+    if len(remainingVariables) == 0:
         if satisfies(cnfFormula, truthAssignment):
             return truthAssignment
         else:
@@ -215,28 +225,30 @@ def tryExtensions(cnfFormula, truthAssignment, remainingVariables):
         newtruthAssignmentB[nextVariable] = False
         return tryExtensions(cnfFormula, newtruthAssignmentB, newRemainingVariables)
 
+
 def testTryExtensions():
-    cnfFormula = readSat('x1 OR x3 AND NOT x1 OR NOT x2 OR NOT x3')
-    utils.tprint('cnfFormula =', cnfFormula)
+    cnfFormula = readSat("x1 OR x3 AND NOT x1 OR NOT x2 OR NOT x3")
+    utils.tprint("cnfFormula =", cnfFormula)
     for (truthAssignment, remainingVariables, isSatisfiable) in [
-            (dict(), ['x1', 'x2', 'x3'], True),
-            ({'x1':False}, ['x2', 'x3'], True),
-            ({'x1':True}, ['x2', 'x3'], True),
-            ({'x1':True, 'x2':True}, ['x3'], True),
-            ({'x1':True, 'x3':False}, ['x2'], True),
-            ({'x1':False, 'x3':False}, ['x2'], False),
-            ({'x1':True, 'x2':False, 'x3':True}, [], True),
-            ({'x1':False, 'x2':True, 'x3':False}, [], False),
-            ({'x1':True, 'x2':False, 'x3':False}, [], True),
+        (dict(), ["x1", "x2", "x3"], True),
+        ({"x1": False}, ["x2", "x3"], True),
+        ({"x1": True}, ["x2", "x3"], True),
+        ({"x1": True, "x2": True}, ["x3"], True),
+        ({"x1": True, "x3": False}, ["x2"], True),
+        ({"x1": False, "x3": False}, ["x2"], False),
+        ({"x1": True, "x2": False, "x3": True}, [], True),
+        ({"x1": False, "x2": True, "x3": False}, [], False),
+        ({"x1": True, "x2": False, "x3": False}, [], True),
     ]:
         satisfyingAssignment = tryExtensions(cnfFormula, truthAssignment, remainingVariables)
         utils.tprint(truthAssignment, remainingVariables)
-        utils.tprint('satisfyingAssignment =', satisfyingAssignment)
+        utils.tprint("satisfyingAssignment =", satisfyingAssignment)
         if satisfyingAssignment:
             assert isSatisfiable
         else:
             assert not isSatisfiable
-            
+
+
 def readSat(inString):
     """Convert a string representing a CNF formula into a Python data
     structure representing the same formula.
@@ -265,11 +277,10 @@ def readSat(inString):
             same clause both positively and negatively.
 
     """
-    
-    clauseStrings = inString.split('AND')
+
+    clauseStrings = inString.split("AND")
     clauseStrings = [x.strip() for x in clauseStrings]
 
-    
     # Here we deal with an annoying special case. Unfortunately, our
     # spec for SAT instances doesn't distinguish very nicely between
     # empty clauses (which are unsatisfiable by definition), and an
@@ -279,25 +290,25 @@ def readSat(inString):
     # string, then we have an empty set of clauses. Any other result
     # is a nonempty set of clauses, one or more of which may in fact
     # be an empty clause.
-    if len(clauseStrings)==1 and clauseStrings[0]=='':
+    if len(clauseStrings) == 1 and clauseStrings[0] == "":
         clauseStrings = []
 
-    clauseStrings = [x.strip('()') for x in clauseStrings]
+    clauseStrings = [x.strip("()") for x in clauseStrings]
 
     clauses = []
     for clauseString in clauseStrings:
         clause = dict()
-        literals = clauseString.split('OR')
+        literals = clauseString.split("OR")
         literals = [x.strip() for x in literals]
         for literal in literals:
-            if literal.startswith('NOT'):
+            if literal.startswith("NOT"):
                 splitLiteral = literal.split()
                 variableName = splitLiteral[1]
                 if variableName not in clause:
                     clause[variableName] = -1
                 elif clause[variableName] == 1:
                     clause[variableName] = 0
-            elif len(literal)>0:
+            elif len(literal) > 0:
                 variableName = literal
                 if variableName not in clause:
                     clause[variableName] = 1
@@ -305,28 +316,29 @@ def readSat(inString):
                     clause[variableName] = 0
         clauses.append(clause)
 
-        
     return clauses
+
 
 def testReadSat():
     for (inString, numClauses, numVars) in [
-            ('', 0, 0),
-            ('  ', 0, 0),
-            ('()', 1, 0),
-            ('x1', 1, 1),
-            ('x1 AND (x2)', 2, 2),
-            ('x1 AND ()', 2, 1),
-            ('x1 AND AND x2', 3, 2),
-            ('  (  x1 )  AND x2 OR NOT   x3  ', 2, 3),
-            ('(x1) AND (NOT x2) AND (NOT x1)', 3, 2),
-            ('(x1 OR x2) AND (NOT x2 OR x3 OR x1) AND (NOT x1)  AND (NOT x3 OR NOT x2)', 4, 3),
+        ("", 0, 0),
+        ("  ", 0, 0),
+        ("()", 1, 0),
+        ("x1", 1, 1),
+        ("x1 AND (x2)", 2, 2),
+        ("x1 AND ()", 2, 1),
+        ("x1 AND AND x2", 3, 2),
+        ("  (  x1 )  AND x2 OR NOT   x3  ", 2, 3),
+        ("(x1) AND (NOT x2) AND (NOT x1)", 3, 2),
+        ("(x1 OR x2) AND (NOT x2 OR x3 OR x1) AND (NOT x1)  AND (NOT x3 OR NOT x2)", 4, 3),
     ]:
-        utils.tprint('inString:', inString)
+        utils.tprint("inString:", inString)
         cnfFormula = readSat(inString)
-        utils.tprint('cnfFormula:', cnfFormula)
+        utils.tprint("cnfFormula:", cnfFormula)
         assert len(cnfFormula) == numClauses
         assert len(getVariablesAsList(cnfFormula)) == numVars
-    
+
+
 def writeSat(cnfFormula):
     """Convert the given formula into an ASCII string description.
 
@@ -343,7 +355,8 @@ def writeSat(cnfFormula):
     """
 
     clauseStrings = [writeClause(clause) for clause in cnfFormula]
-    return ' AND '.join(clauseStrings)
+    return " AND ".join(clauseStrings)
+
 
 def writeClause(clause):
     """Convert the given clause into an ASCII string description.
@@ -368,7 +381,8 @@ def writeClause(clause):
     # variables in the dictionary will be arbitrary.
     sortedClauseVariables = sorted(clause.keys())
     literalStrings = [writeLiteral(clause, variable) for variable in sortedClauseVariables]
-    return '(' + ' OR '.join(literalStrings) + ')'
+    return "(" + " OR ".join(literalStrings) + ")"
+
 
 def writeLiteral(clause, variable):
     """Convert the given variable occurring in the given clause into an
@@ -395,50 +409,54 @@ def writeLiteral(clause, variable):
     if posNeg == 1:
         return variable
     elif posNeg == -1:
-        return 'NOT ' + variable
+        return "NOT " + variable
     elif posNeg == 0:
-        return variable + ' OR NOT ' + variable
+        return variable + " OR NOT " + variable
+
 
 def testWriteSat():
-    for inString in ['', '   ', 'AND', 'x1 AND', '()',
-                     'x1',
-                     'x1 AND (x2)',
-                     '(x1) AND (NOT x2) AND (NOT x1)',
-                     '(x1 OR x2) AND (NOT x2 OR x3 OR x1) AND (NOT x1)  AND (NOT x3 OR NOT x2)',
-                     'x1 OR x3 AND NOT x1 OR NOT x2 OR NOT x3'
-                     'x1 OR NOT x1 OR x2 AND x3 OR NOT x3 OR NOT x3'
+    for inString in [
+        "",
+        "   ",
+        "AND",
+        "x1 AND",
+        "()",
+        "x1",
+        "x1 AND (x2)",
+        "(x1) AND (NOT x2) AND (NOT x1)",
+        "(x1 OR x2) AND (NOT x2 OR x3 OR x1) AND (NOT x1)  AND (NOT x3 OR NOT x2)",
+        "x1 OR x3 AND NOT x1 OR NOT x2 OR NOT x3" "x1 OR NOT x1 OR x2 AND x3 OR NOT x3 OR NOT x3",
     ]:
         utils.tprint(inString)
-        utils.tprint(writeSat(readSat(inString)), '\n\n')
+        utils.tprint(writeSat(readSat(inString)), "\n\n")
         cnfString1 = inString
         cnfFormula1 = readSat(cnfString1)
         cnfString2 = writeSat(cnfFormula1)
         cnfFormula2 = readSat(cnfString2)
         assert cnfFormula1 == cnfFormula2
 
+
 def testSat():
     for (inString, isSatisfiable) in [
-            ('', True),
-            ('   ', True),
-            ('AND', False),
-            ('x1 AND', False),
-            ('()', False),
-            ('x1', True),
-            ('NOT x1', True),
-            ('x1 AND (x2)', True),
-            ('(x1) AND (NOT x2) AND (NOT x1)', False),
-            ('(x1 OR x2) AND (NOT x2 OR x3 OR x1) AND (NOT x1)  AND (NOT x3 OR NOT x2)', False),
-            ('x1 OR x3 AND NOT x1 OR NOT x2 OR NOT x3', True),
-            ('x1 OR NOT x1 AND x1', True),
-            ('x1 OR NOT x1 AND NOT x1', True),
+        ("", True),
+        ("   ", True),
+        ("AND", False),
+        ("x1 AND", False),
+        ("()", False),
+        ("x1", True),
+        ("NOT x1", True),
+        ("x1 AND (x2)", True),
+        ("(x1) AND (NOT x2) AND (NOT x1)", False),
+        ("(x1 OR x2) AND (NOT x2 OR x3 OR x1) AND (NOT x1)  AND (NOT x3 OR NOT x2)", False),
+        ("x1 OR x3 AND NOT x1 OR NOT x2 OR NOT x3", True),
+        ("x1 OR NOT x1 AND x1", True),
+        ("x1 OR NOT x1 AND NOT x1", True),
     ]:
         satisfyingAssignment = sat(inString)
-        utils.tprint('inString:', inString)
-        utils.tprint('satisfyingAssignment:', satisfyingAssignment)
-        utils.tprint('isSatisfiable:', isSatisfiable)
-        if satisfyingAssignment != 'no':
+        utils.tprint("inString:", inString)
+        utils.tprint("satisfyingAssignment:", satisfyingAssignment)
+        utils.tprint("isSatisfiable:", isSatisfiable)
+        if satisfyingAssignment != "no":
             assert isSatisfiable
         else:
             assert not isSatisfiable
-        
-        

@@ -1,8 +1,11 @@
 # python file sortTimings.py
 
-import utils; from utils import rf
+import utils
+from utils import rf
 import time
-def sortTimings(maxTime = None):
+
+
+def sortTimings(maxTime=None):
     """Run experiment on time required for builtin Python sorted() function.
 
     Args:
@@ -21,14 +24,14 @@ def sortTimings(maxTime = None):
 
     """
     functionStartTime = time.clock()
-    timings = [ ]
+    timings = []
     minItems = 100000
     maxItems = 1000000
-    numItemsList = [10**k for k in range(1,6)]
+    numItemsList = [10 ** k for k in range(1, 6)]
     numDigits = 20
-    allRandomNums = [ ]
+    allRandomNums = []
     for i in range(max(numItemsList)):
-        allRandomNums.append( int(utils.randomDigitalString(numDigits)) )
+        allRandomNums.append(int(utils.randomDigitalString(numDigits)))
     for numItems in numItemsList:
         if maxTime and time.clock() - functionStartTime > maxTime:
             return timings
@@ -39,11 +42,11 @@ def sortTimings(maxTime = None):
             sortedNums = sorted(randomNums)
         stop = time.clock()
         timePerSort = (stop - start) / numIters
-        timings.append( (numItems, timePerSort) )
-        print (numItems, timePerSort)
+        timings.append((numItems, timePerSort))
+        print(numItems, timePerSort)
     return timings
+
 
 def testSortTimings():
     val = utils.runWithTimeout(None, sortTimings, 5)
     utils.tprint(val)
-

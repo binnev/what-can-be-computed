@@ -15,20 +15,23 @@
 # Example:
 # >>> tspDir('a,b,5 b,c,6 c,d,8 d,a,9 a,c,1 d,b,2')
 # 'a,b,c,d'
-import utils; from utils import rf
+import utils
+from utils import rf
 from graph import Graph, Edge, Path
 from utils import WcbcException
+
 
 def tspDir(inString):
     graph = Graph(inString)
     firstNode = graph.chooseNode()
-    if firstNode == None: # graph contains no vertices
-        return '' # this is a positive instance -- we return the empty cycle
+    if firstNode == None:  # graph contains no vertices
+        return ""  # this is a positive instance -- we return the empty cycle
     (cycle, distance) = shortestCycleWithPrefix(graph, Path([firstNode]), 0)
     if cycle != None:
         return str(cycle)
     else:
-        return 'no'
+        return "no"
+
 
 # Find the shortest Hamilton cycle in the given graph that extends the
 # given prefix. Parameter graph is a Graph object, parameter prefix is
@@ -50,6 +53,7 @@ def shortestCycleWithPrefix(graph, prefix, prefixDistance):
         # first node)
         return completeCycle(graph, prefix, prefixDistance)
 
+
 # The parameters are exactly as for shortestCycleWithPrefix()
 # above. If this path can be completed into a cycle via a single edge
 # from last to first node, the cycle and its weight are returned as a
@@ -58,11 +62,12 @@ def completeCycle(graph, prefix, prefixDistance):
     firstNode = prefix.start()
     lastNode = prefix.end()
     edgeCompletingCycle = Edge([lastNode, firstNode])
-    if not graph.containsEdge( edgeCompletingCycle ):
+    if not graph.containsEdge(edgeCompletingCycle):
         return (None, None)
     else:
         cycleDistance = prefixDistance + graph.getWeight(edgeCompletingCycle)
         return (prefix, cycleDistance)
+
 
 # See shortestCycleWithPrefix() for documentation. The only difference
 # is that tryAllPrefixExtensions() is invoked with a guarantee that
@@ -70,49 +75,56 @@ def completeCycle(graph, prefix, prefixDistance):
 # try to extend it.
 def tryAllPrefixExtensions(graph, prefix, prefixDistance):
     if len(graph) == len(prefix):
-        raise WcbcException('tryAllPrefixExtensions() received a path that includes every node')
+        raise WcbcException("tryAllPrefixExtensions() received a path that includes every node")
     lastNode = prefix.end()
     bestCycle = None
     bestDistance = None
     for nextNode in graph.neighbors(lastNode):
         if nextNode not in prefix:
             extendedPrefix = prefix.extend(nextNode)
-            extendedPrefixDistance = prefixDistance + graph.getWeight( Edge([lastNode, nextNode]) )
-            (cycle, distance) = shortestCycleWithPrefix(graph, extendedPrefix, extendedPrefixDistance)
+            extendedPrefixDistance = prefixDistance + graph.getWeight(Edge([lastNode, nextNode]))
+            (cycle, distance) = shortestCycleWithPrefix(
+                graph, extendedPrefix, extendedPrefixDistance
+            )
             if cycle != None:
                 if bestDistance == None or distance < bestDistance:
                     bestDistance = distance
                     bestCycle = cycle
     return (bestCycle, bestDistance)
 
+
 def testShortestCycleWithPrefix():
-    graph = Graph('''
+    graph = Graph(
+        """
               a,b,5 b,a,3 b,c,6
               c,a,7 c,d,8 d,a,9 a,c,1 d,b,2
-                      ''', directed = True)
-    path = Path(['a'])
+                      """,
+        directed=True,
+    )
+    path = Path(["a"])
     val = shortestCycleWithPrefix(graph, path, 0)
     cycle, dist = val
     utils.tprint(val)
     assert graph.isHamiltonCycle(cycle)
     assert dist == 14
 
+
 def testTspDir():
     testvals = [
-        ('aC,aB,1 aA,aB,1 aC,aA,1 aB,aA,1 aB,aC,1 aA,aC,1', 3),
-        ('', 0),
-        ('a,a,3', 3),
-        ('a,b,4', 'no'),
-        ('a,b,4 b,a,9', 13),
-        ('a,b,4 b,a,9 b,c,6 c,a,10', 20),
-        ('a,b,4 b,a,9 b,c,6 c,a,10 a,c,2 c,b,3', 14),
-        ('a,b,4 b,a,9 b,c,6 c,a,10 a,c,2 c,b,300', 20),
-        ('a,b,4 b,a,9 b,c,6 c,a,10 a,c,2 c,b,3 c,d,1', 'no'),
+        ("aC,aB,1 aA,aB,1 aC,aA,1 aB,aA,1 aB,aC,1 aA,aC,1", 3),
+        ("", 0),
+        ("a,a,3", 3),
+        ("a,b,4", "no"),
+        ("a,b,4 b,a,9", 13),
+        ("a,b,4 b,a,9 b,c,6 c,a,10", 20),
+        ("a,b,4 b,a,9 b,c,6 c,a,10 a,c,2 c,b,3", 14),
+        ("a,b,4 b,a,9 b,c,6 c,a,10 a,c,2 c,b,300", 20),
+        ("a,b,4 b,a,9 b,c,6 c,a,10 a,c,2 c,b,3 c,d,1", "no"),
     ]
     for (inString, solution) in testvals:
         val = tspDir(inString)
-        utils.tprint(inString.strip(), ':', val)
-        if solution == 'no':
+        utils.tprint(inString.strip(), ":", val)
+        if solution == "no":
             assert val == solution
         else:
             graph = Graph(inString, directed=True)
@@ -120,4 +132,3 @@ def testTspDir():
             dist = graph.cycleLength(cycle)
             assert graph.isHamiltonCycle(cycle)
             assert dist == solution
-

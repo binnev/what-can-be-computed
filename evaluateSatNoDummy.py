@@ -19,52 +19,56 @@
 # literal string 'dummy' is replaced with a real Boolean formula that
 # can be evaluated. The file exists so we can test the program with a
 # real Boolean formula.
-import utils; from utils import rf
-def evaluateSatNoDummy(inString):  
+import utils
+from utils import rf
+
+
+def evaluateSatNoDummy(inString):
     # replace ``dummy'' with the desired formula
-    booleanFormula = '(x1 OR NOT x2) AND (NOT x1 OR x2) AND (x1 OR NOT x1)'
-    clauses = booleanFormula.split('AND')
+    booleanFormula = "(x1 OR NOT x2) AND (NOT x1 OR x2) AND (x1 OR NOT x1)"
+    clauses = booleanFormula.split("AND")
     # return ``yes'' iff the clauses are all satisfied by the given inString
-    # ...   
+    # ...
     # remove whitespace and parentheses from clauses
     clauses = [x.strip() for x in clauses]
-    clauses = [x.strip('()') for x in clauses]
-##    print(clauses)
+    clauses = [x.strip("()") for x in clauses]
+    ##    print(clauses)
     for clause in clauses:
-        literals = clause.split('OR')
+        literals = clause.split("OR")
         # remove whitespace
         literals = [x.strip() for x in literals]
-##        print(literals)
+        ##        print(literals)
         clauseIsSatisfied = False
         for literal in literals:
-            if literal.startswith('NOT'):
+            if literal.startswith("NOT"):
                 negated = True
                 splitLiteral = literal.split()
                 variableName = splitLiteral[1]
             else:
                 negated = False
                 variableName = literal
-            variableID = int(variableName[1:]) # ignore the initial ``x'' in the variable name
-            binaryInput = inString[variableID-1] # variable IDs start at 1 not 0
-            if (binaryInput=='1' and not negated) or (binaryInput=='0' and negated):
+            variableID = int(variableName[1:])  # ignore the initial ``x'' in the variable name
+            binaryInput = inString[variableID - 1]  # variable IDs start at 1 not 0
+            if (binaryInput == "1" and not negated) or (binaryInput == "0" and negated):
                 clauseIsSatisfied = True
                 # this clause is satisfied, no need to check remaining literals
-##                print ('clause satisfied by', literal)
-                break 
-##            print ( negated, variable, variableID)
+                ##                print ('clause satisfied by', literal)
+                break
+        ##            print ( negated, variable, variableID)
         if not clauseIsSatisfied:
             # this clause is unsatisfied, so no need to check remaining clauses
-##            print ('clause is not satisfied')
-            return 'no'
+            ##            print ('clause is not satisfied')
+            return "no"
     # all clauses were satisfied
-    return 'yes'
+    return "yes"
+
 
 def testEvaluateSat():
-    testvals = [('11', 'yes'), 
-                ('01', 'no'), 
-                ]
+    testvals = [
+        ("11", "yes"),
+        ("01", "no"),
+    ]
     for (inString, solution) in testvals:
         val = evaluateSatNoDummy(inString)
-        utils.tprint( inString, ":", val )
+        utils.tprint(inString, ":", val)
         assert val == solution
-

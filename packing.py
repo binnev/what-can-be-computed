@@ -18,22 +18,27 @@
 # Example:
 # >>> packing('1 2 3000 4 5 6 7 8000 9; 10000 ; 15000')
 # '3000 8000'
-import utils; from utils import rf
+import utils
+from utils import rf
+
+
 def packing(inString):
     # Extract the weights and thresholds L, H
-    (weightString, L, H) = inString.split(';')
+    (weightString, L, H) = inString.split(";")
     weights = [int(x) for x in weightString.split()]
-    L = int(L); H = int(H)
+    L = int(L)
+    H = int(H)
     # Use a recursive strategy to search for a feasible packing.
     prefix = []
     prefixWeight = 0
     remainingWeights = weights
     aPacking = packingHelper(prefix, prefixWeight, remainingWeights, L, H)
     if aPacking == None:
-        return 'no'
+        return "no"
     else:
         weightStrings = [str(x) for x in aPacking]
-        return ' '.join(weightStrings)
+        return " ".join(weightStrings)
+
 
 def packingHelper(prefix, prefixWeight, remainingWeights, L, H):
     """Helper function for recursively finding feasible packing.
@@ -61,11 +66,11 @@ def packingHelper(prefix, prefixWeight, remainingWeights, L, H):
             L<=sum(P)<=H. If no such list exists, None is returned.
 
     """
-    
-    if L<=prefixWeight and prefixWeight<=H:
+
+    if L <= prefixWeight and prefixWeight <= H:
         # We have found a feasible packing, so return it.
         return prefix
-    elif len(remainingWeights)==0:
+    elif len(remainingWeights) == 0:
         # There is no feasible packing with this prefix, so return
         # None.
         return None
@@ -77,30 +82,29 @@ def packingHelper(prefix, prefixWeight, remainingWeights, L, H):
         nextWeight = remainingWeights[0]
         # 1. Recursive call *without* the next weight
         aPacking = packingHelper(prefix, prefixWeight, newWeights, L, H)
-        if aPacking!=None:
+        if aPacking != None:
             return aPacking
         else:
             # 2. Recursive call *with* the next weight
-            newPrefix = prefix + [nextWeight] # extends list
-            newPrefixWeight = prefixWeight + nextWeight # adds numerical weights
+            newPrefix = prefix + [nextWeight]  # extends list
+            newPrefixWeight = prefixWeight + nextWeight  # adds numerical weights
             aPacking = packingHelper(newPrefix, newPrefixWeight, newWeights, L, H)
             return aPacking
 
+
 def testPacking():
     testvals = [
-        ('; 5; 5', 'no'),
-        ('5 ; 5 ; 5 ', '5'),
-        ('5 7; 5 ; 5 ', '5'),
-        ('5 7; 7 ; 7 ', '7'),
-        ('5 7; 6 ; 6 ', 'no'),
-        ('5 7; 10 ; 15 ', '5 7'),
-        ('1 2 3000 4 5 6 7 8000 9; 10000 ; 15000 ', '3000 8000'),
-        ('1 2 3000 4 5 6 7 8000 9; 100 ; 150 ', 'no'),
+        ("; 5; 5", "no"),
+        ("5 ; 5 ; 5 ", "5"),
+        ("5 7; 5 ; 5 ", "5"),
+        ("5 7; 7 ; 7 ", "7"),
+        ("5 7; 6 ; 6 ", "no"),
+        ("5 7; 10 ; 15 ", "5 7"),
+        ("1 2 3000 4 5 6 7 8000 9; 10000 ; 15000 ", "3000 8000"),
+        ("1 2 3000 4 5 6 7 8000 9; 100 ; 150 ", "no"),
     ]
 
     for (inString, solution) in testvals:
         val = packing(inString)
-        utils.tprint(inString,':', val)
+        utils.tprint(inString, ":", val)
         assert val == solution
-        
-

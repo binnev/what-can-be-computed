@@ -16,38 +16,43 @@
 # Example:
 # >>> GthenOneT('GTTCCCGTGAATCCCC')
 # 'yes'
-import utils; from utils import rf
+import utils
+from utils import rf
 from threading import Thread
 
+
 def GthenOneT(inString):
-    threads = [ ]
+    threads = []
     ndSoln = utils.NonDetSolution()
     for i in range(0, len(inString)):
-        if inString[i] == 'G':
+        if inString[i] == "G":
             leftString = inString[:i]
-            leftThread = Thread(target=findT, args = (leftString, ndSoln))
+            leftThread = Thread(target=findT, args=(leftString, ndSoln))
             threads.append(leftThread)
-            rightString = inString[i+1:]
-            rightThread = Thread(target=findT, args = (rightString, ndSoln))
+            rightString = inString[i + 1 :]
+            rightThread = Thread(target=findT, args=(rightString, ndSoln))
             threads.append(rightThread)
     return utils.waitForOnePosOrAllNeg(threads, ndSoln)
+
 
 # findT is a helper function that sets solution to ``yes'' if there is
 # exactly one ``T'' in the given searchString.
 def findT(searchString, nonDetSolution):
-    if searchString.count('T')==1:
-        nonDetSolution.setSolution('yes')
+    if searchString.count("T") == 1:
+        nonDetSolution.setSolution("yes")
+
 
 def testGthenOneT():
-    testvals = [('xx', 'no'),
-                ('xTx', 'no'),
-                ('xCGTTTGAATATx', 'no'),
-                ('xCGGAAGGAx', 'no'),
-                ('xTGx', 'yes'),
-                ('xTGTx', 'yes'),
-                ('xTTGTGTTGTTGAACCTAAx', 'yes')]
+    testvals = [
+        ("xx", "no"),
+        ("xTx", "no"),
+        ("xCGTTTGAATATx", "no"),
+        ("xCGGAAGGAx", "no"),
+        ("xTGx", "yes"),
+        ("xTGTx", "yes"),
+        ("xTTGTGTTGTTGAACCTAAx", "yes"),
+    ]
     for (inString, solution) in testvals:
         val = GthenOneT(inString)
-        utils.tprint(inString, ':', val)
+        utils.tprint(inString, ":", val)
         assert val == solution
-

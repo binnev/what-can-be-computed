@@ -1,13 +1,15 @@
-import utils; from utils import rf
+import utils
+from utils import rf
 import re
 from turingMachine import TuringMachine, Transition
+
 
 class Dfa(TuringMachine):
     """A Dfa object models a dfa as described in the textbook.
 
     """
-    def __init__(self, description = None, tapeStr = '', depth = 0, name = None, \
-                 keepHistory = False):
+
+    def __init__(self, description=None, tapeStr="", depth=0, name=None, keepHistory=False):
         """Initialize Dfa object.
 
         Args:
@@ -36,8 +38,7 @@ class Dfa(TuringMachine):
                 for certain experiments, but costly in terms of
                 storage.
         """
-        TuringMachine.__init__(self, description, tapeStr, depth, name, \
-                               keepHistory=keepHistory)
+        TuringMachine.__init__(self, description, tapeStr, depth, name, keepHistory=keepHistory)
 
     def extractTransition(self, line):
         """Given a line in a dfa description, return a new Transition object described by that line.
@@ -86,7 +87,7 @@ class Dfa(TuringMachine):
         s = TuringMachine.writeTransition(self, t)
         separatorLocation = s.rfind(TuringMachine.writeSymSeparator)
         # epsilon transitions must be treated separately
-        if t.label==TuringMachine.anySym and t.direction==TuringMachine.stayDir:
+        if t.label == TuringMachine.anySym and t.direction == TuringMachine.stayDir:
             # it's an epsilon transition -- return whole string
             return s
         else:
@@ -101,35 +102,35 @@ class Dfa(TuringMachine):
 
         """
         (prefix, label) = s.split(TuringMachine.labelSeparator, 1)
-        sortedLabel = ''.join(sorted(label))
+        sortedLabel = "".join(sorted(label))
         return prefix + TuringMachine.labelSeparator + sortedLabel
-    
+
+
 # see testCheckDfa() in checkTuringMachine.py for more detailed tests
 def testDfa():
     for (filename, inString, val) in [
-            ('containsGAGA.dfa', 'CCCCCCCCCAAAAAA', 'no'),
-            ('containsGAGA.dfa', 'CCCGAGACCAAAAAA', 'yes'),
-            ('multipleOf5.dfa', '12345', 'yes'),
-            ('multipleOf5.dfa', '1234560', 'yes'),
-            ('multipleOf5.dfa', '123456', 'no'),
-            ]:
+        ("containsGAGA.dfa", "CCCCCCCCCAAAAAA", "no"),
+        ("containsGAGA.dfa", "CCCGAGACCAAAAAA", "yes"),
+        ("multipleOf5.dfa", "12345", "yes"),
+        ("multipleOf5.dfa", "1234560", "yes"),
+        ("multipleOf5.dfa", "123456", "no"),
+    ]:
         dfa = Dfa(rf(filename), inString)
         result = dfa.run()
-        utils.tprint('filename:', filename, 'inString:', inString, 'result:', result)
+        utils.tprint("filename:", filename, "inString:", inString, "result:", result)
         assert val == result
 
+
 def testWrite():
-    testvals = ['containsGAGA.dfa', 'example2.dfa', 'mult2or3Gs.dfa']
+    testvals = ["containsGAGA.dfa", "example2.dfa", "mult2or3Gs.dfa"]
     for filename in testvals:
         s0 = rf(filename)
         tm1 = Dfa(s0)
         s1 = tm1.write()
         tm2 = Dfa(s1)
         s2 = tm2.write()
-        utils.tprint(filename, '\n', s0, '\n\n', s1, '\n\n', s2)
+        utils.tprint(filename, "\n", s0, "\n\n", s1, "\n\n", s2)
         assert tm1.descriptionsAreSame(s0, tm2, s1)
         assert TuringMachine.haveSameTransitions(tm1, tm2)
         assert tm2.descriptionsAreSame(s1, Dfa(s2), s2)
         assert s1 == s2
-
-        

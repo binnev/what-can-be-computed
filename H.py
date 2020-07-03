@@ -18,23 +18,27 @@
 # haltExTuring.py. (But note that haltExTuring.py works with Turing
 # machines and not Python programs.)
 
-import utils; from utils import rf
+import utils
+from utils import rf
+
+
 def H(progString, inString):
-    if progString==rf('containsGAGA.py'):
-        return 'yes'
-    elif progString==rf('factor.py'):
-        return 'no'
+    if progString == rf("containsGAGA.py"):
+        return "yes"
+    elif progString == rf("factor.py"):
+        return "no"
     else:
-        return 'unknown'
+        return "unknown"
+
 
 def testH():
-    testvals = [('containsGAGA.py', 'TTTTTTTTTTTTTTT', 'yes'),
-                ('factor.py', '91', 'no'),
-                ('multiply.py', '5 9', 'unknown')]
+    testvals = [
+        ("containsGAGA.py", "TTTTTTTTTTTTTTT", "yes"),
+        ("factor.py", "91", "no"),
+        ("multiply.py", "5 9", "unknown"),
+    ]
 
     for (progString, inString, solution) in testvals:
         val = H(rf(progString), inString)
-        utils.tprint(progString, ':', val)
+        utils.tprint(progString, ":", val)
         assert val == solution
-
-

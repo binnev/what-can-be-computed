@@ -10,21 +10,26 @@
 # returns: the program attempts to return "yes" if P(I)=='GAGA' and "no"
 # otherwise, but it will fail if its simulation of P enters an
 # infinite loop.
-import utils; from utils import rf
+import utils
+from utils import rf
 from universal import universal
+
+
 def GAGAOnString(progString, inString):
     val = universal(progString, inString)
-    if val == 'GAGA':
-        return 'yes'
+    if val == "GAGA":
+        return "yes"
     else:
-        return 'no'
+        return "no"
+
 
 def testGAGAOnString():
-    testvals = [('containsGAGA.py', 'GAGAGAGAG', 'no'), 
-                ('repeatCAorGA.py', 'CA', 'no'), 
-                ('repeatCAorGA.py', 'GA', 'yes') ]
+    testvals = [
+        ("containsGAGA.py", "GAGAGAGAG", "no"),
+        ("repeatCAorGA.py", "CA", "no"),
+        ("repeatCAorGA.py", "GA", "yes"),
+    ]
     for (progName, inString, solution) in testvals:
         val = GAGAOnString(rf(progName), inString)
-        utils.tprint( (progName, inString), ":", val )
+        utils.tprint((progName, inString), ":", val)
         assert val == solution
-

@@ -9,12 +9,15 @@
 # Example:
 # >>> containsGAGA('CCCCCCGAGATTTATA')
 # 'yes'
-import utils; from utils import rf   
-def containsGAGA(inString): 
-    if 'GAGA' in inString: 
-        return 'yes' 
-    else: 
-        return 'no' 
+import utils
+from utils import rf
+
+
+def containsGAGA(inString):
+    if "GAGA" in inString:
+        return "yes"
+    else:
+        return "no"
 
 
 # Most of the Python files provided with WCBC contain one or more test
@@ -24,14 +27,15 @@ def containsGAGA(inString):
 # behavior of the main function, and you can invoke test functions to
 # check the correctness of the main function.
 def testContainsGAGA():
-    testVals = [('GAGA', 'yes'),
-                ('CCCGAGA', 'yes'),
-                ('AGAGAGAAGAAGAGAAA', 'yes'),
-                ('GAGACCCCC', 'yes'),
-                ('', 'no'),
-                ('CCCCCCCCGAGTTTT', 'no'),
-                ]
+    testVals = [
+        ("GAGA", "yes"),
+        ("CCCGAGA", "yes"),
+        ("AGAGAGAAGAAGAGAAA", "yes"),
+        ("GAGACCCCC", "yes"),
+        ("", "no"),
+        ("CCCCCCCCGAGTTTT", "no"),
+    ]
     for (inString, solution) in testVals:
         val = containsGAGA(inString)
-        utils.tprint(inString, ':', val)
+        utils.tprint(inString, ":", val)
         assert val == solution
