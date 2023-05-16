@@ -24,7 +24,7 @@ def testyesOnSelf():
         ("containsGAGA.py", "yes"),
         ("isEmpty.py", "no"),
     ]
-    for (filename, solution) in testvals:
+    for filename, solution in testvals:
         val = yesOnSelf(rf(filename))
         utils.tprint(filename + ":", val)
         assert val == solution

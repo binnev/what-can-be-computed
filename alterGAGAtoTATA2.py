@@ -25,7 +25,7 @@ def testAlterGAGAtoTATA2():
         ("repeatCAorGA.py", "CA", "CACA"),
         ("repeatCAorGA.py", "GA", "TATA"),
     ]
-    for (progName, inString, solution) in testvals:
+    for progName, inString, solution in testvals:
         val = alterGAGAtoTATA2(rf(progName), inString)
         utils.tprint(progName, ",", inString, ":", val)
         assert val == solution

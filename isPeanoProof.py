@@ -41,7 +41,7 @@ def testisPeanoProof():
         ("0=0", "0=0", "yes"),
         ("asdf", "zxcv", "no"),
     ]
-    for (proofString, inString, solution) in testVals:
+    for proofString, inString, solution in testVals:
         val = isPeanoProof(proofString, inString)
         utils.tprint(proofString, inString, ":", val)
         assert val == solution

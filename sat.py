@@ -27,7 +27,6 @@ from utils import rf
 
 
 def sat(inString):
-
     # Convert the ASCII formula into our internal format for CNF
     # formulas. See the documentation of readSat() for details.
     cnfFormula = readSat(inString)
@@ -98,7 +97,7 @@ def satisfies(cnfFormula, truthAssignment):
 def testSatisfies():
     truthAssignment = {"x1": True, "x2": True, "x3": False}
     utils.tprint(truthAssignment)
-    for (inString, solution) in [
+    for inString, solution in [
         ("", True),
         ("x1", True),
         ("x1 AND (x2)", True),
@@ -150,7 +149,7 @@ def getVariablesAsList(cnfFormula):
 
 
 def testGetVariablesAsList():
-    for (inString, solution) in [
+    for inString, solution in [
         ("", []),
         ("x1", ["x1"]),
         ("x1 AND (x2)", ["x1", "x2"]),
@@ -191,7 +190,7 @@ def tryExtensions(cnfFormula, truthAssignment, remainingVariables):
             not yet been assigned a truth value.
 
     Returns:
-    
+
         new truthAssignment (dict mapping str to bool): If it is
             possible to extend the given truthAssignment by assigning
             truth values to some or all of remainingVariables and thus
@@ -229,7 +228,7 @@ def tryExtensions(cnfFormula, truthAssignment, remainingVariables):
 def testTryExtensions():
     cnfFormula = readSat("x1 OR x3 AND NOT x1 OR NOT x2 OR NOT x3")
     utils.tprint("cnfFormula =", cnfFormula)
-    for (truthAssignment, remainingVariables, isSatisfiable) in [
+    for truthAssignment, remainingVariables, isSatisfiable in [
         (dict(), ["x1", "x2", "x3"], True),
         ({"x1": False}, ["x2", "x3"], True),
         ({"x1": True}, ["x2", "x3"], True),
@@ -268,7 +267,7 @@ def readSat(inString):
             the textbook
 
     Returns:
-    
+
         list of dict: This is our internal format for storing a (CNF)
             SAT formula. It is list of clauses, where each clause is a
             dictionary whose keys are variable names (stored as
@@ -320,7 +319,7 @@ def readSat(inString):
 
 
 def testReadSat():
-    for (inString, numClauses, numVars) in [
+    for inString, numClauses, numVars in [
         ("", 0, 0),
         ("  ", 0, 0),
         ("()", 1, 0),
@@ -437,7 +436,7 @@ def testWriteSat():
 
 
 def testSat():
-    for (inString, isSatisfiable) in [
+    for inString, isSatisfiable in [
         ("", True),
         ("   ", True),
         ("AND", False),

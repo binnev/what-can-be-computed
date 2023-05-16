@@ -41,7 +41,7 @@ def testComputesF():
         ("loop.py", "no"),
         ("F.py", "yes"),
     ]
-    for (progName, solution) in testvals:
+    for progName, solution in testvals:
         val = computesF(rf(progName))
         utils.tprint(progName, ":", val)
         assert val == solution

@@ -46,7 +46,7 @@ def testBrokenSort():
         ("apple banana apple", None),  # brokenSort enters infinite loop for duplicate values
     ]
 
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = utils.runWithTimeout(None, brokenSort, inString)
         utils.tprint(inString, ":", val)
         assert val == solution

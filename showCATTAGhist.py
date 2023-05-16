@@ -15,7 +15,7 @@ def showCATTAGhist(printResults=True):
     """Print details of the computation of 'cattag.pda' on input 'CAT'
 
     Args:
-    
+
         printResults (bool): If True, details will be
             printed. Otherwise, nothing will be printed. The end-user
             almost certainly will want printResults = True, but it is

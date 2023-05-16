@@ -26,7 +26,7 @@ def testYesViaSome():
         ("isEmpty.py", "", "yes"),
         ("isEmpty.py", "x", "no"),
     ]
-    for (filename, inString, solution) in testvals:
+    for filename, inString, solution in testvals:
         val = yesViaSome(rf(filename), inString)
         utils.tprint(filename + ":", val)
         assert val == solution

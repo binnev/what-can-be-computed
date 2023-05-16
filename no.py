@@ -16,7 +16,7 @@ def testNo():
         ("asdf", "no"),
         ("GAGAGAGAGAGA", "no"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = no(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

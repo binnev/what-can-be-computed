@@ -29,7 +29,7 @@ def testYesOnAll():
         ("isEmpty.py", "no"),
         ("yes.py", "yes"),
     ]
-    for (filename, solution) in testvals:
+    for filename, solution in testvals:
         val = yesOnAll(rf(filename))
         utils.tprint(filename + ":", val)
         assert val == solution

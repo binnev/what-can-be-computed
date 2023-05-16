@@ -41,7 +41,7 @@ def testmultiplyAll_documented():
         ("10 20 30", "6000"),
         ("10 10 10 10 10 10 10 10 10 10", "10000000000"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = multiplyAll_documented(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

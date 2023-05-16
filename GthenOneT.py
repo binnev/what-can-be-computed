@@ -52,7 +52,7 @@ def testGthenOneT():
         ("xTGTx", "yes"),
         ("xTTGTGTTGTTGAACCTAAx", "yes"),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = GthenOneT(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

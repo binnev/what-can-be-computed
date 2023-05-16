@@ -23,6 +23,7 @@ from utils import rf
 from graph import Graph, Edge, Path
 from tspDir import completeCycle
 
+
 # Variant of TSP. We seek a directed shortest cycle that incorporates
 # at least K nodes. See tspDir.py for more detailed comments.
 def tspDirK(inString):
@@ -112,7 +113,7 @@ def testTspDirK():
         ("a,b,4 b,a,9 b,c,6 c,a,10 a,c,2 c,b,3;3", 14),
         ("a,b,4 b,a,9 b,c,6 c,a,10 a,c,2 c,b,3;4", "no"),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = tspDirK(inString)
         utils.tprint(inString.strip(), ":", val)
         if solution == "no":

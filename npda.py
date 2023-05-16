@@ -8,9 +8,7 @@ from dpda import Dpda
 
 
 class Npda(NDTuringMachine):
-    """Represents an npda as described in the textbook.
-
-    """
+    """Represents an npda as described in the textbook."""
 
     def __init__(self, description=None, tapeStr="", name=None, keepHistory=False):
         """Initialize Npda object.
@@ -21,7 +19,7 @@ class Npda(NDTuringMachine):
 
     def createRootClone(self, description, tapeStr, name, keepHistory):
         """Create the root clone of this nondeterministic pda.
-        
+
         Overrides NDTuringMachine.createRootClone(). See that method
         for documentation.
 
@@ -31,7 +29,7 @@ class Npda(NDTuringMachine):
 
 # see testCheckNpda() in checkTuringMachine.py for more detailed tests
 def testNpda():
-    for (filename, inString, val) in [
+    for filename, inString, val in [
         ("containsGAGA.pda", "CCCCCCCCCAAAAAA", "no"),
         ("containsGAGA.pda", "CCCGAGACCAAAAAA", "yes"),
         ("multipleOf5.pda", "12345", "yes"),

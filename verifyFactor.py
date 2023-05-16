@@ -39,7 +39,7 @@ def testVerifyFactor():
         ("31", "3", "", "unsure"),
         ("31", "no", "", "unsure"),
     ]
-    for (inString, maybeSolution, hint, solution) in testVals:
+    for inString, maybeSolution, hint, solution in testVals:
         val = verifyFactor(inString, maybeSolution, hint)
         utils.tprint(inString, maybeSolution, hint, ":", val)
         assert val == solution

@@ -28,7 +28,7 @@ def simulateNfa(nfaString, inString):
 
 # see testCheckNfa() in checkTuringMachine.py for more detailed tests
 def testSimulateNfa():
-    for (filename, inString, solution) in [
+    for filename, inString, solution in [
         ("simple3.nfa", "AA", "yes"),
         ("simple3.nfa", "AGA", "yes"),
         ("simple3.nfa", "AC", "yes"),

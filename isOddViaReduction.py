@@ -26,7 +26,7 @@ def testisOddViaReduction():
         ("17", "yes"),
         ("3953969", "yes"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = isOddViaReduction(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

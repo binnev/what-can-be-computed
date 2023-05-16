@@ -21,7 +21,7 @@ def testweirdYesOnString():
         ("containsGAGA.py", "no"),
         ("isEmpty.py", "yes"),
     ]
-    for (filename, solution) in testvals:
+    for filename, solution in testvals:
         val = weirdYesOnString(rf(filename))
         utils.tprint(filename + ":", val)
         assert val == solution

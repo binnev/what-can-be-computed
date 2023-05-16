@@ -222,7 +222,7 @@ class NDTuringMachine:
 
 # see testCheckNDTM() in checkTuringMachine.py for additional tests
 def testNDTuringMachine():
-    for (filename, inString, solution) in [
+    for filename, inString, solution in [
         ("containsGAGAorGTGT.tm", "GTGAGAGAGT", "yes"),
         ("containsGAGAorGTGT.tm", "GTGAGTGTGT", "yes"),
         ("containsGAGAorGTGT.tm", "GTGAGTGAGT", "no"),

@@ -52,9 +52,7 @@ class Rule:
 
 
 class Cfg:
-    """Represents a context free grammar.
-
-    """
+    """Represents a context free grammar."""
 
     commentStart = "#"
     ruleSeparator = "->"
@@ -225,7 +223,7 @@ class Cfg:
     def printAllStrings(self):
         """Print the all relevant sentential forms of the grammar via utils.tprint().
 
-        This is primarily intended for debugging and testing. 
+        This is primarily intended for debugging and testing.
 
         """
         self.printAccepted()
@@ -280,7 +278,7 @@ class Cfg:
                         newFrontier[result] = s
                     else:
                         self.accepted.add(result)
-        for (s, predecessor) in self.frontier.items():
+        for s, predecessor in self.frontier.items():
             assert s not in self.explored
             self.explored[s] = predecessor
         self.frontier = newFrontier

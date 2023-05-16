@@ -121,7 +121,7 @@ def testTspDir():
         ("a,b,4 b,a,9 b,c,6 c,a,10 a,c,2 c,b,300", 20),
         ("a,b,4 b,a,9 b,c,6 c,a,10 a,c,2 c,b,3 c,d,1", "no"),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = tspDir(inString)
         utils.tprint(inString.strip(), ":", val)
         if solution == "no":

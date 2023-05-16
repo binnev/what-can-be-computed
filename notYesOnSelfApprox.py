@@ -23,7 +23,7 @@ def testnotYesOnSelfApprox():
         ("longerThan1K.py", "yes"),
         ("yes.py", "no"),
     ]
-    for (filename, solution) in testvals:
+    for filename, solution in testvals:
         val = notYesOnSelfApprox(rf(filename))
         utils.tprint(filename + ":", val)
         assert val == solution

@@ -18,7 +18,7 @@ def testyesOnSelfApprox():
         ("longerThan1K.py", "no"),
         ("yes.py", "yes"),
     ]
-    for (filename, solution) in testvals:
+    for filename, solution in testvals:
         val = yesOnSelfApprox(rf(filename))
         utils.tprint(filename + ":", val)
         assert val == solution

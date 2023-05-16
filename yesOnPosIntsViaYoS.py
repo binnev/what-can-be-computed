@@ -26,7 +26,7 @@ def testyesOnPosIntsViaYoS():
         ("containsGAGA.py", "no"),
         ("yes.py", None),
     ]
-    for (filename, solution) in testVals:
+    for filename, solution in testVals:
         inString = rf(filename)
         val = utils.runWithTimeout(None, yesOnPosIntsViaYoS, inString)
         utils.tprint(inString, ":", val)

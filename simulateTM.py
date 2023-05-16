@@ -27,7 +27,7 @@ def simulateTM(tmString, inString):
 
 # see testCheckTM() in checkTuringMachine.py for more detailed tests
 def testSimulateTM():
-    for (filename, inString, solution) in [
+    for filename, inString, solution in [
         ("containsGAGA.tm", "CCCCCCCCCAAAAAA", "no"),
         ("containsGAGA.tm", "CCCGAGACCAAAAAA", "yes"),
         ("binaryIncrementer.tm", "x100111x", "x101000x"),

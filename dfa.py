@@ -5,9 +5,7 @@ from turingMachine import TuringMachine, Transition
 
 
 class Dfa(TuringMachine):
-    """A Dfa object models a dfa as described in the textbook.
-
-    """
+    """A Dfa object models a dfa as described in the textbook."""
 
     def __init__(self, description=None, tapeStr="", depth=0, name=None, keepHistory=False):
         """Initialize Dfa object.
@@ -61,8 +59,7 @@ class Dfa(TuringMachine):
         return Transition(sourceState, destState, label, None, TuringMachine.rightDir)
 
     def clone(self):
-        """Clone this dfa, returning a new Dfa object
-        """
+        """Clone this dfa, returning a new Dfa object"""
         newDfa = Dfa(None, self.tape, self.depth, self.name)
         self.copyTMState(newDfa)
         return newDfa
@@ -108,7 +105,7 @@ class Dfa(TuringMachine):
 
 # see testCheckDfa() in checkTuringMachine.py for more detailed tests
 def testDfa():
-    for (filename, inString, val) in [
+    for filename, inString, val in [
         ("containsGAGA.dfa", "CCCCCCCCCAAAAAA", "no"),
         ("containsGAGA.dfa", "CCCGAGACCAAAAAA", "yes"),
         ("multipleOf5.dfa", "12345", "yes"),

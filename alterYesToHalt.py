@@ -28,7 +28,7 @@ def alterYesToHalt(inString):
 
 
 def testAlterYesToHalt():
-    for (progName, inString, solution) in [
+    for progName, inString, solution in [
         ("containsGAGA.py", "GAGAGAGAG", "halted"),
         ("containsGAGA.py", "TTTTGGCCGGT", None),
     ]:

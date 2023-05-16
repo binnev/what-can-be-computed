@@ -14,7 +14,7 @@ def testreturnsNumber():
         ("", 32),
         ("asdf", 32),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = returnsNumber(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

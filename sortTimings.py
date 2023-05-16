@@ -27,7 +27,7 @@ def sortTimings(maxTime=None):
     timings = []
     minItems = 100000
     maxItems = 1000000
-    numItemsList = [10 ** k for k in range(1, 6)]
+    numItemsList = [10**k for k in range(1, 6)]
     numDigits = 20
     allRandomNums = []
     for i in range(max(numItemsList)):

@@ -34,7 +34,7 @@ def verifyTspD(I, S, H):
 def testVerifyTspD():
     G = "a,b,5 a,c,9 b,d,1 d,c,6"
     S = "yes"
-    for (L, H, solution) in [
+    for L, H, solution in [
         (22, "a,b,d,c", "correct"),
         (21, "a,b,d,c", "correct"),
         (20, "a,b,d,c", "unsure"),

@@ -104,7 +104,7 @@ def testPacking():
         ("1 2 3000 4 5 6 7 8000 9; 100 ; 150 ", "no"),
     ]
 
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = packing(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

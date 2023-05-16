@@ -26,7 +26,7 @@ def testisOdd():
         ("17", "yes"),
         ("3953969", "yes"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = isOdd(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

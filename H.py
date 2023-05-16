@@ -38,7 +38,7 @@ def testH():
         ("multiply.py", "5 9", "unknown"),
     ]
 
-    for (progString, inString, solution) in testvals:
+    for progString, inString, solution in testvals:
         val = H(rf(progString), inString)
         utils.tprint(progString, ":", val)
         assert val == solution

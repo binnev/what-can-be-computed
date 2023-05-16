@@ -17,7 +17,7 @@ def testF():
         ("abcdef", "6"),
     ]
 
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = F(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

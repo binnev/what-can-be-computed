@@ -41,7 +41,7 @@ def testyesOnStringApprox():
         ("maybeLoop.py", "xsecret sauce", "no"),
         ("maybeLoop.py", "xsecret saucex", "yes"),
     ]
-    for (filename, inString, solution) in testvals:
+    for filename, inString, solution in testvals:
         val = yesOnStringApprox(rf(filename), inString)
         utils.tprint(filename + ":", val)
         assert val == solution

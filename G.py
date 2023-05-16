@@ -21,7 +21,7 @@ def testG():
         ("abcdef", "a"),
     ]
 
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = G(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

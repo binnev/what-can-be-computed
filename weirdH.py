@@ -34,7 +34,7 @@ def testWeirdH():
         ("multiply.py", msg),
         ("containsGAGA.py", None),
     ]
-    for (filename, solution) in testvals:
+    for filename, solution in testvals:
         val = utils.runWithTimeout(None, weirdH, rf(filename))
         utils.tprint(filename, ":", val)
         assert val == solution

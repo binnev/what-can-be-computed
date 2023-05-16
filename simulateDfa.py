@@ -27,7 +27,7 @@ def simulateDfa(dfaString, inString):
 
 # see testCheckDfa() in checkTuringMachine.py for more detailed tests
 def testSimulateDfa():
-    for (filename, inString, val) in [
+    for filename, inString, val in [
         ("containsGAGA.dfa", "CCCCCCCCCAAAAAA", "no"),
         ("containsGAGA.dfa", "CCCGAGACCAAAAAA", "yes"),
         ("multipleOf5.dfa", "12345", "yes"),

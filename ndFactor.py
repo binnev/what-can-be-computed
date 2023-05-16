@@ -18,6 +18,7 @@ from utils import rf
 from threading import Thread
 import threading
 
+
 # The main function calls the helper function ndFactorHelper with
 # suitable parameters.
 def ndFactor(inString):

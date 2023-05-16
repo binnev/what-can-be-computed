@@ -32,7 +32,7 @@ def testverifyCheckMultiply():
         ("5 6 30", "no", "", "unsure"),
         ("5 6 31", "yes", "", "unsure"),
     ]
-    for (I, S, H, retVal) in testVals:
+    for I, S, H, retVal in testVals:
         val = verifyCheckMultiply(I, S, H)
         utils.tprint(I, S, H, ":", val)
         assert val == retVal

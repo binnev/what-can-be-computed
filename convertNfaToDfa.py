@@ -212,7 +212,7 @@ q2->qA : Eps
         (nfaMulti, set(["q1", "q5"]), frozenset(["q1", "q2", "q5", "q6"])),
         (nfaMulti, set(["q0", "q3", "q5"]), frozenset(["q0", "q1", "q2", "q3", "q4", "q5", "q6"])),
     ]
-    for (nfa, state, solution) in testvals:
+    for nfa, state, solution in testvals:
         val = getAllStayDests(nfa, state)
         utils.tprint(state, ":", val)
         assert val == solution
@@ -236,7 +236,7 @@ def testConvertNfatoDfa():
         ("example2.nfa", "CAGT", 9, 20, 10000),
     ]
     numTests = 0
-    for (nfaFile, alphabet, maxShortInputLen, maxRandInputLen, numRandInputs) in testvals:
+    for nfaFile, alphabet, maxShortInputLen, maxRandInputLen, numRandInputs in testvals:
         numTests += 1
         if utils.BRIEF_TESTS and numTests > NUM_BRIEF_TESTS:
             break

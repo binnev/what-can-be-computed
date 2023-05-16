@@ -47,7 +47,7 @@ def multiplyTimings(maxTime=None):
         start = time.clock()
         numIters = 10
         for i in range(numIters):
-            for (num1, num2) in randomPairs:
+            for num1, num2 in randomPairs:
                 val = num1 * num2
         stop = time.clock()
         timePerMult = (stop - start) / (numIters * numRandomPairs)

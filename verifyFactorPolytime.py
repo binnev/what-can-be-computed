@@ -47,7 +47,7 @@ def testVerifyFactorPolytime():
         ("3", "1111111", "", "unsure"),
         ("6", "3", "111111111", "unsure"),
     ]
-    for (inString, maybeSolution, hint, solution) in testVals:
+    for inString, maybeSolution, hint, solution in testVals:
         val = verifyFactorPolytime(inString, maybeSolution, hint)
         utils.tprint(inString, maybeSolution, hint, ":", val)
         assert val == solution

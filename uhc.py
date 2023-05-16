@@ -43,7 +43,7 @@ def testUhc():
         ("a,b b,c c,a a,d b,d", True),
         ("aB,aA aB,aC aA,aC", True),
     ]
-    for (inString, hasUhc) in testVals:
+    for inString, hasUhc in testVals:
         result = uhc(inString)
         utils.tprint(inString, ":", result)
         if not hasUhc:

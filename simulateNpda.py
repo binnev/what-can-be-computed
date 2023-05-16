@@ -25,7 +25,7 @@ def simulateNpda(pdaString, inString):
 
 # see testCheckNpda() in checkTuringMachine.py for more detailed tests
 def testSimulateNpda():
-    for (filename, inString, val) in [
+    for filename, inString, val in [
         ("containsGAGA.pda", "CCCCCCCCCAAAAAA", "no"),
         ("containsGAGA.pda", "CCCGAGACCAAAAAA", "yes"),
         ("multipleOf5.pda", "12345", "yes"),

@@ -48,7 +48,7 @@ class TwoTDCM(TuringMachine):
 
 
 def testTwoTDCM():
-    for (filename, inString, tapeSoln, outputSoln) in [
+    for filename, inString, tapeSoln, outputSoln in [
         ("containsGAGA.tm", "CCCCCCCCCAAAAAA", "no", ""),
         ("containsGAGA.tm", "CCCGAGACCAAAAAA", "yes", ""),
         ("loop.tm", "x", TuringMachine.exceededMaxStepsMsg, ""),

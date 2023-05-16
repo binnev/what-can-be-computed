@@ -46,7 +46,7 @@ def testPartition():
         ("3 3 3 3 1000 1000 1000 1000", "3 3 1000 1000"),
     ]
 
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = partition(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

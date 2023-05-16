@@ -16,7 +16,7 @@ def onlyZs(inString):
 
 
 def testOnlyZs():
-    for (inString, solution) in [
+    for inString, solution in [
         ("", ""),
         ("aassdc", ""),
         ("ZZZ", "ZZZ"),

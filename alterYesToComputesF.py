@@ -43,7 +43,7 @@ def testAlterYesToComputesF():
     from G import G  # G is any computable function different to F
 
     F_input = "xxxx"
-    for (progName, inString, solution) in [
+    for progName, inString, solution in [
         ("containsGAGA.py", "GAGAGAGAG", F(F_input)),
         ("containsGAGA.py", "TTTTGGCCGGT", G(F_input)),
     ]:

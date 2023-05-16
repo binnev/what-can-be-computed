@@ -48,7 +48,7 @@ def testcontainsGAGAandCACAandTATA():
         ("CCTATAGAGACCCCCGAGTTTT", "no"),
         ("CCTATACACACCCCCGAGTTTT", "no"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = containsGAGAandCACAandTATA(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

@@ -74,7 +74,7 @@ def simulate2TDCM(tmString, inString, verbose=False):
         scannedSymbol = regTape[regHeadPos]
         transitionList = transitions[state]
         foundTransition = False
-        for (destState, label, writeSymbol, direction) in transitionList:
+        for destState, label, writeSymbol, direction in transitionList:
             if TuringMachine.anySym == label:
                 foundTransition = True
                 break

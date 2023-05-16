@@ -19,7 +19,7 @@ def testHmmmm():
         ("4523", "no"),
         ("-200", "no"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = hmmmm(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

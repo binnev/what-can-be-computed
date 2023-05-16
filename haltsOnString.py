@@ -31,7 +31,7 @@ def haltsOnString(progString, inString):
 
 
 def testhaltsOnString():
-    for (progName, inString, solution) in [
+    for progName, inString, solution in [
         ("loopIfContainsGAGA.py", "GAGAGAGAG", "no"),
         ("loopIfContainsGAGA.py", "TTTTGGCCGGT", "yes"),
     ]:

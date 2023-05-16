@@ -66,7 +66,7 @@ def testHalfUhc():
         ("a,b b,c c,d d,e e,f f,g g,h h,i i,j h,a", "yes"),
         ("a,b b,c c,d d,e e,f f,g g,h h,i i,j d,a", "no"),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = halfUhc(inString)
         utils.tprint(inString, ":", val)
         if solution == "no":

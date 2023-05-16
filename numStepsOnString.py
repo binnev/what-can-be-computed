@@ -35,7 +35,7 @@ def numStepsOnString(progString, inString):
 
 
 def testNumStepsOnString():
-    for (progName, inString, solution) in [
+    for progName, inString, solution in [
         ("loopIfContainsGAGA.py", "GAGAGAGAG", "no"),
         ("loopIfContainsGAGA.py", "TTTTGGCCGGT", "num"),
     ]:

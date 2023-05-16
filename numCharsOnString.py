@@ -23,7 +23,7 @@ def numCharsOnString(progString, inString):
 
 
 def testnumCharsOnString():
-    for (progName, inString, solution) in [
+    for progName, inString, solution in [
         ("containsGAGA.py", "GAGAGAGAG", "3"),
         ("containsGAGA.py", "TTTTGGCCGGT", "2"),
     ]:

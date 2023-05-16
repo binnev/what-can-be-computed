@@ -39,7 +39,7 @@ def testAll3Sets():
             "{4,5,6} {4,5,7} {4,5,8} {4,6,7} {4,6,8} {4,7,8} {5,6,7} {5,6,8} {5,7,8} {6,7,8}",
         ),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = all3Sets(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

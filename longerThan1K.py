@@ -22,7 +22,7 @@ def testlongerThan1K():
         ("", "no"),
         (1000 * "x", "no"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = longerThan1K(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

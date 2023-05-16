@@ -26,7 +26,7 @@ def testcountLinesPlus1():
         ("abc\ndef\nghi", "4"),
         ("abc\ndef\nghi\n", "5"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = countLinesPlus1(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

@@ -81,7 +81,7 @@ def testNdFindNANADivConq():
         ("10000CACAs10000TATAs", 10000 * "CACA" + 10000 * "TATA", "yes"),
         ("10000CACAs10000TATAs", 10000 * "CACA" + 10000 * "TATA", "yes"),
     ]
-    for (desc, inString, solution) in testVals:
+    for desc, inString, solution in testVals:
         val = ndFindNANADivConq(inString)
         utils.tprint(desc, ":", val)
         if val == "no":

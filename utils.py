@@ -29,7 +29,7 @@ def checkPythonVersion(shouldExit=True):
     If the version is too old, exit Python immediately unless instructed otherwise.
 
     Args:
-    
+
         shouldExit (bool): Indicates the action that should be taken
             if the version of Python is too old. If True, exit
             immediately. Otherwise, print a warning message but then
@@ -89,11 +89,11 @@ def extractMainFunctionName(progString):
     examples provided with the book.
 
     Args:
-    
+
         progString (str): string containing the Python program to be
         examined.
 
-    Returns: 
+    Returns:
 
         str: The name of the main function if one could be found,
            otherwise the empty string.
@@ -116,17 +116,17 @@ def extractMainFunctionName(progString):
 def extractMainFunction(progString, localVars):
     """Given a Python program as defined in the book, return a reference
     to the "main" function: that is, the first Python function defined
-    within progString. The localVars parameter should be 
+    within progString. The localVars parameter should be
 
     Args:
-    
+
         progString (str): string containing the Python program to be
             examined.
 
         localVars (dict): the "locals()" dictionary of the calling
             function, as explained further in the source code comment.
 
-    Returns: 
+    Returns:
 
         fn: A reference to the main function if one could be
             found. Otherwise a WcbcException is raised.
@@ -152,10 +152,10 @@ def readFile(fileName):
     """Read a file, returning its contents as a single string.
 
     Args:
-    
+
         fileName (str): The name of the file to be read.
 
-    Returns: 
+    Returns:
 
         str: The contents of the file.
     """
@@ -174,7 +174,7 @@ def writeFile(fileName, fileContents):
     """Write a file, overwriting any existing content with the given content.
 
     Args:
-    
+
         fileName (str): The name of the file to be written or overwritten.
 
         fileContents (str): The contents of the file to be written,
@@ -193,17 +193,17 @@ def ESS(inString1, inString2):
     character, followed by the two strings concatenated together.
 
     Args:
-    
+
         inString1 (str): The first string to be encoded
 
         inString2 (str): The second string to be encoded
 
-    Returns: 
+    Returns:
 
         str: A single string encoding inString1 and inString2
 
     Example:
-        
+
         >>> ESS('abc', 'defg')
         '3 abcdefg'
     """
@@ -219,18 +219,18 @@ def DESS(inString):
     strings. DESS is the inverse of the function ESS.
 
     Args:
-    
+
         inString (str): The string to be decoded
 
-    Returns: 
+    Returns:
 
         (str, str): A 2-tuple containing the two strings that were decoded from the input.
 
     Example:
-        
+
         >>> DESS('3 abcdefg')
         ('abc', 'defg')
-        
+
     """
     # split on the first space character
     (theLength, remainder) = inString.split(" ", 1)
@@ -248,7 +248,7 @@ def randomAlphanumericString(length=None, maxLength=20):
     selected uniformly at random.
 
     Args:
-    
+
         length (int): The desired length of the string. Defaults to
            None. If None, the length of the string will be chosen
            uniformly at random between 0 and maxLength-1.
@@ -257,7 +257,7 @@ def randomAlphanumericString(length=None, maxLength=20):
            the maximum length is maxLength-1. This parameter is only
            relevant if length is None.
 
-    Returns: 
+    Returns:
 
         str: The randomly generated alphanumeric string.
 
@@ -283,7 +283,7 @@ def randomDigitalString(length=None, maxLength=20):
     be 0.
 
     Args:
-    
+
         length (int): The desired length of the string. Defaults to
            None. If None, the length of the string will be chosen
            uniformly at random between 0 and maxLength-1.
@@ -292,7 +292,7 @@ def randomDigitalString(length=None, maxLength=20):
            the maximum length is maxLength-1. This parameter is only
            relevant if length is None.
 
-    Returns: 
+    Returns:
 
         str: The randomly generated string of digits.
 
@@ -323,7 +323,7 @@ def randomString(alphabet, length=None, maxLength=20):
 
         alphabet (list of characters): A list of characters in the
             alphabet to be used.
-    
+
         length (int): The desired length of the string. Defaults to
            None. If None, the length of the string will be chosen
            uniformly at random between 0 and maxLength-1.
@@ -332,7 +332,7 @@ def randomString(alphabet, length=None, maxLength=20):
            the maximum length is maxLength-1. This parameter is only
            relevant if length is None.
 
-    Returns: 
+    Returns:
 
         str: The randomly generated string.
 
@@ -372,8 +372,8 @@ def boolToYes(b):
     Args:
 
         b (bool): The Boolean value to be converted
-    
-    Returns: 
+
+    Returns:
 
         str: 'yes' if b is True, and 'no' otherwise.
 
@@ -399,14 +399,14 @@ def nextShortLex(s, alphabet):
 
         alphabet (list of characters): A list of characters in the
             alphabet to be used.
-    
-    Returns: 
+
+    Returns:
 
         str: The successor of s in the shortlex ordering, assuming the
             given alphabet.
 
     Example:
-        
+
         >>> nextShortLex('aab', ['a', 'b', 'c'])
         'aac'
         >>> nextShortLex('ccc', ['a', 'b', 'c'])
@@ -465,7 +465,7 @@ def nextASCII(s):
 
         s (str): The ASCII string whose successor will be returned.
 
-    Returns: 
+    Returns:
 
         str: The successor of ASCII string s in the shortlex ordering.
 
@@ -548,7 +548,7 @@ def runWithTimeout(timeout, fn, *inStrings):
         *inStrings: A variable number of arguments that will be passed
             on to fn.
 
-    Returns: 
+    Returns:
 
         object: None if fn times out, otherwise the return value of fn.
 
@@ -598,7 +598,7 @@ def formatASet(theSet):
 
         theSet (set of str): The set to be formatted.
 
-    Returns: 
+    Returns:
 
         str: A string representing theSet, enclosed by braces and with
              elements separated by commas.
@@ -606,7 +606,7 @@ def formatASet(theSet):
     Example:
         >>> formatASet({'abc', 'd', 'ef'})
         '{d,ef,abc}'
-    
+
     """
     return "{" + ",".join(theSet) + "}"
 
@@ -622,7 +622,7 @@ def formatSetOfSets(theSets):
         theSets (set of frozensets of str): The set of frozensets to
             be formatted.
 
-    Returns: 
+    Returns:
 
         str: A string representing theSets.
 
@@ -646,10 +646,10 @@ def sortByNthElement(theList, N):
 
         N (int): The index of the elements that should be used for the sorting.
 
-    Returns: 
+    Returns:
 
         list: A new list sorted in increasing order by the Nth element of each item in theList.
-    
+
     """
     return sorted(theList, key=lambda x: x[N])
 
@@ -799,7 +799,7 @@ problems, all threads will now be killed.""",
 
 
 def waitAllTerminated(threads, nonDetSolution):
-    """Wait until all the given threads have terminated, then signal. 
+    """Wait until all the given threads have terminated, then signal.
 
     When all threads have terminated, signal this fact via the
     nonDetSolution object.
@@ -840,6 +840,7 @@ BRIEF_TESTS = True
 NUM_BRIEF_TESTS = 1
 TEST_TIMEOUT = 10.0
 ################################################################################
+
 
 # tprint stands for "test print" -- for printing output in a test function
 def tprint(*args, **kwargs):

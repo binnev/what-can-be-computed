@@ -40,7 +40,7 @@ def testDhc():
         ("a,b b,c c,a a,d b,d", False),
         ("a,b b,c c,a a,d d,b", True),
     ]
-    for (inString, hasDhc) in testVals:
+    for inString, hasDhc in testVals:
         result = dhc(inString)
         utils.tprint(inString, ":", result)
         if not hasDhc:

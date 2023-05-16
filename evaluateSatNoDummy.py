@@ -68,7 +68,7 @@ def testEvaluateSat():
         ("11", "yes"),
         ("01", "no"),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = evaluateSatNoDummy(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

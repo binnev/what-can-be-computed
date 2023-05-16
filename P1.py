@@ -49,22 +49,22 @@ def testP1etc():
         ("101", "no"),
     ]
 
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = P1(inString)
         utils.tprint(inString, ":", val)
         assert val == solution
 
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = P2(inString)
         utils.tprint(inString, ":", val)
         assert val == solution
 
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = P3(inString)
         utils.tprint(inString, ":", val)
         assert val == solution
 
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = P4(inString)
         utils.tprint(inString, ":", val)
         # no need to assert anything for P4

@@ -29,7 +29,7 @@ def alterYesToNumChars(inString):
 
 
 def testAlterYesToNumChars():
-    for (progName, inString, solution) in [
+    for progName, inString, solution in [
         ("containsGAGA.py", "GAGAGAGAG", "xxx"),
         ("containsGAGA.py", "TTTTGGCCGGT", "xx"),
     ]:

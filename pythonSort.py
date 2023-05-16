@@ -28,7 +28,7 @@ def testPythonSort():
         ("apple banana apple", "apple apple banana"),
     ]
 
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = pythonSort(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

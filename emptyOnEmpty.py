@@ -23,7 +23,7 @@ def emptyOnEmpty(progString):
 
 def testEmptyOnEmpty():
     testvals = [("containsGAGA.py", "no"), ("isEmpty.py", "no"), ("onlyZs.py", "yes")]
-    for (progName, solution) in testvals:
+    for progName, solution in testvals:
         val = emptyOnEmpty(rf(progName))
         utils.tprint(progName, ":", val)
         assert val == solution

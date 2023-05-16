@@ -17,7 +17,7 @@ def multiply(inString):
 
 def testMultiply():
     testVals = [("4 5", 4 * 5), ("100 10000", 100 * 10000), ("1024 256", 1024 * 256)]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = multiply(inString)
         utils.tprint(inString, val)
         assert int(val) == solution

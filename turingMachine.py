@@ -798,8 +798,7 @@ class TuringMachine:
             self.raiseExceededMaxSteps()
 
     def raiseExceededMaxSteps(self):
-        """Raise an exception indicating that the maximum number of steps was exceeded.
-        """
+        """Raise an exception indicating that the maximum number of steps was exceeded."""
 
         raise utils.WcbcException(
             TuringMachine.exceededMaxStepsMsg + ".  Current output: " + self.getOutput()
@@ -872,8 +871,7 @@ class TuringMachine:
         dest.reset(self.tape, self.state, self.headPos, self.steps, resetHistory=False)
 
     def clone(self):
-        """Clone this machine, returning a new TuringMachine
-        """
+        """Clone this machine, returning a new TuringMachine"""
         newTM = TuringMachine(None, self.tape, self.depth, self.name)
         self.copyTMState(newTM)
         return newTM
@@ -1183,7 +1181,7 @@ q1->q2:~;R
         (s1, s2, True),
         (s2, s1, False),
     ]
-    for (tm1str, tm2str, result) in testVals:
+    for tm1str, tm2str, result in testVals:
         tm1 = TuringMachine(tm1str)
         tm2 = TuringMachine(tm2str)
         val = tm1.hasSameTransitions(tm2)
@@ -1193,7 +1191,7 @@ q1->q2:~;R
 
 # see testCheckTM() in checkTuringMachine.py for more detailed tests
 def testTuringMachine():
-    for (filename, inString, solution) in [
+    for filename, inString, solution in [
         ("containsGAGA.tm", "CCCCCCCCCAAAAAA", "no"),
         ("containsGAGA.tm", "CCCGAGACCAAAAAA", "yes"),
         # ('badCharacter.tm', 'CCCGAGACCAAAAAA'), # should throw an exception

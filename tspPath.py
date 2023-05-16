@@ -74,7 +74,7 @@ def testTspPath():
         ("a,b,5 b,c,6 d,a,9 a,c,1 d,b,2;a;b", "no"),
         ("a,b,5 b,c,6 d,a,9 a,c,1;a;b", "no"),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = tspPath(inString)
         utils.tprint(inString.strip(), ":", val)
         if solution == "no":

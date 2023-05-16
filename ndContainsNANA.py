@@ -14,6 +14,7 @@ import utils
 from utils import rf
 from threading import Thread
 
+
 # function that searches the given input for four different strings, in parallel
 def ndContainsNANA(inString):
     # the list of strings to look for
@@ -57,7 +58,7 @@ def testNdContainsNANA():
         (rf("geneticString.txt"), "yes"),
         ("T" * 100000, "no"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = ndContainsNANA(inString)
         prefix = inString[:20]
         utils.tprint(prefix + "...", ":", val)

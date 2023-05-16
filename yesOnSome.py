@@ -37,7 +37,7 @@ def testyesOnSome():
         ("yes.py", "yes"),
         ("no.py", "no"),
     ]
-    for (filename, solution) in testvals:
+    for filename, solution in testvals:
         val = yesOnSome(rf(filename))
         utils.tprint(filename + ":", val)
         assert val == solution

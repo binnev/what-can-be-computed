@@ -65,7 +65,7 @@ def simulateTMv2(tmString, inString, verbose=False):
         scannedSymbol = tape[headPos]
         transitionList = transitions[state]
         foundTransition = False
-        for (destState, label, writeSymbol, direction) in transitionList:
+        for destState, label, writeSymbol, direction in transitionList:
             if "~" == label:
                 foundTransition = True
                 break
@@ -105,7 +105,7 @@ def simulateTMv2(tmString, inString, verbose=False):
 
 
 def testSimulateTMv2():
-    for (filename, inString, solution) in [
+    for filename, inString, solution in [
         ("containsGAGA.tm", "CCCCCCCCCAAAAAA", "no"),
         ("containsGAGA.tm", "CCCGAGACCAAAAAA", "yes"),
         ("binaryIncrementer.tm", "x100111x", "x101000x"),

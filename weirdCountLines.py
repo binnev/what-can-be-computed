@@ -19,7 +19,7 @@ def testweirdCountLines():
         (rf("weirdCountLines.py"), "24"),
         ("asdf", "1"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = weirdCountLines(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

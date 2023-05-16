@@ -15,6 +15,7 @@ import utils
 from utils import rf
 from threading import Thread
 
+
 # function that searches the given input for four different strings, in
 # parallel.
 def ndFindNANA(inString):
@@ -51,6 +52,7 @@ def ndFindNANA(inString):
 # to be executed in a separate thread as part of a nondeterministic
 # computation.
 
+
 # The main body of this program is essentially identical to {\sf \texttt{containsNANA.py}},
 # but this helper function returns different information.
 def findString(string, text, nonDetSolution):
@@ -66,7 +68,7 @@ def testNdFindNANA():
         ("T" * 100000 + "GAGACCC", "yes"),
         ("T" * 1000 + "AAAA" + "C" * 1000, "yes"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = ndFindNANA(inString)
         prefix = inString[:20]
         utils.tprint(prefix + "...", ":", val)

@@ -24,7 +24,7 @@ def haltsViaNumSteps(progString, inString):
 
 def testHaltsViaNumSteps():
     # utils.TEST_TIMEOUT = 2.0 # exit infinite loop after two seconds
-    for (progName, inString, solution) in [
+    for progName, inString, solution in [
         ("loopIfContainsGAGA.py", "GAGAGAGAG", "no"),
         ("loopIfContainsGAGA.py", "TTTTGGCCGGT", "yes"),
     ]:

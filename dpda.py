@@ -60,9 +60,7 @@ class PdaTransition(Transition):
 
 
 class Dpda(TuringMachine):
-    """A Dpda object models a dpda as described in the textbook.
-
-    """
+    """A Dpda object models a dpda as described in the textbook."""
 
     def __init__(self, description=None, tapeStr="", depth=0, name=None, keepHistory=False):
         """Initialize Dpda object.
@@ -144,8 +142,7 @@ class Dpda(TuringMachine):
         return PdaTransition(sourceState, destState, label, stackLabel, stackWriteStr, direction)
 
     def clone(self):
-        """Clone this dpda, returning a new Dpda object
-        """
+        """Clone this dpda, returning a new Dpda object"""
         newPda = Dpda(None, self.tape, self.depth, self.name)
         self.copyTMState(newPda)
         newPda.stack = list(self.stack)
@@ -228,7 +225,7 @@ class Dpda(TuringMachine):
 
 # see testCheckDpda() in checkTuringMachine.py for more detailed tests
 def testDpda():
-    for (filename, inString, val) in [
+    for filename, inString, val in [
         ("containsGAGA.pda", "CCCCCCCCCAAAAAA", "no"),
         ("containsGAGA.pda", "CCCGAGACCAAAAAA", "yes"),
         ("multipleOf5.pda", "12345", "yes"),

@@ -31,7 +31,7 @@ def testAlterYoEToEoE():
         ("containsGAGA.py", "a non-empty string"),
         ("isEmpty.py", ""),
     ]
-    for (progName, solution) in testvals:
+    for progName, solution in testvals:
         progString = rf(progName)
         utils.writeFile("progString.txt", progString)
         val = alterYoEToEoE("")

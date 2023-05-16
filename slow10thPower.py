@@ -5,6 +5,7 @@
 import utils
 from utils import rf
 
+
 # Input is a nonnegative integer M in decimal notation. Output is $M^{10}$.
 # We could compute this efficiently using the Python ** operator,
 # but here we deliberately use a slow iterative method.
@@ -19,6 +20,6 @@ def slow10thPower(inString):
 def testSlow10thPower():
     for M in [0, 1, 2, 8, 10, 100]:
         val = slow10thPower(str(M))
-        solution = str(M ** 10)
+        solution = str(M**10)
         utils.tprint(M, ":", val)
         assert val == solution

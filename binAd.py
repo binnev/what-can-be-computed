@@ -28,10 +28,10 @@ def isWellFormed(f):
     """Return True if f is well formed and False otherwise.
 
     Args:
-    
+
         f (str): string representing a possible formula in binAd
 
-    Returns: 
+    Returns:
 
         bool: True if f is well formed and False otherwise.
 
@@ -56,7 +56,7 @@ def testIsWellFormed():
         ("101111=111000", True),
         ("101+1+0101=1111+1+0+1", True),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = isWellFormed(inString)
         utils.tprint(inString, ":", val)
         assert val == solution
@@ -66,10 +66,10 @@ def applyRuleOne(f):
     """Apply Rule 1 to the formula f.
 
     Args:
-    
+
         f (str): string representing a formula in binAd
 
-    Returns: 
+    Returns:
 
         set of str: Set of formulas that can be produced by applying
            Rule 1 to f. This will be empty if f is not well formed.
@@ -93,12 +93,40 @@ def testApplyRuleOne():
         ("101=", set()),
         ("111==11", set()),
         ("1+1+=101", set()),
-        ("1=1", set(["1+1=1+1",])),
-        ("1=0", set(["1+1=1+0",])),
-        ("101111=111000", set(["1+101111=1+111000",])),
-        ("101+1+0101=1111+1+0+1", set(["1+101+1+0101=1+1111+1+0+1",])),
+        (
+            "1=1",
+            set(
+                [
+                    "1+1=1+1",
+                ]
+            ),
+        ),
+        (
+            "1=0",
+            set(
+                [
+                    "1+1=1+0",
+                ]
+            ),
+        ),
+        (
+            "101111=111000",
+            set(
+                [
+                    "1+101111=1+111000",
+                ]
+            ),
+        ),
+        (
+            "101+1+0101=1111+1+0+1",
+            set(
+                [
+                    "1+101+1+0101=1+1111+1+0+1",
+                ]
+            ),
+        ),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = applyRuleOne(inString)
         utils.tprint(inString, ":", val)
         assert val == solution
@@ -108,10 +136,10 @@ def applyRuleTwo(f):
     """Apply Rule 2 to the formula f.
 
     Args:
-    
+
         f (str): string representing a formula in binAd
 
-    Returns: 
+    Returns:
 
         set of str: Set of formulas that can be produced by applying
            Rule 2 to f. This will be empty if f is not well formed.
@@ -156,7 +184,7 @@ def testApplyRuleTwo():
             ),
         ),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = applyRuleTwo(inString)
         utils.tprint(inString, ":", val)
         assert val == solution
@@ -166,10 +194,10 @@ def applyRuleThree(f):
     """Apply Rule 3 to the formula f.
 
     Args:
-    
+
         f (str): string representing a formula in binAd
 
-    Returns: 
+    Returns:
 
         set of str: Set of formulas that can be produced by applying
            Rule 3 to f. This will be empty if f is not well formed.
@@ -201,7 +229,14 @@ def testApplyRuleThree():
         ("", set()),
         ("1", set()),
         ("1+10", set()),
-        ("1+10=11", set(["11=11",])),
+        (
+            "1+10=11",
+            set(
+                [
+                    "11=11",
+                ]
+            ),
+        ),
         (
             "1+10+1+10101+1+1010=1+1+100",
             set(
@@ -213,7 +248,7 @@ def testApplyRuleThree():
             ),
         ),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = applyRuleThree(inString)
         utils.tprint(inString, ":", val)
         assert val == solution
@@ -223,10 +258,10 @@ def applyAllRules(f):
     """Apply Rules 1, 2, and 3 to the formula f.
 
     Args:
-    
+
         f (str): string representing a formula in binAd
 
-    Returns: 
+    Returns:
 
         set of str: Set of formulas that can be produced by applying
            Rule 1 or 2 or 3 to f. This will be empty if f is not well
@@ -258,7 +293,7 @@ def testApplyAllRules():
             ),
         ),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = applyAllRules(inString)
         utils.tprint(inString, ":", val)
         assert val == solution
@@ -273,7 +308,7 @@ def applyAllRulesToFrontier(provedFormulas, frontierFormulas, predecessors=None)
     dictionary of predecessor formulas, if given, is also updated.
 
     Args:
-    
+
         provedFormulas (set of str): a set of formulas that have been
             proved already. Formulas in this set may or may not have
             yet been used to generate new formulas via inference
@@ -292,7 +327,7 @@ def applyAllRulesToFrontier(provedFormulas, frontierFormulas, predecessors=None)
             parameter is optional, but if it exists, this dictionary
             will be updated.
 
-    Returns: 
+    Returns:
 
         set of str: a new frontier consisting of only the newly proved
             formulas.
@@ -414,7 +449,7 @@ def getProofFromPredecessors(f, predecessors):
     1000.
 
     Args:
-    
+
         f (str): string representing a formula in binAd
 
         predecessors (dict mapping str to str): dictionary in which
@@ -423,7 +458,7 @@ def getProofFromPredecessors(f, predecessors):
             this would have been constructed using calls to
             applyAllRulesToFrontier().
 
-    Returns: 
+    Returns:
 
         list of str: a sequence of formulas that constitute a proof of
             f.
@@ -449,11 +484,11 @@ def enumerateStatements(K):
     """Generate at least K provable statements and return them as a set.
 
     Args:
-    
+
         K (int): a lower bound on the number of provable statements
             that will be generated.
 
-    Returns: 
+    Returns:
 
         set of str: a set of provable statements.
 
@@ -488,19 +523,19 @@ def isProvable(f, maxFormulas=100000):
     """Attempt to determine whether f is provable and return a proof if one is found.
 
     Args:
-    
+
         f (str): string representing a formula in binAd
 
         maxFormulas (int): an (approximate) upper bound on the number
             of provable statements that will be generated while trying
             to prove f.
 
-    Returns: 
+    Returns:
 
         (str, list of str): a 2-tuple (result, proof), where
 
             result: is a string describing what happened, e.g., ``not
-            well-formed...'' or ``provable'' or ``not proved...''. 
+            well-formed...'' or ``provable'' or ``not proved...''.
 
             proof: is an ordered list of the formulas used to prove f.
                 If no proof was found, proof is None.
@@ -536,7 +571,7 @@ def testIsProvable():
         ("1+1=1+1+1", "not"),
         ("1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1=11000", "not"),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         (result, proof) = isProvable(inString, 2000)
         utils.tprint(inString, ":", result)
         if result == "provable":
@@ -548,11 +583,11 @@ def computeBinarySum(s):
     """Compute a sum of binary numbers from a string expression
 
     Args:
-    
+
         s (str): string representing a sum of binary numbers,
             e.g. '101+1+10011'
 
-    Returns: 
+    Returns:
 
         int: the sum of the binary numbers in s
 
@@ -571,7 +606,7 @@ def testComputeBinarySum():
         ("101+1+10011", 25),
         ("1+11+111+1111+11111", 57),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = computeBinarySum(inString)
         utils.tprint(inString, ":", val)
         assert val == solution
@@ -581,10 +616,10 @@ def isTrue(f):
     """Return True if f is a true BinAd formula and False otherwise.
 
     Args:
-    
+
         f (str): string representing a formula in binAd
 
-    Returns: 
+    Returns:
 
         bool: True if f is a true BinAd formula and False otherwise
 
@@ -609,7 +644,7 @@ def testIsTrue():
         ("1+1+1=1+1+1+1", False),
         ("1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1=11000", True),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = isTrue(inString)
         utils.tprint(inString, ":", val)
         assert val == solution
@@ -621,7 +656,7 @@ def isProof(proof, target):
     Note that this function returns a string ('yes' or 'no'), not a Boolean.
 
     Args:
-    
+
         proof (str): A string representing a proof in binAd. The
             statements in the proof are separated by whitespace.
 
@@ -630,7 +665,7 @@ def isProof(proof, target):
             trying to determine whether the given proof does indeed
             prove the target statement.
 
-    Returns: 
+    Returns:
 
         str: 'yes' if the parameter proof is a mechanical proof of the
             target formula, and 'no' otherwise
@@ -730,7 +765,7 @@ dfd
         (badProof2, "no"),
         (badProof3, "no"),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = isProof(inString, target)
         utils.tprint(inString, target, ":", val)
         assert val == solution

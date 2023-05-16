@@ -21,7 +21,7 @@ def testPathStr():
         ("a,b,,c".split(","), "exception"),
         ("a1,b1,c1".split(","), "a1,b1,c1"),
     ]
-    for (nodes, solution) in testvals:
+    for nodes, solution in testvals:
         try:
             p = Path(nodes)
         except utils.WcbcException as e:
@@ -45,7 +45,7 @@ def testPathReverse():
         ("a,b,c".split(","), Path("c,b,a".split(","))),
         ("a1,b1,c1".split(","), Path("c1,b1,a1".split(","))),
     ]
-    for (nodes, solution) in testvals:
+    for nodes, solution in testvals:
         p = Path(nodes)
         val = p.reverse()
         utils.tprint(p, ":", val)
@@ -64,7 +64,7 @@ def testPathExtend():
         ("a,b,c".split(","), "xyz", Path("a,b,c,xyz".split(","))),
         ("a1,b1,c1".split(","), "xyz", Path("a1,b1,c1,xyz".split(","))),
     ]
-    for (nodes, newNode, solution) in testvals:
+    for nodes, newNode, solution in testvals:
         p = Path(nodes)
         val = p.extend(newNode)
         utils.tprint(p, ";", newNode, ":", val)
@@ -82,7 +82,7 @@ def testPathRotateToFront():
         ("a,b,c".split(","), "c", Path("c,a,b".split(","))),
         ("a,b,c".split(","), "d", "exception"),
     ]
-    for (nodes, node, solution) in testvals:
+    for nodes, node, solution in testvals:
         p = Path(nodes)
         try:
             val = p.rotateToFront(node)
@@ -132,7 +132,7 @@ def testPathEquals():
         (p5, None, False),
         (p5, "asdf", False),
     ]
-    for (path1, path2, solution) in testvals:
+    for path1, path2, solution in testvals:
         val = path1 == path2
         utils.tprint(path1, path2, ":", val)
         assert val == solution
@@ -159,7 +159,7 @@ def testPathContains():
         (p6, "c", True),
         (p6, "d", False),
     ]
-    for (path, node, solution) in testvals:
+    for path, node, solution in testvals:
         val = node in path
         utils.tprint(path, node, ":", val)
         assert val == solution
@@ -202,7 +202,7 @@ def testPathIter():
         (p7, p7Edges),
         (p8, p8Edges),
     ]
-    for (path, solution) in testvals:
+    for path, solution in testvals:
         val = [e for e in path]
         utils.tprint(path, ":", val)
         assert val == solution
@@ -241,7 +241,7 @@ def testGraphStr():
         (("b,a,3 a,,4",), "exception"),
         (("b,a,3 a,a,4 c", True, False), "a,a,4 a,b,3 c"),
     ]
-    for (args, solution) in testvals:
+    for args, solution in testvals:
         graphString = args[0]
         try:
             g = Graph(*args)
@@ -272,7 +272,7 @@ def testGraphContains():
         (("b,a,3 a,a,4 a,ccc,5 b,d,6",), "cc", False),
         (("b,a,3 a,a,4 z a,ccc,5 b,d,6",), "z", True),
     ]
-    for (args, node, solution) in testvals:
+    for args, node, solution in testvals:
         graphString = args[0]
         g = Graph(*args)
         val = node in g
@@ -291,7 +291,7 @@ def testGraphIter():
         (("b,a,3 a,a,4 a,ccc,5 b,d,6",), ["a", "b", "ccc", "d"]),
         (("b,a,3 a,a,4 z x a,ccc,5 b,d,6",), ["a", "b", "ccc", "d", "x", "z"]),
     ]
-    for (args, solution) in testvals:
+    for args, solution in testvals:
         graphString = args[0]
         g = Graph(*args)
         val = [node for node in g]
@@ -335,7 +335,7 @@ def testGraphAddNode():
         (("b,a,3 a,a,4 a,ccc,5 b,d,6",), "aaa", "aaa a,a,4 a,ccc,5 b,a,3 b,d,6"),
         (("b,a,3 a,a,4", True, False), "c", "a,a,4 a,b,3 c"),
     ]
-    for (args, node, solution) in testvals:
+    for args, node, solution in testvals:
         graphString = args[0]
         try:
             g = Graph(*args)
@@ -362,7 +362,7 @@ def testGetNodesAsSet():
         (("b,a,3 a,a,4", True, False), ["a", "b"]),
         (("b,a,3 a,a,4 a,ccc,5 b,d,6 e",), ["a", "b", "ccc", "d", "e"]),
     ]
-    for (args, solution) in testvals:
+    for args, solution in testvals:
         solution = frozenset(solution)
         g = Graph(*args)
         val = g.getNodesAsSet()
@@ -384,7 +384,7 @@ def testGetEdgesAsDict():
             {Edge(["b", "a"]): 3, Edge(["a", "a"]): 4, Edge(["a", "ccc"]): 5, Edge(["b", "d"]): 6},
         ),
     ]
-    for (args, solution) in testvals:
+    for args, solution in testvals:
         g = Graph(*args)
         val = g.getEdgesAsDict()
         utils.tprint(args, ":", val)
@@ -405,7 +405,7 @@ def testGetEdgesAsSet():
             {Edge(["b", "a"]): 3, Edge(["a", "a"]): 4, Edge(["a", "ccc"]): 5, Edge(["b", "d"]): 6},
         ),
     ]
-    for (args, solution) in testvals:
+    for args, solution in testvals:
         solution = frozenset(solution.keys())
         g = Graph(*args)
         val = g.getEdgesAsSet()
@@ -427,7 +427,7 @@ def testEdges():
             {Edge(["b", "a"]): 3, Edge(["a", "a"]): 4, Edge(["a", "ccc"]): 5, Edge(["b", "d"]): 6},
         ),
     ]
-    for (args, solution) in testvals:
+    for args, solution in testvals:
         solution = sorted(solution.keys())
         g = Graph(*args)
         val = sorted([e for e in g.edges()])
@@ -449,7 +449,7 @@ def testNeighbors():
         (("b,a,3 a,a,4 a,ccc,5 b,d,6 e a,d,3",), "a", ["a", "ccc", "d"]),
         (("b,a,3 a,a,4 a,ccc,5 b,d,6 e a,d,3",), "b", ["a", "d"]),
     ]
-    for (args, node, solution) in testvals:
+    for args, node, solution in testvals:
         g = Graph(*args)
         try:
             val = g.neighbors(node)
@@ -474,7 +474,7 @@ def testWeightedNeighbors():
         (("b,a,3 a,b,9 a,a,4 a,ccc,5 b,d,6 e a,d,3",), "a", {"a": 4, "b": 9, "ccc": 5, "d": 3}),
         (("b,a,3 a,b,9 a,a,4 a,ccc,5 b,d,6 e a,d,3",), "b", {"a": 3, "d": 6}),
     ]
-    for (args, node, solution) in testvals:
+    for args, node, solution in testvals:
         g = Graph(*args)
         try:
             val = g.weightedNeighbors(node)
@@ -484,7 +484,10 @@ def testWeightedNeighbors():
             else:
                 val = "exception"
         utils.tprint(
-            args, node, ":", val,
+            args,
+            node,
+            ":",
+            val,
         )
         assert val == solution
 
@@ -506,7 +509,7 @@ def testGraphContainsEdge():
         (("b,a,3 a,a,4 a,ccc,5 b,d,6",), Edge(["ccc", "a"]), False),
         (("b,a,3 a,a,4 z a,ccc,5 b,d,6",), Edge(["z", "z"]), False),
     ]
-    for (args, edge, solution) in testvals:
+    for args, edge, solution in testvals:
         g = Graph(*args)
         val = g.containsEdge(edge)
         utils.tprint(args, edge, ":", val)
@@ -525,7 +528,7 @@ def testGetWeight():
         (("b,a,3 a,b,9 a,a,4 a,ccc,5 b,d,6",), Edge(["b", "a"]), 3),
         (("b,a,3 a,b,9 a,a,4 z a,ccc,5 b,d,6",), Edge(["a", "b"]), 9),
     ]
-    for (args, edge, solution) in testvals:
+    for args, edge, solution in testvals:
         g = Graph(*args)
         try:
             val = g.getWeight(edge)
@@ -535,7 +538,10 @@ def testGetWeight():
             else:
                 val = "exception"
         utils.tprint(
-            args, edge, ":", val,
+            args,
+            edge,
+            ":",
+            val,
         )
         assert val == solution
 
@@ -561,10 +567,12 @@ def testGraphAddEdge():
         ),
         (("b,a,3 a,a,4 z a,ccc,5 b,d,6",), Edge(["z", "z"]), "b,a,3 a,a,4 z,z,1 a,ccc,5 b,d,6"),
     ]
-    for (args, edgeArgs, solution) in testvals:
+    for args, edgeArgs, solution in testvals:
         g = Graph(*args)
         if isinstance(edgeArgs, Edge):
-            edgeArgs = tuple(edgeArgs,)
+            edgeArgs = tuple(
+                edgeArgs,
+            )
 
         try:
             g.addEdge(*edgeArgs)
@@ -594,7 +602,7 @@ def testGraphRemoveEdge():
         (("b,a,3 a,a,4 a,ccc,5 b,d,6",), Edge(["ccc", "a"]), "exception"),
         (("b,a,3 a,a,4 a,ccc,5 b,d,6", True, False), Edge(["d", "b"]), "d b,a,3 a,a,4 a,ccc,5"),
     ]
-    for (args, edge, solution) in testvals:
+    for args, edge, solution in testvals:
         g = Graph(*args)
 
         try:
@@ -653,7 +661,7 @@ def testGraphIsPath():
         ((g3, "a,b,a"), True),
         ((g3, "a,b,a,b"), False),
     ]
-    for (args, solution) in testvals:
+    for args, solution in testvals:
         g, pathStr = args
         path = Path.fromString(pathStr)
         val = g.isPath(path)
@@ -703,7 +711,7 @@ def testGraphIsCycle():
         ((Graph("a,a,1"), "a"), True),
         ((Graph("a,a,1"), "a,a"), False),
     ]
-    for (args, solution) in testvals:
+    for args, solution in testvals:
         g, pathStr = args
         path = Path.fromString(pathStr)
         val = g.isCycle(path)
@@ -744,7 +752,7 @@ def testContainsAllNodesOnce():
         ((g5, "a,b,c,d,e,z,y"), False),
         ((g5, "a,b,c,d,f,z"), False),
     ]
-    for (args, solution) in testvals:
+    for args, solution in testvals:
         g, pathStr = args
         nodes = pathStr.split(",") if len(pathStr) > 0 else []
         path = Path(nodes)
@@ -771,7 +779,7 @@ def testGraphIsHamiltonPath():
         ((g1, "a,b,c,c,d,e"), False),
         ((g2, "a,b,c,c,d,e"), False),
     ]
-    for (args, solution) in testvals:
+    for args, solution in testvals:
         g, pathStr = args
         path = Path.fromString(pathStr)
         val = g.isHamiltonPath(path)
@@ -808,7 +816,7 @@ def testGraphIsHamiltonCycle():
         ((g3, "a,b,c,c,d,e"), False),
         ((g4, "a,b,c,c,d,e"), False),
     ]
-    for (args, solution) in testvals:
+    for args, solution in testvals:
         g, pathStr = args
         path = Path.fromString(pathStr)
         val = g.isHamiltonCycle(path)
@@ -846,7 +854,7 @@ def testGraphIsClique():
         ((g3, "a,b,c,d"), True),
         ((g3, "a,b,c,d,e"), False),
     ]
-    for (args, solution) in testvals:
+    for args, solution in testvals:
         g, nodesStr = args
         nodes = nodesStr.split(",") if len(nodesStr) > 0 else []
         val = g.isClique(nodes)
@@ -864,7 +872,7 @@ def testGraphConvertToWeighted():
         (g1, g3),
         (g2, g4),
     ]
-    for (g, solution) in testvals:
+    for g, solution in testvals:
         val = g.clone()
         val.convertToWeighted()
         utils.tprint(g, ":", val)
@@ -881,7 +889,7 @@ def testGraphConvertToDirected():
         (g1, g2),
         (g3, g4),
     ]
-    for (g, solution) in testvals:
+    for g, solution in testvals:
         val = g.clone()
         val.convertToDirected()
         utils.tprint(g, ":", val)
@@ -907,7 +915,7 @@ def testGraphPathLength():
         ((g1, "a,b,c,c,d,e"), 16),
         ((g2, "a,b,c,c,d,e"), 16),
     ]
-    for (args, solution) in testvals:
+    for args, solution in testvals:
         g, pathStr = args
         path = Path.fromString(pathStr)
         try:
@@ -938,7 +946,7 @@ def testGraphCycleLength():
         ((g1, "a,b,c,d,e"), 15),
         ((g2, "a,b,c,d,e"), 15),
     ]
-    for (args, solution) in testvals:
+    for args, solution in testvals:
         g, pathStr = args
         path = Path.fromString(pathStr)
         try:
@@ -960,7 +968,7 @@ def testGraphChooseNode():
         (Graph("a,b,1"), {"a", "b"}),
         (Graph("a,b,1 b,c,1"), {"a", "b", "c"}),
     ]
-    for (g, solution) in testvals:
+    for g, solution in testvals:
         val = g.chooseNode()
         utils.tprint(g, ":", val)
         if len(solution) == 0:
@@ -984,7 +992,7 @@ def testGraphSumEdgeWeights():
         (g3, 6),
         (g4, 10),
     ]
-    for (g, solution) in testvals:
+    for g, solution in testvals:
         val = g.sumEdgeWeights()
         utils.tprint(g, ":", val)
         assert val == solution

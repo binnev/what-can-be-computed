@@ -41,7 +41,7 @@ def testTsp():
         ("a,b,5 b,c,6 c,d,8 d,a,9 a,c,1 d,b,200", "a,b,c,d", 28),
         ("a,b,5 b,c,6 d,a,9 a,c,1", "no", None),
     ]
-    for (inString, solution, length) in testvals:
+    for inString, solution, length in testvals:
         val = tsp(inString)
         utils.tprint(inString, ":", val)
         if solution == "no":

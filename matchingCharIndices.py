@@ -42,7 +42,7 @@ def testMatchingCharIndices():
         ("aaa aaaaa", "0,0 0,1 0,2 0,3 0,4 1,0 1,1 1,2 1,3 1,4 2,0 2,1 2,2 2,3 2,4"),
         ("abcdefgh fghijklmnop", "5,0 6,1 7,2"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = matchingCharIndices(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

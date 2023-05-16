@@ -80,7 +80,7 @@ def testShortestPath():
         ("a,b,1 b,c,1 c,d,1 d,e,1 a,e,5 a,c,1; a; e", 3),
         ("a,b,5 c,d,7 ; a; c", "no"),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = shortestPath(inString)
         utils.tprint(inString, ":", val)
         assert val == str(solution)

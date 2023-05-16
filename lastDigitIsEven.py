@@ -26,7 +26,7 @@ def testlastDigitIsEven():
         ("17", "no"),
         ("3953969", "no"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = lastDigitIsEven(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

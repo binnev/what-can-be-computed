@@ -4,12 +4,11 @@ from utils import WcbcException
 
 
 class Path:
-    """A Path object models a path in a graph.
-    """
+    """A Path object models a path in a graph."""
 
     def __init__(self, nodes):
         """Initialize Path object.
-        
+
         Args:
 
             nodes (list of str): a list containing the names of the nodes in the path
@@ -106,7 +105,7 @@ class Path:
     def start(self):
         """Return the initial node in the path.
 
-        Returns: 
+        Returns:
 
            str: the initial node in the path.
 
@@ -118,7 +117,7 @@ class Path:
     def end(self):
         """Return the final node in the path.
 
-        Returns: 
+        Returns:
 
            str: the final node in the path.
 
@@ -153,18 +152,18 @@ class Path:
 
     def rotateToFront(self, node):
         """Cyclically permute the nodes in the path so that a given node is at
-the start of the path.
+        the start of the path.
 
-        Args:
+                Args:
 
-            node (str): The node which should be at the start of the
-            path. An exception will be thrown if it is not currently
-            in the path.
+                    node (str): The node which should be at the start of the
+                    path. An exception will be thrown if it is not currently
+                    in the path.
 
-        Returns:
+                Returns:
 
-            Path: A new Path object, cyclically permuted so the given
-            node is at the start of the path.
+                    Path: A new Path object, cyclically permuted so the given
+                    node is at the start of the path.
 
         """
         if not node in self.nodes:
@@ -241,7 +240,7 @@ class Graph:
 
     def __init__(self, graphString, weighted=True, directed=True):
         """Initialize Graph object.
-        
+
         Args:
 
             graphString (str): a description of the graph as an ASCII
@@ -376,21 +375,19 @@ class Graph:
                         dest[sourceStr] = weight
 
     def clone(self):
-        """Return a new Graph object identical to the current one.
-
-        """
+        """Return a new Graph object identical to the current one."""
 
         # inefficient, but extremely easy to implement!
         return Graph(str(self), self.weighted, self.directed)
 
     def getIsolatedNodes(self):
         """Return a frozenset consisting of nodes with no incoming or
-outgoing edges.
+        outgoing edges.
 
-            Returns:
+                    Returns:
 
-                frozenset of str: nodes with no incoming or outgoing
-                    edges
+                        frozenset of str: nodes with no incoming or outgoing
+                            edges
 
         """
         if not self.isolatedNodes:  # need to update
@@ -400,9 +397,9 @@ outgoing edges.
     def computeIsolatedNodes(self):
         """Private method that computes the set of isolated nodes.
 
-            Returns:
+        Returns:
 
-                frozenset of str: the set of isolated nodes
+            frozenset of str: the set of isolated nodes
         """
         isolated = set(self.nodes.keys())
         for node, neighbors in self.nodes.items():
@@ -434,9 +431,9 @@ outgoing edges.
     def getNodesAsSet(self):
         """Return a frozenset consisting of all nodes in the graph.
 
-            Returns:
+        Returns:
 
-                frozenset of str: elements are the nodes in the graph
+            frozenset of str: elements are the nodes in the graph
 
         """
         return frozenset(self.nodes.keys())
@@ -445,11 +442,11 @@ outgoing edges.
     def getEdgesAsDict(self):
         """Return a dictionary of edges and weights in the graph.
 
-            Returns:
+        Returns:
 
-                dict mapping Edge to int: Each key is an Edge object,
-                    and its corresponding value is the weight of that
-                    edge.
+            dict mapping Edge to int: Each key is an Edge object,
+                and its corresponding value is the weight of that
+                edge.
 
         """
         edges = dict()
@@ -469,9 +466,9 @@ outgoing edges.
     def getEdgesAsSet(self):
         """Return a frozenset of edges in the graph.
 
-            Returns:
+        Returns:
 
-                frozenset of Edge: the edges in the graph.
+            frozenset of Edge: the edges in the graph.
 
         """
         return frozenset([e for e in self.getEdgesAsDict()])
@@ -479,9 +476,9 @@ outgoing edges.
     def edges(self):
         """Return an iterable that will iterate over all edges in the graph.
 
-            Returns:
+        Returns:
 
-                iterable of Edge: the edges in the graph.
+            iterable of Edge: the edges in the graph.
 
         """
 

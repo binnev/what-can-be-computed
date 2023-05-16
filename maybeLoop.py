@@ -31,7 +31,7 @@ def testmaybeLoop():
         ("xsecret sauce", "no"),
         ("xsecret saucex", "yes"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = utils.runWithTimeout(None, maybeLoop, inString)
         utils.tprint(inString, ":", val)
         assert val == solution

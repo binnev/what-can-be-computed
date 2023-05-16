@@ -43,7 +43,7 @@ def testUniversal():
         ("listEvens.py", "2", ""),
         ("listEvens.py", "10", "2,4,6,8"),
     ]
-    for (filename, inString, solution) in testVals:
+    for filename, inString, solution in testVals:
         val = universal(rf(filename), inString)
         utils.tprint(filename, inString, val)
         assert val == solution
@@ -58,7 +58,7 @@ def testUniversal1arg():
         ("listEvens.py", "2", ""),
         ("listEvens.py", "10", "2,4,6,8"),
     ]
-    for (filename, inString, solution) in testVals:
+    for filename, inString, solution in testVals:
         progString = rf(filename)
         newInString = utils.ESS(progString, inString)
         val = universal1arg(newInString)

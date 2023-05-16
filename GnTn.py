@@ -44,7 +44,7 @@ def testGnTn():
         ("TTTTTT", "no"),
         ("GGTTTT", "no"),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = GnTn(inString)
         utils.tprint(inString, ": ", val)
         assert val == solution

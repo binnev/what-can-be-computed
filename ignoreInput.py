@@ -27,7 +27,7 @@ def ignoreInput(inString):
 
 
 def testIgnoreInput():
-    for (progName, inString, solution) in [
+    for progName, inString, solution in [
         ("containsGAGA.py", "GAGAGAGAG", "yes"),
         ("containsGAGA.py", "TTTTGGCCGGT", "no"),
     ]:

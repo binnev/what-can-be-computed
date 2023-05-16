@@ -80,7 +80,7 @@ def testExtendsClique():
         (["a", "b"], "e", False),
         (["a", "b", "c"], "e", False),
     ]
-    for (clique, newNode, solution) in testvals:
+    for clique, newNode, solution in testvals:
         val = extendsClique(G, clique, newNode)
         utils.tprint(clique, newNode, val)
         assert val == solution
@@ -145,7 +145,7 @@ def testTryExtendClique():
         (4, set({"a", "c"}), set({"b", "d", "e"}), "verify"),
         (5, set({"a", "c"}), set({"b", "d", "e"}), None),
     ]
-    for (K, clique, remainingNodes, solution) in testvals:
+    for K, clique, remainingNodes, solution in testvals:
         val = tryExtendClique(G, K, clique, remainingNodes)
         utils.tprint(K, clique, remainingNodes, val)
         if solution is None:
@@ -165,7 +165,7 @@ def testClique():
         (4, "verify"),
         (5, None),
     ]
-    for (K, solution) in testvals:
+    for K, solution in testvals:
         inString = graphString + " ; " + str(K)
         val = clique(inString)
         utils.tprint(inString, val)

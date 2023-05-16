@@ -7,9 +7,7 @@ from dfa import Dfa
 
 
 class Nfa(NDTuringMachine):
-    """Represents an nfa as described in the textbook.
-
-    """
+    """Represents an nfa as described in the textbook."""
 
     epsilonStr = "Eps"
     """Represents epsilon-transitions in ASCII machine descriptions
@@ -26,7 +24,7 @@ class Nfa(NDTuringMachine):
     def createRootClone(self, description, tapeStr, name, keepHistory):
         """Create the root clone of this nondeterministic Turing
         machine.
-        
+
         Overrides NDTuringMachine.createRootClone(). See that method
         for documentation.
 
@@ -36,7 +34,7 @@ class Nfa(NDTuringMachine):
     def transformAnEpsilonTransition(self, t):
         """Transform an epsilon transition into equivalent transitions without
         epsilon.
-        
+
         Args:
 
             t (Transition): the epsilon-transition to be transformed
@@ -80,9 +78,7 @@ class Nfa(NDTuringMachine):
         return ts
 
     def transformEpsilonTransitions(self):
-        """Convert into an equivalent nfa with no epsilon-transitions.
-        
-        """
+        """Convert into an equivalent nfa with no epsilon-transitions."""
         newTransitions = dict()
         for sourceState, transitionList in self.rootClone.transitions.items():
             newTransitionList = []
@@ -98,7 +94,7 @@ class Nfa(NDTuringMachine):
 
 # see testCheckNfa() in checkTuringMachine.py for more detailed tests
 def testNfa():
-    for (filename, inString, solution) in [
+    for filename, inString, solution in [
         ("simple3.nfa", "AA", "yes"),
         ("simple3.nfa", "AGA", "yes"),
         ("simple3.nfa", "AC", "yes"),

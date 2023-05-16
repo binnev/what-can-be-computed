@@ -31,7 +31,7 @@ def testverifyAdd():
         ("5 6", "11", "", "correct"),
         ("5 6", "10", "", "unsure"),
     ]
-    for (I, S, H, retVal) in testVals:
+    for I, S, H, retVal in testVals:
         val = verifyAdd(I, S, H)
         utils.tprint(I, S, H, ":", val)
         assert val == retVal

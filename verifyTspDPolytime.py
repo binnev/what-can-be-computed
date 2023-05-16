@@ -39,7 +39,7 @@ def verifyTspDPolytime(I, S, H):
 
 def testVerifyTspDPolytime():
     G = "a,b,5 a,c,9 b,d,1 d,c,6"
-    for (L, S, H, solution) in [
+    for L, S, H, solution in [
         (22, "yes", "a,b,d,c", "correct"),
         (21, "yes", "a,b,d,c", "correct"),
         (20, "yes", "a,b,d,c", "unsure"),

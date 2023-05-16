@@ -29,7 +29,7 @@ def testMCopiesOfC():
         ("2", "CC"),
         ("20", "CCCCCCCCCCCCCCCCCCCC"),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = MCopiesOfC(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

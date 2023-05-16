@@ -26,7 +26,7 @@ def alterYesToGAGA(inString):
 
 
 def testAlterYesToGAGA():
-    for (progName, inString, solution) in [
+    for progName, inString, solution in [
         ("containsGAGA.py", "GAGAGAGAG", "GAGA"),
         ("containsGAGA.py", "ATATACCC", "no"),
     ]:

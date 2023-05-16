@@ -26,7 +26,7 @@ def testrecognizeEvenLength():
         ("xxx", None),
         (201 * "x", None),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = utils.runWithTimeout(None, recognizeEvenLength, inString)
         utils.tprint(inString, ":", val)
         assert val == solution

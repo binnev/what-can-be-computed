@@ -23,7 +23,7 @@ def testrepeatCAorGA():
         ("GA", "GAGA"),
         ("CCCCTTTAA", "unknown"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = repeatCAorGA(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

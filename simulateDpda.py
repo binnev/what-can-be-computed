@@ -25,7 +25,7 @@ def simulateDpda(pdaString, inString):
 
 # see testCheckDpda() in checkTuringMachine.py for more detailed tests
 def testSimulateDpda():
-    for (filename, inString, val) in [
+    for filename, inString, val in [
         ("containsGAGA.pda", "CCCCCCCCCAAAAAA", "no"),
         ("containsGAGA.pda", "CCCGAGACCAAAAAA", "yes"),
         ("multipleOf5.pda", "12345", "yes"),

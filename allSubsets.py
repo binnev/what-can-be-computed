@@ -42,7 +42,7 @@ def testAllSubsets():
         ("4", "{} {4}"),
         ("4 5 6", "{} {4} {5} {4,5} {6} {4,6} {5,6} {4,5,6}"),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = allSubsets(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

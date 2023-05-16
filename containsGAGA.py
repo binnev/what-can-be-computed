@@ -35,7 +35,7 @@ def testContainsGAGA():
         ("", "no"),
         ("CCCCCCCCGAGTTTT", "no"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = containsGAGA(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

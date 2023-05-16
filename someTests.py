@@ -27,7 +27,7 @@ def testmultiplyAll():
         ("10 20 30", "6000"),
         ("10 10 10 10 10 10 10 10 10 10", "10000000000"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = multiplyAll(inString)
         utils.tprint(inString, ":", val)
         assert val == solution
@@ -50,7 +50,7 @@ def testcountLines():
         ("abc\ndef\nghi", "3"),
         ("abc\ndef\nghi\n", "4"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = countLines(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

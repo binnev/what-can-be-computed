@@ -180,7 +180,7 @@ def testConvertSatTo3Sat():
         (s4, s4soln),
     ]
 
-    for (inString, soln) in testvals:
+    for inString, soln in testvals:
         utils.tprint("**", inString, "**")
         converted = convertSatTo3Sat(inString)
         utils.tprint(converted, "\n\n")

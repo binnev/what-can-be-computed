@@ -29,7 +29,7 @@ def testGAGAOnString():
         ("repeatCAorGA.py", "CA", "no"),
         ("repeatCAorGA.py", "GA", "yes"),
     ]
-    for (progName, inString, solution) in testvals:
+    for progName, inString, solution in testvals:
         val = GAGAOnString(rf(progName), inString)
         utils.tprint((progName, inString), ":", val)
         assert val == solution

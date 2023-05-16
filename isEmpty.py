@@ -17,7 +17,7 @@ def testisEmpty():
         ("", "yes"),
         ("asdf", "no"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = isEmpty(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

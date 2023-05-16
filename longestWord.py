@@ -27,7 +27,7 @@ def testlongestWord():
         ("x xx xxx xxxx xxxxx xxxx xxx xx x", "xxxxx"),
         ("x xx xxx xxxx\nxxxxx xxxx\nxxx xx xxxxxxxx", "xxxxxxxx"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = longestWord(inString)
         utils.tprint(inString, ":", val)
         assert val == solution

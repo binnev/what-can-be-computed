@@ -5,6 +5,7 @@
 import utils
 from utils import rf
 
+
 # The input should be a positive integer M in decimal notation. This
 # program returns a list of all positive even integers less than M,
 # separated by commas.
@@ -27,7 +28,7 @@ def testListEvens():
         (10, "2,4,6,8"),
         (15, "2,4,6,8,10,12,14"),
     ]
-    for (M, solution) in testVals:
+    for M, solution in testVals:
         val = listEvens(str(M))
         utils.tprint(M, ":", val)
         assert val == solution

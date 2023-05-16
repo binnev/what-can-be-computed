@@ -23,7 +23,7 @@ def testloopIfContainsGAGA():
         ("GAGA", loopVal),
         ("CCCATTTGAGAGGGGG", loopVal),
     ]
-    for (inString, solution) in testvals:
+    for inString, solution in testvals:
         val = utils.runWithTimeout(None, loopIfContainsGAGA, inString)
         utils.tprint(inString, val)
         if val == None:

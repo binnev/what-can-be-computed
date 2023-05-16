@@ -16,7 +16,7 @@ def testYes():
         ("asdf", "yes"),
         ("GAGAGAGAGAGA", "yes"),
     ]
-    for (inString, solution) in testVals:
+    for inString, solution in testVals:
         val = yes(inString)
         utils.tprint(inString, ":", val)
         assert val == solution
