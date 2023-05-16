@@ -1,9 +1,8 @@
-# 3.2
 import pytest
 
 import utils
-from exercises.count_chars import count_chars
-from exercises.count_chars_b import count_chars_b
+from exercises.chapter3.count_chars import count_chars
+from exercises.chapter3.count_chars_b import count_chars_b
 
 
 @pytest.mark.parametrize("func", [count_chars, count_chars_b])
@@ -11,8 +10,8 @@ from exercises.count_chars_b import count_chars_b
     "input, solution",
     [
         ("CATTG", 5),
-        (utils.rf("exercises/count_chars.py"), 58),
-        (utils.rf("exercises/count_chars_b.py"), 103),
+        (utils.rf("exercises/chapter3/count_chars.py"), 58),
+        (utils.rf("exercises/chapter3/count_chars_b.py"), 103),
     ],
 )
 def test_3_2(func, input, solution):

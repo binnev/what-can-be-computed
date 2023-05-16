@@ -159,11 +159,10 @@ def readFile(fileName):
 
         str: The contents of the file.
     """
+    from pathlib import Path
 
-    fileContents = ""
-    with open(fileName) as inputFile:
-        fileContents = inputFile.read()
-    return fileContents
+    with open(Path(__file__).parent / fileName) as inputFile:
+        return inputFile.read()
 
 
 # Define a very short convenient alias for the readFile function
