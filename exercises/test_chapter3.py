@@ -53,3 +53,49 @@ def test_3_3(func, input, solution):
 )
 def test_3_4(output, expected):
     assert output == expected
+
+
+def test_3_5():
+    # We can write a notional function no_on_string as follows:
+    def no_on_string(p, i):
+        if p(i) == "no":
+            return "yes"
+        else:
+            return "no"
+
+    # If this function can exist, we can also write no_on_self:
+    def no_on_self(p):
+        return no_on_string(p, p)
+
+    """
+    But this function produces a contradiction when called on itself. 
+    Let's substitute in the source code for no_on_string into no_on_self, so it goes from 
+    
+        def no_on_self(p):
+            return no_on_string(p, p)
+    
+    to 
+    
+        def no_on_self(p):
+            if p(p) == "no":
+                return "yes"
+            else:
+                return "no"
+
+    Now let's call no_on_self(no_on_self), so substituting in p = no_on_self: 
+    
+        def no_on_self(no_on_self):
+            if no_on_self(no_on_self) == "no":
+                return "yes"
+            else:
+                return "no"
+
+    There's the contradiction: 
+    no_on_self(no_on_self) returns "yes" if no_on_self(no_on_self) returns "no".
+    
+    If we try to call no_on_self(no_on_self) in practice, the contradiction manifests itself as 
+    an infinite recursion error.
+    """
+    with pytest.raises(RecursionError) as e:
+        no_on_self(no_on_self)
+    assert str(e.value) == "maximum recursion depth exceeded"
